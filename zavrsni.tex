@@ -1,6 +1,7 @@
 \documentclass[times, utf8, zavrsni]{fer}
 \usepackage{booktabs}
 \usepackage{pdfpages}
+
 \begin{document}
 
 \thesisnumber{5709}
@@ -20,8 +21,9 @@
     \
 
     Zahvaljujem tvrtki Microblink na danim sredstvima bez kojih ovaj rad ne bi bio moguć.
-    Posebno zahvaljujem kolegama koji su me svojim bogatim znanjem i iskustvom
-    usmjeravali u razvoju rada, a to su: Jurica Cerovec, Nenad Mikša, Boris Trubić, Igor Smolkovič i Ivan Jurin.
+    Posebno zahvaljujem kolegama Jurici Cerovecu, Nenadu Mikši, Borisu Trubiću,
+    Igoru Smolkoviču i Ivanu Jurinu koji su me svojim bogatim znanjem i iskustvom
+    usmjeravali u razvoju rada.
 }
 
 \zahvala{
@@ -51,7 +53,7 @@ OCR sustave za detekciju rukom pisanih znakova možemo podijeliti na dvije potka
 ih korisnici unose i to im omogućuje praćenje parametara poput: brzine pisanja, broj napravljenih poteza,
 smjer pisanja, itd. \emph{Off-line} OCR sustavi izvode se nad jednom slikom na kojoj se nalazi
 sav sadržaj nad kojim je potrebno napraviti detekciju. Takvi sustavi nemaju dodatne informacije koje imaju
-\emph{off-line} sustavi i zato je detekcija znakova kompliciranija \citep{DBLP:journals/corr/abs-1710-05703}. Slika \ref{fig:math-example-01} prikazuje primjer rezultata
+\emph{on-line} sustavi i zato je detekcija znakova kompliciranija \citep{DBLP:journals/corr/abs-1710-05703}. Slika \ref{fig:math-example-01} prikazuje primjer rezultata
 \emph{off-line} OCR sustava za detekciju rukom pisanih znakova.
 
 \begin{figure}[htb]
@@ -65,7 +67,7 @@ OCR sustavi imaju široku primjenu i možemo ih pronaći primjerice u detekciji
 znakova na registarskim pločicama \citep{DBLP:journals/corr/Saghaei16a}, \citep{DBLP:journals/corr/abs-1802-09567},
 u detekciji znakova na tiskanim knjigama \citep{DBLP:journals/corr/abs-1802-10033},
 \citep{Christy:2017:MDE:3172938.3075645} i
-detekciji znakova na raznim dokumenatima \citep{DBLP:journals/corr/HarrajR15}. Na slici \ref{fig:receipt-example-01}
+detekciji znakova na raznim dokumenatima \citep{DBLP:journals/corr/HarrajR15} \citep{verma2016ocr}. Na slici \ref{fig:receipt-example-01}
 prikazan je primjer rezultata korištenja OCR sustava za detekciju znakova na računima iz trgovine.
 Slika \ref{fig:book-example-01} prikazuje rezultat OCR sustava za detekciju znakova na tiskanim knjigama.
 
@@ -163,7 +165,7 @@ klasifikaciju. \citep{DBLP:journals/corr/abs-1710-05703}
 
 \subsubsection{Klasifikacija}
 
-Klasifikacija je najvažniji korak optičkog raspoznavanja znakova \citep{verma2012survey}
+Klasifikacija je najvažniji korak optičkog raspoznavanja znakova \citep{verma2012survey} \citep{zhu2016novel}
 koji koristi izdvojene značajke za određivanje klase pojedinog znaka \citep{lehal1999feature} \citep{kaur2016survey}.
 Statistički pristupi klasifikacije koriste diskriminativne funkcije za određivanje klase znaka \citep{DBLP:journals/corr/abs-1710-05703},
 a u novije vrijeme koriste se duboke neuronske mreže \citep{Jurin:2017:Master}.
@@ -206,7 +208,89 @@ postprocesiranje OCR rezultata.
     \label{fig:post-correction-example-01}
 \end{figure}
 
+\chapter{Sustavi za određivanje strukture teksta}
+Sustavi za određivanje strukture teksta na temelju OCR rezultata sastavni su dio OCR sustava. Određivanje strukture teksta
+podrazumjeva segmentaciju linija i segmentaciju riječi unutar linije. Neke tehnike segmentacije
+OCR znakova i njihove klasifikacije nemaju informaciju o tome kojoj liniji i riječi pojedini znak pripada.
+Prednost takvog pristupa je da takav OCR sustav možemo koristiti nad slikama koje ne sadrže linije,
+kao na primjer matematički izrazi \citep{Jurin:2017:Master}. Nedostatak je što nakon klasifikacije
+moramo razviti sustav koji će OCR znakove dodatno procesirati da bismo dobili strukturu teksta \citep{Jurin:2017:Master}.
+
+Tekst na slici može biti podijeljen na linije ili blokove, a u bloku
+tekst možemo podijeliti na linije. Unutar jedne linije znakove možemo grupirati riječi. Način na
+koji će se odrediti struktura teksta uvelike ovisi o problemu koji riješavamo i kakve rezultate
+želimo dobiti.
+
+Tain i suradnici \citep{DBLP:journals/corr/TianPHLYT16} predlažu sustav za određivanje strukture teksta
+koji će osim određivanja kojoj liniji pojedini znak pripada znati izbaciti tzv. \emph{false positive}
+znakove odnosno znakove koje je OCR sustav prepoznao, a zapravo u tekstu ne postoje. Njihov sustav temelji
+se na \emph{min-cost flow network} modelu koji objedinjuje izbacivanje \emph{false positive} znakova i
+pronalazak strukture teksta. Na temelju međusobne pozicije između dva prepoznata znaka i
+dodatnog parametra kojeg dobivaju od klasifikatora, a koji označava vjerojatnost ispravne detekcije, grade težinski
+usmjereni graf (Slika \ref{fig:text-flow}) koji svoj problem modeliraju \emph{min-cost flow network} modelom.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[height=5cm]{images/text-flow.png}
+    \caption{Težinski usmjereni graf temeljen na \emph{min-cost flow network} modelu \citep{DBLP:journals/corr/TianPHLYT16}.}
+    \label{fig:text-flow}
+\end{figure}
+
+\pagebreak
+
+Zhu i suradnici \citep{zhu2016novel} predložili su novu arhitekturu (Slika \ref{fig:novel-ocr}) OCR sustava koji se temelji na empirijskim
+rezultatima koji su pokazali da sadržaj riječi ne ovisi samo o dijelu teksta u kojem se ta riječ
+nalazi nego i o susjednim dijelovima teksta. Njihov novi OCR sustav radi dvostruku analizu strukture
+teksta -- prije klasifikacije i nakon klasifikacije. Prva analiza strukture teksta omogućuje im da odrede
+strukturu teksta u blokovima, a druga analiza strukture teksta im omogućuje da poprave pogreške u klasifikaciji.
+Njihova nova arhitektura predstavlja hibridni OCR sustav koji iskorištava rezultate analize strukture teksta.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[height=6cm]{images/novel-ocr.png}
+    \caption{Arhitektura novog OCR sustava kojeg predlažu Zhu i suradnici \citep{zhu2016novel}.}
+    \label{fig:novel-ocr}
+\end{figure}
+
+\pagebreak
+
+Yin i suradnici \citep{yin2007handwritten} pronalaze linije u tekstu povezujući znakove u težinski
+graf nad kojim provode Kruskalov algoritam za pronalazak minimalnog razapinjujućeg stabla. Njihov
+pristup ne koristi rezultate klasifikacije, nego koriste povezane komponente koje im predstavljaju
+znakove i koje pronalaze koristeći algoritam temeljen na praćenju kontura \engl{contour tracing}.
+Slika \ref{fig:mst-example-01} prikazuje rezultat pronalaska linija teksta u rukom pisanom dokumentu na
+Engleskom jeziku.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[height=8cm]{images/mst-example-01.png}
+    \caption{Rezultat pronalaska linija teksta u rukom pisanom dokumentu na Engleskom jeziku \citep{yin2007handwritten}}
+    \label{fig:mst-example-01}
+\end{figure}
+
+Motivirani njihovim radom Pan i suradnici \citep{pan2011hybrid} predstavili su sličan pristup
+koji u težinama grafa uzima u obzir dodatne težine koje su učene MCE \engl{minimum classification error} mjerom.
+
+Još jedan pristup predložili su Yin i suradnici \citep{DBLP:journals/corr/abs-1301-2628} koji koriste
+tehniku hijerahiskog grupiranja koji postupno spaja linije koje dijele znakove dok god
+postoje linije koje se mogu spojiti. \citep{DBLP:journals/corr/TianPHLYT16}
+
+Liang i suradnici \citep{liang1996document} predlažu heuristički algoritam za određivanje sturkture
+teksta. Algoritam radi horizontalnu projekciju (Slika \ref{fig:histogram-projection}) omeđujućih pravokutnika na jednu ravninu i pronalazi
+vrhove i doline u histogramu koji prikazuje frekvencije pojavljivanja projektiranih pravokutnika.
+Osim ovog pristupa predložili su još jedan koji spaja dva znaka u jednu cjelinu ako i samo ako
+su dva znaka dovoljno blizu da ih ima smisla spojiti. Gupta i suradnici \citep{gupta2006document} također koriste razne heuristike prema kojima
+povezuju susjedne omeđujuće pravokutnike.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[height=6cm]{images/histogram-projection.png}
+    \caption{Histogram dobiven horizontalnom projekcijom omeđujućih pravokutnika \citep{liang1996document}}
+    \label{fig:histogram-projection}
+\end{figure}
+
 \chapter{Zaključak}
+
 \bibliography{literatura}
 \bibliographystyle{fer}
 
