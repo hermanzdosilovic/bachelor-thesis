@@ -1,6 +1,9 @@
 \documentclass[times, utf8, zavrsni]{fer}
 \usepackage{booktabs}
 \usepackage{pdfpages}
+\usepackage{listings}
+
+\renewcommand{\lstlistingname}{Isječak}
 
 \begin{document}
 
@@ -84,6 +87,8 @@ Slika \ref{fig:book-example-01} prikazuje rezultat OCR sustava za detekciju znak
     \caption{Rezultat OCR sustava za detekciju znakova na tiskanim knjigama.}
     \label{fig:book-example-01}
 \end{figure}
+
+\pagebreak
 
 \section{Proces izvođenja}
 
@@ -208,7 +213,7 @@ postprocesiranje OCR rezultata.
     \label{fig:post-correction-example-01}
 \end{figure}
 
-\chapter{Sustavi za određivanje strukture teksta}
+\chapter{Određivanje strukture teksta}
 Sustavi za određivanje strukture teksta na temelju OCR rezultata sastavni su dio OCR sustava. Određivanje strukture teksta
 podrazumjeva segmentaciju linija i segmentaciju riječi unutar linije. Neke tehnike segmentacije
 OCR znakova i njihove klasifikacije nemaju informaciju o tome kojoj liniji i riječi pojedini znak pripada.
@@ -282,12 +287,162 @@ Osim ovog pristupa predložili su još jedan koji spaja dva znaka u jednu cjelin
 su dva znaka dovoljno blizu da ih ima smisla spojiti. Gupta i suradnici \citep{gupta2006document} također koriste razne heuristike prema kojima
 povezuju susjedne omeđujuće pravokutnike.
 
+\pagebreak
+
 \begin{figure}[htb]
     \centering
     \includegraphics[height=6cm]{images/histogram-projection.png}
     \caption{Histogram dobiven horizontalnom projekcijom omeđujućih pravokutnika \citep{liang1996document}}
     \label{fig:histogram-projection}
 \end{figure}
+
+Određivanje strukture teksta težak je postupak koji uvelike ovisi o problemu koji rješavamo. U ovom
+poglavlju smo pokazali da strukturiranje teksta može biti izvođeno u raznim fazama izvođenja OCR
+sustava. Trenutak u kojem ćemo pokrenuti analizu strukture teksta ovisi o načinu na koji smo
+označili segmente znakova, koje informacije o segmentu imamo i koji problem rješavamo.
+Pokazali smo da su neki pristupi postigli bolje rezultate kada se iskoristilo domensko znanje
+i kada su se u nekim heurističkim pristupima koristili parametri koji su bili pomno
+izabrani za dani problem.
+U nastavku ovog rada predložiti ćemo nekoliko pristupa za određivanje strukture teksta na temelju položaja omeđujućih pravokutnika nakon provedene klasifikacije
+znakova. Analizirati ćemo njihove prednosti i nedostatke i cijelo vrijeme ćemo znati koji točno problem rješavamo.
+
+\chapter{Opis problema}
+Problem koji rješavamo je određivanje strukture teksta na temelju položaja pojedinih znakova.
+Od OCR sustava dobijemo listu znakova i za svaki znak znamo sljedeće informacije:
+\begin{itemize}
+    \item[$\bullet$] $x$ - poziciju gornjeg lijevog kuta,
+    \item[$\bullet$] $y$ - poziciju gornjeg lijevog kuta,
+    \item[$\bullet$] $width$ - širinu znaka,
+    \item[$\bullet$] $height$ - visinu znaka i
+    \item[$\bullet$] $value$ - ASCII vrijednost znaka.
+\end{itemize}
+
+\
+
+Slika \ref{fig:book-example-02} prikazuje vizaualizaciju rezultata OCR sustava koji nam je za svaki
+znak vratio omeđujući pravokutnik (označeno plavom bojom) i vrijednost znaka odnosno klasu kojoj
+znak pripada.
+Primjer pojednostavljenog OCR rezultata koji će sustav za određivanje strukture teksta dobiti kao svoj
+ulaz prikazan je Isječkom \ref{lst:ocr-result-json-01}. Ulazni OCR rezultat u JSON formatu uvijek se sastoji
+od jedne linije u koju su smješteni znakovi nasumičnim redosljedom.
+
+\
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[height=4cm]{images/book-example-02.png}
+    \caption{Primjer rezultata koji vraća OCR sustav}
+    \label{fig:book-example-02}
+\end{figure}
+
+\pagebreak
+
+\begin{lstlisting}[frame=single,caption={Rezultat OCR-a u JSON formatu},label={lst:ocr-result-json-01},language=HTML]
+{
+    "ocr_result": {
+        "lines": [
+            {
+                "chars": [
+                    {
+                        "x": 33.00815,
+                        "y": 35.9664545,
+                        "width": 20.54956,
+                        "height": 29.820866,
+                        "value": 72
+                    },
+                    {
+                        "x": 10.1956,
+                        "y": 0.88411045,
+                        "width": 19.469421,
+                        "height": 29.035599,
+                        "value": 67
+                    }
+                ]
+            }
+        ]
+    }
+}
+\end{lstlisting}
+
+Sustav za određivanje strukture teksta treba za dobiveni OCR rezultat u JSON formatu vratiti novi
+rezultat u JSON formatu koji će znakove grupirati u linije i koji će unutar linija biti poredani
+s lijeva na desno. Također, linije moraju biti sortirane tako da se najviša linija u dokumentu nalazi
+prva.
+
+\pagebreak
+
+\begin{lstlisting}[frame=single,caption={Rezultat OCR-a u JSON formatu},label={lst:ocr-result-json-01},language=HTML]
+{
+    "ocr_result": {
+        "lines": [
+            {
+                "chars": [
+                    {
+                        "x": 10.1956,
+                        "y": 0.88411045,
+                        "width": 19.469421,
+                        "height": 29.035599,
+                        "value": 67
+                    }
+                ]
+            },
+            {
+                "chars": [
+                    {
+                        "x": 33.00815,
+                        "y": 35.9664545,
+                        "width": 20.54956,
+                        "height": 29.820866,
+                        "value": 72
+                    }
+                ]
+            }
+        ]
+    }
+}
+\end{lstlisting}
+
+U sklopu ovog rada rješavati ćemo problem određivanja strukture teksta
+na računima iz trgovine i određivanje strukture teksta u knjigama.
+
+\chapter{Skup podataka za testiranje}
+Detaljno objasniti kako izgleda skup podatak za testiranje. Napomenuti da se
+radi o anotiranim podacima, a ne o podacima koje je vratio neki klasifikator.
+
+Dati čitatelju do znanja da se radi o vrlo specijaliziranom problemu koji
+jako ovisi o OCR sustavu
+
+Možeš u dodatku rada opisati kako je strukturiran \emph{test-data} direktorij.
+
+\chapter{Algoritmi za određivanje strukture teksta}
+U ovom poglavlju trebaš napisati na koji način je podijeljen sustav za određivanje
+strukture teksta (\emph{aligner} i \emph{spacer}). Opisati način rada svakog
+i njihovu suradnju. Opisati što se očekuje od \emph{alignera}, a što od \emph{spacera}.
+
+\chapter{Rezultati i analiza}
+\section{Metrike}
+Opisati metrike koje su korištene za određivanje \emph{fitnesa} layoutera.
+Zašto baš ta metrika, a ne neka druga. Objasniti prednosti i mane takve metrike
+i koje su posljedice njezina korištenja.
+
+\section{Brojke}
+Brojke rezultata, grafovi ili tablice.
+
+\section{Analiza}
+Analiza rezultata. Zašto \emph{aligner} radi, a zašto ne. Isto tako i za
+\emph{spacer}. Pokazati gdje \emph{aligner} griješi i analizirati zašto. Isto i za
+\emph{spacer}.
+
+\chapter{Daljnji rad}
+Opisati što se može napraviti u bližoj budućnosti da rezultati budu bolji.
+Definitvno spomenuti potrebu za izgradnjom boljeg skupa podataka i definiranja
+metrike. Istaknuti prednosti takvog novog skupa podataka.
+
+\chapter{Dodaci}
+U dodacima rada opisati strukturu \emph{test-data} direktorija. Opisati
+na koji način čitatelj može reproducirati rezultate i kako može isprobati rad
+\emph{Layouter} na nekom svom skupu podataka. Pogledaj kako se ispravno dodaju
+dodaci i u kojem dijelu rada dodatak mora biti.
 
 \chapter{Zaključak}
 
