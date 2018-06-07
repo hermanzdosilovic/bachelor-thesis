@@ -7,6 +7,17 @@
 
 \begin{document}
 
+\lstset{
+basicstyle=\ttfamily\footnotesize,
+keepspaces=true,
+numbers=left,
+frame=single,
+captionpos=b,
+showspaces=false,
+numberstyle=\ttfamily,
+columns=flexible
+}
+
 \thesisnumber{5709}
 
 \title{Sustav za određivanje strukture teksta na temelju položaja pojedinih znakova}
@@ -40,7 +51,7 @@
 \chapter{Optičko raspoznavanje znakova}
 Sustav za optičko raspoznavanje znakova \engl{optical character recognition} (u daljnjem tekstu: OCR)
 pretvara sliku tiskanog teksta u digitalizirani format kojim možemo jednostavno manipulirati na računalu.
-Za razliku od ljudskog mozga, računalima nije lako prepoznati tekst i pojedine znakove teksta sa slike
+Iako je to ljudima jednostavan zadatak, računalima nije lako prepoznati tekst i pojedine znakove teksta sa slike
 zbog velike raznolikosti jezika, fonta i stila kojim tekst može biti napisan.
 OCR je stoga vrlo zahtjevan problem i mnogo je istraživačkog truda uloženo u pokušaju
 da se slike teksta pretvore u format koji računalo razumije. \citep{DBLP:journals/corr/abs-1710-05703}
@@ -110,7 +121,7 @@ mobilnog uređaja ili nekog drugog uređaja za digitalizaciju dokumenata \engl{s
 Nakon prvog koraka, slika dokumenta nad kojim provodimo raspoznavanje znakova sastoji se
 samo od slikovnih elemenata \engl{pixels} \citep{Vynckier:2018:HowOcrWorks}.
 Slika \ref{fig:receipt-example-02} prikazuje primjer slike nad kojom možemo provesti
-postupak raspoznavanja znakova. Primjetimo da slika može sadržiti pozadinu koju bi
+postupak raspoznavanja znakova. Primjetimo da slika može sadržati pozadinu koju bi
 OCR sustav trebao zanemariti.
 
 \begin{figure}[htb]
@@ -122,7 +133,7 @@ OCR sustav trebao zanemariti.
 
 \subsubsection{Pretprocesiranje}
 
-U koraku pretprocesiranja slike provodimo niz morfoloških transformacija i filtra nad pribavljenom slikom.
+U koraku pretprocesiranja slike OCR sustavi često provode niz morfoloških transformacija i filtra nad pribavljenom slikom.
 Cilj ovog koraka je povećati kvalitetu slike i smanjiti informacije na slici. Binarizacija je jedan od
 potkoraka pretporocesiranja koji slike u boji ili u nijansama sive pretvara u crno-bijele. Osim binarizacije
 koriste se neke morfološke transformacije poput dilatacije, rezanja i skaliranja.
@@ -140,7 +151,7 @@ Slika \ref{fig:binarization} prikazuje primjer slike prije i nakon binarizacije.
 \label{subsubsec:segmentacija}
 
 Sljedeći korak, segmentacija znakova, je postupak segmentiranja slike u segmente unutar kojih se nalaze znakovi
-koje želimo klasificirati. Jedna od pristupa segmentacije izvodi se s vrha prema dnu gdje se najprije
+koje želimo klasificirati. Jedan od pristupa segmentacije izvodi se s vrha prema dnu gdje se najprije
 segmentiraju linije, zatim riječi i na kraju pojedini znakovi \citep{Jurin:2017:Master}, \citep{Vynckier:2018:HowOcrWorks}.
 Prednost ovakvog pristupa je da uz lokaciju svakog znaka dobivamo i strukturu cijelog teksta, odnosno, znamo kojoj
 liniji i kojoj riječi znak pripada. Nedostatak ovakvog pristupa je da ne postoje korekcijski mehanizmi kojima bismo
@@ -162,7 +173,7 @@ Slika \ref{fig:segmentation} prikazuje rezultat segmentacije pojedinih znakova.
 
 \subsubsection{Izdvajanje značajki}
 
-Izdvajanje značajki pojedinog znaka podrazumjeva odabir značajki prema kojima će
+Izdvajanje značajki pojedinog znaka podrazumijeva odabir značajki prema kojima će
 se jedinstveno klasificirati svaki znak. Značajke poput geometrijskog oblika ili
 statističkih svojstava mogu biti uzete u obzir prilikom klasifikacije. Važno područje istraživanja pripada
 razmatranju koje i koliko značajki je potrebno uzeti u obzir za kvalitetnu i ispravnu
@@ -277,7 +288,7 @@ Motivirani njihovim radom Pan i suradnici \citep{pan2011hybrid} predstavili su s
 koji u težinama grafa uzima u obzir dodatne težine koje su učene MCE \engl{minimum classification error} mjerom.
 
 Još jedan pristup predložili su Yin i suradnici \citep{DBLP:journals/corr/abs-1301-2628} koji koriste
-tehniku hijerahiskog grupiranja koji postupno spaja linije koje dijele znakove dok god
+tehniku hijerahijskog grupiranja koji postupno spaja linije koje dijele znakove dok god
 postoje linije koje se mogu spojiti. \citep{DBLP:journals/corr/TianPHLYT16}
 
 Liang i suradnici \citep{liang1996document} predlažu heuristički algoritam za određivanje sturkture
@@ -310,53 +321,76 @@ znakova. Analizirati ćemo njihove prednosti i nedostatke i cijelo vrijeme ćemo
 Problem koji rješavamo je određivanje strukture teksta na temelju položaja pojedinih znakova.
 Od OCR sustava dobijemo listu znakova i za svaki znak znamo sljedeće informacije:
 \begin{itemize}
-    \item[$\bullet$] $x$ - poziciju gornjeg lijevog kuta,
-    \item[$\bullet$] $y$ - poziciju gornjeg lijevog kuta,
+    \item[$\bullet$] $x$ - horizontalnu poziciju gornjeg lijevog kuta,
+    \item[$\bullet$] $y$ - vertikalnu poziciju gornjeg lijevog kuta,
     \item[$\bullet$] $width$ - širinu znaka,
     \item[$\bullet$] $height$ - visinu znaka i
-    \item[$\bullet$] $value$ - ASCII vrijednost znaka.
+    \item[$\bullet$] $value$ - Unicode vrijednost znaka.
 \end{itemize}
 
-\
+U sklopu ovog rada rješavati ćemo problem određivanja strukture teksta
+na računima iz trgovine i određivanje strukture teksta u knjigama. Stup podataka za testiranje
+sustava biti će detaljno objašnjen u poglavlju \ref{chap:skup-padataka-za-testiranje}.
 
-Slika \ref{fig:book-example-02} prikazuje vizaualizaciju rezultata OCR sustava koji nam je za svaki
+\section{Primjer ulaza}
+
+Slika \ref{fig:book-example-02} prikazuje vizualizaciju rezultata OCR sustava koji nam je za svaki
 znak vratio omeđujući pravokutnik (označeno plavom bojom) i vrijednost znaka odnosno klasu kojoj
-znak pripada.
-Primjer pojednostavljenog OCR rezultata koji će sustav za određivanje strukture teksta dobiti kao svoj
-ulaz prikazan je Isječkom \ref{lst:ocr-result-json-01}. Ulazni OCR rezultat u JSON formatu uvijek se sastoji
-od jedne linije u koju su smješteni znakovi nasumičnim redosljedom.
+znak pripada. Slike \ref{fig:receipt-example-01} i \ref{fig:book-example-01} također prikazuju
+vizualizaciju rezultata OCR sustava i primjer podataka s kakvim će se sustav za
+određivanje strukture teksta susresti.
+
+Primjer pojednostavljenog (detaljnije u poglavlju \ref{chap:skup-padataka-za-testiranje}) OCR rezultata koji će sustav za određivanje strukture teksta dobiti kao svoj
+ulaz prikazan je Isječkom \ref{lst:ocr-result-json-01}. Ulazni OCR rezultat u JSON\footnote{JSON format, \url{https://json.org}}
+formatu uvijek se sastoji od jedne linije u koju su smješteni znakovi nasumičnim redosljedom.
 
 \
 
 \begin{figure}[htb]
     \centering
     \includegraphics[height=4cm]{images/book-example-02.png}
-    \caption{Primjer rezultata koji vraća OCR sustav}
+    \caption{Primjer vizualizacije rezultata koji vraća OCR sustav.}
     \label{fig:book-example-02}
 \end{figure}
 
 \pagebreak
 
-\begin{lstlisting}[frame=single,caption={Rezultat OCR-a u JSON formatu},label={lst:ocr-result-json-01},language=HTML]
+
+\begin{lstlisting}[caption={Primjer OCR rezultata u JSON formatu. Ulaz u sustav za određivanje strukture teksta.},label={lst:ocr-result-json-01}]
 {
     "ocr_result": {
         "lines": [
             {
                 "chars": [
                     {
-                        "x": 33.00815,
-                        "y": 35.9664545,
-                        "width": 20.54956,
-                        "height": 29.820866,
-                        "value": 72
+                        "x": 25.95604,
+                        "y": 17.30562,
+                        "width": 10.64438,
+                        "height": 16.60289,
+                        "value": 48
                     },
                     {
-                        "x": 10.1956,
-                        "y": 0.88411045,
-                        "width": 19.469421,
-                        "height": 29.035599,
-                        "value": 67
-                    }
+                        "x": 19.77133,
+                        "y": 1.28793,
+                        "width": 16.07777,
+                        "height": 10.76925,
+                        "value": 77
+                    },
+                    {
+                        "x": 5.50248,
+                        "y": 2.84320,
+                        "width": 12.13375,
+                        "height": 15.60966,
+                        "value": 73
+                    },
+                    {
+                        "x": 3.19550,
+                        "y": 19.67606,
+                        "width": 14.94088,
+                        "height": 20.78798,
+                        "value": 91
+                    },
+
                 ]
             }
         ]
@@ -364,36 +398,82 @@ od jedne linije u koju su smješteni znakovi nasumičnim redosljedom.
 }
 \end{lstlisting}
 
-Sustav za određivanje strukture teksta treba za dobiveni OCR rezultat u JSON formatu vratiti novi
-rezultat u JSON formatu koji će znakove grupirati u linije i koji će unutar linija biti poredani
-s lijeva na desno. Također, linije moraju biti sortirane tako da se najviša linija u dokumentu nalazi
-prva.
-
 \pagebreak
 
-\begin{lstlisting}[frame=single,caption={Rezultat OCR-a u JSON formatu},label={lst:ocr-result-json-01},language=HTML]
+\section{Zahtjevi sustava}
+Sustav za određivanje strukture teksta (u daljenjem tekstu: \emph{Sustav}) treba za dobiveni OCR rezultat u JSON formatu vratiti novi
+rezultat u JSON formatu koji će znakove grupirati u linije i koji će unutar linija biti poredani
+s lijeva na desno. Također, linije moraju biti sortirane tako da se najviša linija u dokumentu nalazi
+na prvom mjestu.
+
+Osim grupiranja linija, sustav treba odrediti gdje se nalazi razmak između riječi.
+Od sustava se očekuje da između dva znaka, gdje smatra da završava prethodna i počinje nova
+riječ, ubaci novi znak bjeline čija je vrijednost \engl{value} $32$ dok ostale informacije
+mogu biti prozivoljne.
+
+Isječak \ref{lst:ocr-result-json-02} prikazuje primjer izlaza iz sustava za dani ulaz
+iz Isječka \ref{lst:ocr-result-json-01}. Sustav je znakove grupirao u dvije linije i
+između prvog i zadnjeg znaka u drugoj liniji je ubacio znak bjeline. Vrijednost znaka
+bjeline je zahtijevana vrijednost $32$. Ostale informacije znaka bjeline mogle su biti
+proizvoljne, međutim, sustav im je dodijelio sljedeće smislenije vrijednost:
+
+\begin{itemize}
+    \item[$\bullet$] $x$ - horizontalna pozicija gornjeg desnog kuta lijevog znaka,
+    \item[$\bullet$] $y$ - vertikalna pozicija gornjeg lijevog kuta desnog znaka,
+    \item[$\bullet$] $width$ - horizontalna udaljenost između gornjeg desnog kuta lijevog
+                               znaka i gornjeg lijevog kuta desnog znaka,
+    \item[$\bullet$] $height$ - visina lijevog znaka.
+\end{itemize}
+
+Pod \emph{lijevi znak} podrazumijeva se na znak koji se nalazi prije znaka bjeline, a pod
+\emph{desni znak} podrazumijeva se na znak koji se nalazi nakon znaka bjeline.
+
+\
+
+\begin{lstlisting}[caption={Primjer izlaza iz sustava za određivanje strukture teksta.},label={lst:ocr-result-json-02}]
 {
     "ocr_result": {
         "lines": [
             {
                 "chars": [
                     {
-                        "x": 10.1956,
-                        "y": 0.88411045,
-                        "width": 19.469421,
-                        "height": 29.035599,
-                        "value": 67
+                        "x": 5.50248,
+                        "y": 2.84320,
+                        "width": 12.13375,
+                        "height": 15.60966,
+                        "value": 73
+                    },
+                    {
+                        "x": 19.77133,
+                        "y": 1.28793,
+                        "width": 16.07777,
+                        "height": 10.76925,
+                        "value": 77
                     }
                 ]
             },
             {
                 "chars": [
                     {
-                        "x": 33.00815,
-                        "y": 35.9664545,
-                        "width": 20.54956,
-                        "height": 29.820866,
-                        "value": 72
+                        "x": 3.19550,
+                        "y": 19.67606,
+                        "width": 14.94088,
+                        "height": 20.78798,
+                        "value": 91
+                    },
+                    {
+                        "x": 18.13638,
+                        "y": 19.67606,
+                        "width": 7,81966,
+                        "height": 20.78798,
+                        "value": 32
+                    }
+                    {
+                        "x": 25.95604,
+                        "y": 17.30562,
+                        "width": 10.64438,
+                        "height": 16.60289,
+                        "value": 48
                     }
                 ]
             }
@@ -402,10 +482,9 @@ prva.
 }
 \end{lstlisting}
 
-U sklopu ovog rada rješavati ćemo problem određivanja strukture teksta
-na računima iz trgovine i određivanje strukture teksta u knjigama.
-
 \chapter{Skup podataka za testiranje}
+\label{chap:skup-padataka-za-testiranje}
+
 Detaljno objasniti kako izgleda skup podatak za testiranje. Napomenuti da se
 radi o anotiranim podacima, a ne o podacima koje je vratio neki klasifikator.
 
