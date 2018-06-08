@@ -72,10 +72,13 @@ sav sadržaj nad kojim je potrebno napraviti detekciju. Takvi sustavi nemaju dod
 
 \begin{figure}[htb]
     \centering
+    \captionsetup{justification=centering,margin=2cm}
     \includegraphics[height=4cm]{images/math-example-01.png}
     \caption{Rezultat \emph{off-line} OCR sustava za detekciju znakova rukom pisanog teksta.}
     \label{fig:math-example-01}
 \end{figure}
+
+\pagebreak
 
 OCR sustavi imaju široku primjenu i možemo ih pronaći primjerice u detekciji
 znakova na registarskim pločicama \citep{DBLP:journals/corr/Saghaei16a}, \citep{DBLP:journals/corr/abs-1802-09567},
@@ -87,14 +90,14 @@ Slika \ref{fig:book-example-01} prikazuje rezultat OCR sustava za detekciju znak
 
 \begin{figure}[htb]
     \centering
-    \includegraphics[height=4cm]{images/receipt-example-01.png}
+    \includegraphics[width=\textwidth]{images/receipt-example-01.png}
     \caption{Rezultat OCR sustava za detekciju znakova na računima iz trgovine.}
     \label{fig:receipt-example-01}
 \end{figure}
 
 \begin{figure}[htb]
     \centering
-    \includegraphics[height=4cm]{images/book-example-01.png}
+    \includegraphics[width=\textwidth]{images/book-example-01.png}
     \caption{Rezultat OCR sustava za detekciju znakova na tiskanim knjigama.}
     \label{fig:book-example-01}
 \end{figure}
@@ -126,7 +129,7 @@ OCR sustav trebao zanemariti.
 
 \begin{figure}[htb]
     \centering
-    \includegraphics[height=8cm]{images/receipt-example-02.jpeg}
+    \includegraphics[height=7cm]{images/receipt-example-02.jpeg}
     \caption{Ulazna slika u OCR sustav pribavljena kamerom mobilnog uređaja.}
     \label{fig:receipt-example-02}
 \end{figure}
@@ -142,7 +145,7 @@ Slika \ref{fig:binarization} prikazuje primjer slike prije i nakon binarizacije.
 
 \begin{figure}[htb]
     \centering
-    \includegraphics[height=2cm]{images/binarization.png}
+    \includegraphics[width=\textwidth]{images/binarization.png}
     \caption{Prije binarizacije (lijevo) i nakon binarizacije (desno) \citep{Vynckier:2018:HowOcrWorks}.}
     \label{fig:binarization}
 \end{figure}
@@ -171,6 +174,8 @@ Slika \ref{fig:segmentation} prikazuje rezultat segmentacije pojedinih znakova.
     \label{fig:segmentation}
 \end{figure}
 
+\pagebreak
+
 \subsubsection{Izdvajanje značajki}
 
 Izdvajanje značajki pojedinog znaka podrazumijeva odabir značajki prema kojima će
@@ -195,7 +200,7 @@ označio prekretnicu u klasifikaciji i lokalizaciji objekata \citep{Jurin:2017:M
 
 \begin{figure}[htb]
     \centering
-    \includegraphics[height=5cm]{images/deep-example-01.png}
+    \includegraphics[width=\textwidth]{images/deep-example-01.png}
     \caption{Arhitektura \emph{AlexNet} \citep{Jurin:2017:Master}}
     \label{fig:deep-example-01}
 \end{figure}
@@ -217,9 +222,11 @@ za konkretan problem koji su rješavali. Ovim pristupom ostvarili su bolje rezul
 za konkretni problem nego što su ostvarili koristeći postojeći generički sustav za
 postprocesiranje OCR rezultata.
 
+\
+
 \begin{figure}[htb]
     \centering
-    \includegraphics[height=5cm]{images/post-correction-example-01.png}
+    \includegraphics[width=\textwidth]{images/post-correction-example-01.png}
     \caption{Arhitektura \emph{post-correction} OCR sustava \citep{schulz2017multi}}
     \label{fig:post-correction-example-01}
 \end{figure}
@@ -247,7 +254,8 @@ usmjereni graf (Slika \ref{fig:text-flow}) koji svoj problem modeliraju \emph{mi
 
 \begin{figure}[htb]
     \centering
-    \includegraphics[height=5cm]{images/text-flow.png}
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[height=6cm]{images/text-flow.png}
     \caption{Težinski usmjereni graf temeljen na \emph{min-cost flow network} modelu \citep{DBLP:journals/corr/TianPHLYT16}.}
     \label{fig:text-flow}
 \end{figure}
@@ -261,9 +269,12 @@ teksta -- prije klasifikacije i nakon klasifikacije. Prva analiza strukture teks
 strukturu teksta u blokovima, a druga analiza strukture teksta im omogućuje da poprave pogreške u klasifikaciji.
 Njihova nova arhitektura predstavlja hibridni OCR sustav koji iskorištava rezultate analize strukture teksta.
 
+\
+
 \begin{figure}[htb]
     \centering
-    \includegraphics[height=6cm]{images/novel-ocr.png}
+    \captionsetup{justification=centering,margin=2cm}
+    \fbox{\includegraphics[height=7cm]{images/novel-ocr.png}}
     \caption{Arhitektura novog OCR sustava kojeg predlažu Zhu i suradnici \citep{zhu2016novel}.}
     \label{fig:novel-ocr}
 \end{figure}
@@ -277,8 +288,11 @@ znakove i koje pronalaze koristeći algoritam temeljen na praćenju kontura \eng
 Slika \ref{fig:mst-example-01} prikazuje rezultat pronalaska linija teksta u rukom pisanom dokumentu na
 Engleskom jeziku.
 
+\
+
 \begin{figure}[htb]
     \centering
+    \captionsetup{justification=centering,margin=2cm}
     \includegraphics[height=8cm]{images/mst-example-01.png}
     \caption{Rezultat pronalaska linija teksta u rukom pisanom dokumentu na Engleskom jeziku \citep{yin2007handwritten}}
     \label{fig:mst-example-01}
@@ -302,6 +316,7 @@ povezuju susjedne omeđujuće pravokutnike.
 
 \begin{figure}[htb]
     \centering
+    \captionsetup{justification=centering,margin=2cm}
     \includegraphics[height=6cm]{images/histogram-projection.png}
     \caption{Histogram dobiven horizontalnom projekcijom omeđujućih pravokutnika \citep{liang1996document}}
     \label{fig:histogram-projection}
@@ -328,8 +343,8 @@ Od OCR sustava dobijemo listu znakova i za svaki znak znamo sljedeće informacij
     \item[$\bullet$] $value$ - Unicode vrijednost znaka.
 \end{itemize}
 
-U sklopu ovog rada rješavati ćemo problem određivanja strukture teksta
-na računima iz trgovine i određivanje strukture teksta u knjigama. Stup podataka za testiranje
+U sklopu ovog završnog rada rješavati ćemo problem određivanja strukture teksta
+na računima iz trgovine i sadržaja iz knjiga. Stup podataka za testiranje
 sustava biti će detaljno objašnjen u poglavlju \ref{chap:skup-padataka-za-testiranje}.
 
 \section{Primjer ulaza}
@@ -485,13 +500,142 @@ Pod \emph{lijevi znak} podrazumijeva se na znak koji se nalazi prije znaka bjeli
 \chapter{Skup podataka za testiranje}
 \label{chap:skup-padataka-za-testiranje}
 
-Detaljno objasniti kako izgleda skup podatak za testiranje. Napomenuti da se
-radi o anotiranim podacima, a ne o podacima koje je vratio neki klasifikator.
+Skup podataka za testiranje (u daljnjem tekstu: \emph{podatci})
+sustava sastoji se od slika, JSON datoteka i tekstualnih datoteka.
+U sklopu ovog završnog rada razvijeni sustav za određivanje strukture teksta
+rješavati će problem određivanja strukture teksta na računima iz trgovine i
+sadržaja iz knjiga.
 
-Dati čitatelju do znanja da se radi o vrlo specijaliziranom problemu koji
-jako ovisi o OCR sustavu
+\section{Slike}
+\label{sec:slike}
 
-Možeš u dodatku rada opisati kako je strukturiran \emph{test-data} direktorij.
+Podatci za testiranje sustava sadrže $100$ slika računa
+(Slika \ref{fig:receipt-example-04}) i $34$ slike sadržaja iz knjiga (Slika \ref{fig:book-example-03}).
+
+\
+
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[height=8cm]{images/receipt-example-04.jpg}
+    \caption{Primjer slike računa za koji će se rješavati problem određivanja strukture teksta.}
+    \label{fig:receipt-example-04}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/book-example-03.jpg}
+    \caption{Primjer slike sadržaja iz knjige za koji će se rješavati problem određivanja strukture teksta.}
+    \label{fig:book-example-03}
+\end{figure}
+
+Svaki znak na svakoj slici je \textbf{ručno} označen i klasificiran. Na slikama računa
+označeno je ukupno $85068$ znakova, a na slikama sadržaja iz knjiga označeno je ukupno
+$25092$ znaka. Ručno označeni podatci oponašaju rezultate OCR sustava koji predstavljaju ulaz u
+sustav za određivanje strukture teksta.
+
+Omeđujući pravokutnici označenih znakova predstavljaju područje koje označeni znak
+zauzima na slici. Stranice omeđujućih pravokutnika su uvijek paralelne sa rubovima slike.
+Slika \ref{fig:book-example-04} prikazuje isječak slike, sadržaja iz knjige, na kojoj
+su znakovi ukošeni, a stranice njihovih omeđujućih znakova paralelne su sa rubovima slike.
+Možemo uočiti kako je moguće da se dva susjedna omeđujuća pravokutnika preklapaju.
+
+\
+
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/book-example-04.png}
+    \caption{Primjer slike s kosim tekstom. Vizualizacija OCR rezultata. Omeđujući pravokutnici su uvijek paralelni s rubovima slike.}
+    \label{fig:book-example-04}
+\end{figure}
+
+\section{JSON datoteke}
+Slike opisane u \ref{sec:slike} \textbf{ne predstavljaju} ulaz u sustav za određivanje strukture
+teksta. Nakon označavanja slika podatci o označavanju svake slike se izvoze i pohranjuju u JSON datoteke.
+JSON datoteka u kojoj su zapisani podatci o označavanju Slike \ref{fig:receipt-example-04}
+prikazana je u Isječku \ref{lst:ocr-result-json-03}. Početna tri ključa
+\lstinline{meta}, \lstinline{tags} i \lstinline{crop} predstavljaju dodatne informacije
+o označenoj slici i mogu se zanemariti. Zbog specifičnosti sustava za označavanje
+slika i načina na koji on pohranjuje informacije o označavanju, svi označeni
+znakovi će biti smješteni u jednu liniju u nasumičnom poretku, a ta linija
+će biti smještena u jedan blok. Za svaki znak dostupna je informacija o Unicode
+vrijednosti znaka koja je smještena pod ključem \lstinline{value}. Dodatno, za
+svaki znak dostupna je informacija o poziciji i veličini njegovog omeđujućeg pravokutnika
+\engl{bounding box}. Za svaki omeđujući pravokutnik poznate su sljedeće informacije:
+\begin{itemize}
+    \item[$\bullet$] $x$ - horizontalna pozicija gornjeg lijevog kuta,
+    \item[$\bullet$] $y$ - vertikalna pozicija gornjeg lijevog kuta,
+    \item[$\bullet$] $width$ - širina i
+    \item[$\bullet$] $height$ - visina.
+\end{itemize}
+
+Kako vrijednost $x$ omeđujućeg pravokutnika raste tako je znak bliže desnom rubu slike.
+Čim je vrijednost $y$ omeđujućeg pravokutnika veća time je znak niže na slici.
+Sve informacije o omeđujućem pravokutniku su vrijednosti iz skupa nenegativnih realnih
+brojeva.
+
+Dodatne informacije dostupne za svaki znak smještene u ključeve
+\lstinline{font} i \lstinline{quality} mogu se zanemariti.
+
+\
+
+\begin{lstlisting}[caption={JSON datoteka s podatcima o označavanju Slike \ref{fig:receipt-example-04}.},label={lst:ocr-result-json-03}]
+{
+    "meta": {
+        "retailer": "Fred Meyer",
+        "validation_type": "turk-multiple",
+        "group": "ibotta-june-turk-multiple"
+    },
+    "tags": [
+        "ibotta-june-turk-multiple"
+    ],
+    "crop": {
+        "x": 90.0,
+        "y": 209.0,
+        "width": 496.0,
+        "height": 485.0
+    },
+    "ocr_result": {
+        "blocks": [
+            {
+                "lines": [
+                    {
+                        "chars": [
+                            {
+                                "value": 42,
+                                "quality": 100,
+                                "font": "unknown",
+                                "bounding_box": {
+                                    "x": 55.678818,
+                                    "y": 1.7737274,
+                                    "width": 10.0,
+                                    "height": 12.452545
+                                }
+                            },
+                            {
+                                "value": 42,
+                                "quality": 100,
+                                "font": "unknown",
+                                "bounding_box": {
+                                    "x": 66.28284,
+                                    "y": 3.0,
+                                    "width": 10.434326,
+                                    "height": 12.565659
+                                }
+                            },
+                            // ostalih 585 znakova...
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
+\end{lstlisting}
 
 \chapter{Algoritmi za određivanje strukture teksta}
 U ovom poglavlju trebaš napisati na koji način je podijeljen sustav za određivanje
