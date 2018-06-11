@@ -112,7 +112,7 @@ Slika \ref{fig:book-example-01} prikazuje rezultat OCR-sustava za detekciju znak
 \pagebreak
 
 \section{Komponente OCR-sustava}
-
+\label{sec:komponente-ocr-sustava}
 Optičko raspoznavanje znakova provodi se u nekoliko koraka \citep{DBLP:journals/corr/abs-1710-05703} \citep{kaur2016survey}:
 \begin{enumerate}
     \item pribavljanje slike,
@@ -353,10 +353,39 @@ znakova. Analizirat ćemo njihove prednosti i nedostatke i cijelo vrijeme ćemo 
 
 
 
+
+
+
+
+
+
+
+
+
+
 \chapter{Određivanje strukture teksta na temelju položaja pojedinih znakova}
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/sustav-01.png}
+    \caption{Suradnja OCR-sustava i sustava za određivanje strukture teksta.}
+    \label{fig:sustav-01}
+\end{figure}
+
+U kontekstu određivanja strukture teksta na temelju položaja pojedinih znakova,
+radi preglednije analize, razmatramo OCR-sustav koji nema
+korak naknadne obrade. Nakon završetka klasifikacije OCR-sustav posjeduje
+nestrukturirani OCR-rezultat u kojemu se nalaze svi segmentirani i
+klasificirani znakovi. Takav
+nestrukturirani OCR-rezultat prosljeđuje se sustavu za određivanje strukture
+teksta na naknadnu obradu.
+U praksi je sustav za određivanje strukture teksta sastavni dio naknadne obrade OCR-sustava, međutim, u ovom završnom radu ćemo razdvojiti ta dva sustava
+radi preglednije analize njihove suradnje.
+
 Sustav za određivanje strukture teksta na temelju položaja pojedinih znakova
-(u daljnjem tekstu: \emph{Sustav}) na ulaz prima od OCR-sustava listu znakova za
-koje zna sljedeće informacije:
+(u daljnjem tekstu: \emph{Sustav}) na ulaz od OCR-sustava prima
+nestrukturirani OCR-rezultat koji u sebi sadrži sve znakove koje je OCR-sustav
+prepoznao. Za svaki znak u OCR-rezultatu znamo sljedeće informacije:
 \begin{itemize}
     \item[$\bullet$] $x$ - horizontalnu poziciju gornjeg lijevog kuta,
     \item[$\bullet$] $y$ - vertikalnu poziciju gornjeg lijevog kuta,
@@ -365,13 +394,18 @@ koje zna sljedeće informacije:
     \item[$\bullet$] $value$ - Unicode vrijednost znaka.
 \end{itemize}
 
-Izlaz iz sustava su znakovi grupirani u linije, a unutar linije sustav treba
-odrediti gdje završava prethodna i započinje sljedeća riječ.
+Izlaz sustava je strukturirani OCR-rezultat u kojemu su znakovi
+grupirani u linije, a unutar svake linije su riječi odvojene znakom
+bjeline. Strukturirani OCR-rezultat se zatim prosljeđuje dodatnim naknadnim
+obradama koje ovise o problemu koji se rješava i u ovom završnom radu o njima
+neće biti riječi. Slika \ref{fig:sustav-01} prikazuje vizualizaciju navedenih
+suradnji.
 
 U skolpu ovog završnog rada potrebno je razviti sustav za određivanje strukture
-teksta na računima iz trgovine i sadržaja iz knjga. Stup podataka za testiranje
+teksta koji će rješavati problem određivanja strukture teksta na računima iz
+trgovine i sadržaja iz knjga. Stup podataka za testiranje
 sustava biti će detaljno objašnjen u odjeljku
-\ref{chap:skup-padataka-za-testiranje}.
+\ref{sec:skup-padataka-za-testiranje}.
 
 Slika \ref{fig:book-example-02} prikazuje vizualizaciju rezultata OCR-sustava
 koji nam je za svaki znak vratio omeđujući pravokutnik (označeno plavom bojom) i
@@ -381,21 +415,23 @@ vizualizaciju rezultata OCR sustava i primjere s kakvim će se sustav za
 određivanje strukture teksta koji razvijamo susresti.
 
 Primjer pojednostavljenog (detaljnije u odjeljku
-\ref{chap:skup-padataka-za-testiranje}) OCR-rezultata u formatu JSON koji će
-sustav za određivanje strukture teksta dobiti kao svoj ulaz prikazan je isječkom
-\ref{lst:ocr-result-json-01}. Ulazni OCR-rezultat u formatu
-JSON uvijek se sastoji od jedne linije u koju
-su smješteni znakovi nasumičnim redosljedom.
-\pagebreak
+\ref{sec:skup-padataka-za-testiranje}) nestrukturiranog OCR-rezultata u formatu
+JSON koji će sustav za određivanje strukture teksta dobiti kao svoj ulaz
+prikazan je isječkom \ref{lst:ocr-result-json-01}. Ulazni nestrukturirani
+OCR-rezultat u formatu JSON uvijek se sastoji od jedne linije u koju
+su smješteni svi segmentirani i klasificirani znakovi u nasumičnim redosljedom.
+
 \begin{figure}[htb]
     \centering
-    \includegraphics[height=4cm]{images/book-example-02.png}
+    \includegraphics[width=\textwidth]{images/book-example-02.png}
     \caption{Vizualizacija OCR-rezultata.}
     \label{fig:book-example-02}
 \end{figure}
+
 \begin{lstlisting}[
-    caption={Pojednostavljeni OCR-rezultat u formatu JSON.},
-    label={lst:ocr-result-json-01}
+    caption={Pojednostavljeni nestrukturirani OCR-rezultat u formatu JSON.},
+    label={lst:ocr-result-json-01},
+    firstnumber=1
 ],
 {
     "ocr_result": {
@@ -432,30 +468,39 @@ su smješteni znakovi nasumičnim redosljedom.
 
 
 
+
+
+
+
+
 \section{Željena funkcionalnost}
 \label{sec:željena-funkcionalnost}
-Od sustava se očekuje da za dobiveni OCR-rezultat u formatu JSON vrati novi
-rezultat u istom formatu koji će znakove grupirati u linije i koji će unutar
-linija biti poredani s lijeva na desno. Također, linije moraju biti sortirane
-tako da se najviša linija u dokumentu nalazi na prvom mjestu.
+Od sustava se očekuje da za dobiveni nestrukturirani OCR-rezultat u formatu
+JSON vrati novi strukturirani OCR-rezultat u istom formatu koji će znakove
+grupirati u linije i koji će unutar linija biti poredani s lijeva na desno.
+Također, linije moraju biti sortirane tako da se najviša linija u dokumentu
+nalazi na prvom mjestu.
 
 Osim grupiranja linija od sustava se očekuje da između dva znaka, gdje smatra da
 završava prethodna i započinje nova riječ, ubaci novi znak bjeline čija je
 vrijednost \engl{value} $32$ dok ostale informacije mogu biti prozivoljne.
 Dodatan zahtjev je da sustav sve grupirane linije smjesti u jedan blok.
-Detaljnije o blokovima će biti opisano u pododjeljku \ref{sec:json-datoteke}.
+Detaljnije o blokovima će biti opisano u pododjeljku
+\ref{subsec:ulazne-datoteke}.
 
 Isječak \ref{lst:ocr-result-json-02} prikazuje primjer izlaza iz sustava za dani
 ulaz iz isječka \ref{lst:ocr-result-json-01}. Sustav je znakove grupirao u dvije
 linije i između prvog i zadnjeg znaka u drugoj liniji je ubacio znak bjeline.
 Vrijednost znaka bjeline je zahtijevana vrijednost $32$. Ostale informacije
 znaka bjeline mogle su biti proizvoljne, međutim, sustav im je dodijelio
-sljedeće smislenije vrijednost:
-\begin{itemize}
-    \item[$\bullet$] $x$ - horizontalna pozicija gornjeg desnog kuta lijevog znaka,
-    \item[$\bullet$] $y$ - vertikalna pozicija gornjeg lijevog kuta desnog znaka,
-    \item[$\bullet$] $width$ - horizontalna udaljenost između gornjeg desnog kuta lijevog
-                               znaka i gornjeg lijevog kuta desnog znaka,
+sljedeće smislenije vrijednosti:\begin{itemize}
+    \item[$\bullet$] $x$ - horizontalna pozicija gornjeg desnog kuta lijevog
+                           znaka,
+    \item[$\bullet$] $y$ - vertikalna pozicija gornjeg lijevog kuta desnog
+                           znaka,
+    \item[$\bullet$] $width$ - horizontalna udaljenost između gornjeg desnog
+                               kuta lijevog znaka i gornjeg lijevog kuta desnog
+                               znaka,
     \item[$\bullet$] $height$ - visina lijevog znaka.
 \end{itemize}
 
@@ -465,7 +510,8 @@ znaka bjeline.
 
 \begin{lstlisting}[
     caption={Izlaz iz sustava za određivanje strukture teksta u formatu JSON.},
-    label={lst:ocr-result-json-02}
+    label={lst:ocr-result-json-02},
+    firstnumber=1
 ]
 {
     "ocr_result": {
@@ -510,8 +556,13 @@ znaka bjeline.
 
 
 
+
+
+
+
+
 \section{Skup podataka za testiranje}
-\label{chap:skup-padataka-za-testiranje}
+\label{sec:skup-padataka-za-testiranje}
 Skup podataka za testiranje (u daljnjem tekstu: \emph{podatci})
 sustava sastoji se od slika, ulaznih datoteka u formatu JSON i
 očekivanih izlaznih datoteka. U sklopu ovog završnog rada razvijeni sustav za
@@ -519,37 +570,35 @@ određivanje strukture teksta rješavati će problem određivanja strukture teks
 na računima iz trgovine i sadržaja iz knjiga.
 
 
+
+
 \subsection{Slike}
 \label{subsec:slike}
-Podatci za testiranje sustava sadrže $100$ slika računa (slika
-\ref{fig:receipt-example-04}) i $34$ slike sadržaja iz knjiga (slika
+Podatci za testiranje sustava sadrže $100$ slika računa (primjer na slici
+\ref{fig:receipt-example-04}) i $34$ slike sadržaja iz knjiga (primjer na slici
 \ref{fig:book-example-03}).
 
 \begin{figure}[htb]
     \centering
     \captionsetup{justification=centering,margin=2cm}
     \includegraphics[height=8cm]{images/receipt-example-04.jpg}
-    \caption{
-        Primjer slike računa za koji će se rješavati problem određivanja
-        strukture teksta.
-    }
+    \caption{Primjer slike računa iz trgovine.}
     \label{fig:receipt-example-04}
 \end{figure}
+
 \begin{figure}[htb]
     \centering
     \captionsetup{justification=centering,margin=2cm}
     \includegraphics[width=\textwidth]{images/book-example-03.jpg}
-    \caption{
-        Primjer slike sadržaja iz knjige za koji će se rješavati problem
-        određivanja strukture teksta.
-    }
+    \caption{Primjer slike sadržaja iz knjige.}
     \label{fig:book-example-03}
 \end{figure}
 
 Svaki znak na svakoj slici je \textbf{ručno} označen i klasificiran. Na slikama
-računa označeno je ukupno $85068$ znakova, a na slikama sadržaja iz knjiga
-označeno je ukupno $25092$ znaka. Ručno označeni podatci oponašaju rezultate
-OCR-sustava koji predstavljaju ulaz u sustav za određivanje strukture teksta.
+računa iz trgovine označeno je ukupno $85068$ znakova, a na slikama sadržaja iz
+knjiga označeno je ukupno $25092$ znaka. Ručno označeni podatci oponašaju
+nestrukturirane OCR-rezultate koji su ulaz u sustav za određivanje strukture
+teksta.
 
 Omeđujući pravokutnici označenih znakova predstavljaju područje koje označeni
 znak zauzima na slici. Stranice omeđujućih pravokutnika su uvijek paralelne sa
@@ -562,28 +611,28 @@ susjedna omeđujuća pravokutnika preklapaju.
     \centering
     \captionsetup{justification=centering,margin=2cm}
     \includegraphics[width=\textwidth]{images/book-example-04.png}
-    \caption{
-        Primjer slike s kosim tekstom. Vizualizacija OCR rezultata. Omeđujući
-        pravokutnici su uvijek paralelni s rubovima slike.
-    }
+    \caption{Primjer slike s kosim tekstom.}
     \label{fig:book-example-04}
 \end{figure}
+
+
+
 
 \subsection{Ulazne datoteke}
 \label{subsec:ulazne-datoteke}
 Slike opisane u \ref{subsec:slike} \textbf{ne predstavljaju} ulaz u sustav za
 određivanje strukture teksta. Nakon označavanja slika podatci o označavanju
 svake slike se izvoze i pohranjuju u datoteke u JSON formatu. Datoteke u JSON
-formatu predstavljaju ulaz u sustav. Ulazna datoteka u formatu JSON u kojoj su
-zapisani podaci o označavanju slike \ref{fig:receipt-example-04} prikazana je
-u isječku \ref{lst:ocr-result-json-03}. Zbog specifičnosti sustava za označavanje
-slika i načina na koji pohranjuje informacije o označavanju, svi označeni znakovi
-bit će smješteni u jednu liniju u nasumičnom poretku i ta linija će biti
-smještena u jedan blok. Za svaki znak dostupna je informacija o Unicode
-vrijednosti znaka koja je smještena pod ključem \lstinline{value}. Dodatno, za
-svaki znak dostupna je informacija o poziciji i veličini njegovog omeđujućeg
-pravokutnika \engl{bounding box}. Za svaki omeđujući pravokutnik poznate su
-sljedeće informacije:
+formatu predstavljaju nestrukturirani OCR-rezultat i ulaz u sustav. Ulazna
+datoteka u formatu JSON u kojoj su zapisani podaci o označavanju slike \ref
+{fig:receipt-example-04} prikazana je u isječku \ref{lst:ocr-result-json-03}.
+Zbog specifičnosti sustava za označavanje slika i načina na koji pohranjuje
+informacije o označavanju, svi označeni znakovi bit će smješteni u jednu liniju
+u nasumičnom poretku i ta linija će biti smještena u jedan blok. Za svaki znak
+dostupna je informacija o Unicode vrijednosti znaka koja je smještena pod
+ključem \lstinline{value}. Dodatno, za svaki znak dostupna je informacija o
+poziciji i veličini njegovog omeđujućeg pravokutnika \engl{bounding box}. Za
+svaki omeđujući pravokutnik poznate su sljedeće informacije:
 \begin{itemize}
     \item[$\bullet$] $x$ - horizontalna pozicija gornjeg lijevog kuta,
     \item[$\bullet$] $y$ - vertikalna pozicija gornjeg lijevog kuta,
@@ -592,20 +641,20 @@ sljedeće informacije:
 \end{itemize}
 
 Kako vrijednost $x$ omeđujućeg pravokutnika raste tako je znak bliže desnom rubu
-slike. Kako vrijednost $y$ omeđujućeg pravokutnika raste tako je znak niže na
-slici. Sve informacije o omeđujućem pravokutniku su vrijednosti iz skupa
-nenegativnih realnih brojeva.
+slike. Kako vrijednost $y$ omeđujućeg pravokutnika raste tako je znak bliže
+donjem rubu slike. Sve informacije o omeđujućem pravokutniku su vrijednosti iz
+skupa nenegativnih realnih brojeva.
 
 Sustav za označavanje slika izvozi još neke dodatne informacije o znakovima i
-o označenoj slici. Sve informacije koje nisu ovdje navede i koje se ne nalaze u
-isječku \ref{lst:ocr-result-json-03} mogu se zanemariti.
+o označenoj slici. Sve informacije koje nisu ovdje navede mogu se zanemariti.
 
 \begin{lstlisting}[
     caption={
         JSON datoteka s podatcima o označavanju slike
         \ref{fig:receipt-example-04}.
     },
-    label={lst:ocr-result-json-03}
+    label={lst:ocr-result-json-03},
+    firstnumber=1
 ]
 {
     "ocr_result": {
@@ -642,6 +691,7 @@ isječku \ref{lst:ocr-result-json-03} mogu se zanemariti.
 }
 \end{lstlisting}
 
+
 \subsubsection{Izlaz iz sustava za određivanje strukture teksta}
 U odjeljku \ref{sec:željena-funkcionalnost} navedeni su zahtjevi sustava i
 opisan je pojednostavljeni format izlaza iz sustava. Od sustava se očekuje da
@@ -650,18 +700,24 @@ prikazan ulaz u sustav opisan u ovom odjeljku. Sve grupirane linije potrebno je
 smjestiti u jedan blok. Sustav ne treba isporučiti informacije koje su se mogu
 zanemariti na ulazu.
 
+
+
+
 \subsection{Očekivane izlazne datoteke}
-Očekivane izlazne datoteke predstavljaju tekstualni sadržaj sa slike.
-Isječak \ref{lst:txt-result-04} predstavlja tekstualni sadržaj računa sa slike
-\ref{fig:receipt-example-04}. Uočimo da u tekstualnom sadržaju ne postoje
-bjeline prije početka linije koje postoje u sadržaju na slici. Osim toga,
-višestruke bjeline u sadržaju na slici predstavljene su točno jednom bjelinom
-u tekstualnom sadržaju u datoteci.
+\label{subsec:očekivane-izlazne-datoteke}
+Očekivane izlazne datoteke predstavljaju ispravni strukturirani tekstualni
+sadržaj sa slike. Isječak \ref{lst:txt-result-04} predstavlja ispravni
+strukturirani tekstualni sadržaj računa sa slike \ref{fig:receipt-example-04}.
+Uočimo da u tekstualnom sadržaju ne postoje bjeline prije početka linije koje
+postoje u sadržaju na slici. Osim toga, višestruke bjeline u sadržaju na slici
+predstavljene su točno jednom bjelinom u tekstualnom sadržaju u datoteci.
+
 \begin{lstlisting}[
     caption={
         Tekstualni sadržaj slike \ref{fig:receipt-example-04}.
     },
-    label={lst:txt-result-04}
+    label={lst:txt-result-04},
+    firstnumber=1
 ]
 POINTS TO $35 REWARD 8770
 BALANCE REWARDS ACCT # *********2463
@@ -681,30 +737,64 @@ Learn more at the pharmacy.
 
 
 
+
+
+
+
+
 \section{Korištenje skupa podataka za testiranje}
 \begin{figure}[htb]
     \centering
     \captionsetup{justification=centering,margin=2cm}
-    \includegraphics[width=\textwidth]{images/sustav-01.png}
+    \includegraphics[width=\textwidth]{images/sustav-02.png}
     \caption{
         Postupak dobivanja izlazne datoteke iz strukturiranog OCR-rezultata.
     }
-    \label{fig:sustav-01}
+    \label{fig:sustav-02}
 \end{figure}
-Slika \ref{fig:sustav-01} prikazuje postupak dobivanje izlazne datoteke iz
+Slika \ref{fig:sustav-02} prikazuje postupak dobivanja izlazne datoteke iz
 strukturiranog OCR-rezultata kojeg je vratio sustav za određivanje strukture
 teksta. Ulaz u sustav je ulazna datoteka u formatu JSON koja predstavlja
-OCR-rezultat kao što je opisano u pododjeljku \ref{subsec:ulazne-datoteke}.
+nestrukturirani OCR-rezultat kao što je opisano u pododjeljku
+\ref{subsec:ulazne-datoteke}.
 Izlaz iz sustava je strukturirani OCR-rezultat u formatu JSON u kojemu se nalaze
 znakovi grupirani u linije i gdje su između riječi ubačeni znakovi bjeline.
 Strukturirani OCR-rezultat u formatu JSON potrebno je pretvoriti u izlaznu
-datoteku koja predstavlja strukturirani tekstualni sadržaj koji se onda
+datoteku koja predstavlja strukturirani tekstualni sadržaj u formatu opisanom u
+pododjeljku \ref{subsec:očekivane-izlazne-datoteke} koji se onda
 uspoređuje sa očekivanim izlaznim datotekama dostupnim u skupu podataka za
-testiranje.
+testiranje. Isječak \ref{lst:ocr-result-to-txt} prikazuje pseudokôd algoritma
+za ispis OCR-rezultata na standradni izlaz.
 
-Metode usporedbe izlaznih datoteka iz sustava i očekivanih izlaznih
-datoteka iz skupa podataka za testiranje biti će objašnjene u odjeljku
-\ref{sec:metrike}.
+\begin{lstlisting}[
+    caption={Pseudokôd algoritma za ispis OCR-rezultata na standardni izlaz.},
+    label={lst:ocr-result-to-txt},
+    morekeywords={def,for,end,if,else,return},
+    firstnumber=1
+],
+def ispisi(ocrRezultat)
+  for linija u ocrRezultat.linije
+    for znak u linija
+      print(znak.value)
+    end
+    print("\n")
+  end
+end
+\end{lstlisting}
+
+Metode usporedbe izlaznih datoteka dobivenih iz strukturiranih OCR-rezultata i
+očekivanih izlaznih datoteka iz skupa podataka za testiranje biti će objašnjene
+u odjeljku.
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -716,8 +806,9 @@ Sustav za određivanje strukture teksta podijeljen je u dva podsustava:
 \textbf{sustav za određivanje linija} i \textbf{sustav za rastavljanje riječi}.
 Slika \ref{fig:sustav-02} prikazuje navedene komponente sustava i njihovu
 suradnju. Ulaz u sustav za određivanje linija je nestrukturirani OCR-rezultat
-dobiven od OCR-sustava. Izlaz iz sustava za određivanje strukture teksta
-je OCR-rezultat u kojemu su znakovi grupirani u linije kojima pripadaju. Izlaz
+dobiven od OCR-sustava koji je ujedno i ulaz u sustav za određivanje strukture
+teksta. Izlaz iz sustava za određivanje linija je OCR-rezultat
+u kojemu su znakovi grupirani u linije kojima pripadaju. Izlaz
 iz sustava za određivanje linija je ulaz u sustav za rastavljanje riječi koji
 u svakoj liniji ubacuje na odgovarajuća mjesta znakove bjeline koji odvajaju
 riječi. Izlaz iz sustava za rastavljanje riječi je ujedno i izlaz iz sustava
@@ -725,22 +816,30 @@ za određivanje strukture teksta.
 \begin{figure}[htb]
     \centering
     \captionsetup{justification=centering,margin=2cm}
-    \includegraphics[width=\textwidth]{images/sustav-02.png}
+    \includegraphics[width=\textwidth]{images/sustav-03.png}
     \caption{
         Komponente sustava za određivanje strukture teksta.
     }
-    \label{fig:sustav-02}
+    \label{fig:sustav-03}
 \end{figure}
 
 U nastavku ovog poglavlja objasniti ćemo implementirane algoritme za određivanje
-linija i za rastavljanje riječi.
+linija i za rastavljanje riječi, a u poglavlju bit će opisani rezultati i
+kratka analiza algoritama.
+
+
+
+
+
 
 
 
 \section{Algoritmi za određivanje linija}
+\label{sec:algoritmi-za-odredivanje-linija}
 Algoritmi za određivanje linija trebaju na temelju omeđujućih pravokutnika
 svakog znaka znakove grupirati u linije. Slika \ref{fig:line-semgentation-01}
 predstavlja vizualizaciju očekivanog rezultata algoritma za određivanje linija.
+
 \begin{figure}[htb]
     \centering
     \captionsetup{justification=centering,margin=2cm}
@@ -751,31 +850,44 @@ predstavlja vizualizaciju očekivanog rezultata algoritma za određivanje linija
     \label{fig:line-semgentation-01}
 \end{figure}
 
-\subsection{Algoritam za određivanje linija na temelju maksimalnog preklapanja znakova}
+Algoritam na ulazu prima nestrukturirani OCR-rezultat koji je ujedno i ulaz u
+sustav za određivanje strukture teksta. Izlaz iz algoritma je OCR-rezultat u
+kojemu su znakovi grupirani u linije, sortirani s lijeva na desno i u kojemu
+su linije sortirane tako da se najviša linija na slici nalazi na prvom mjestu.
+
+
+
+
+\subsection{Algoritam temeljen na maksimalnom preklapanju znakova}
 Algoritam za određivanje linija na temelju maksimalnog preklapanja znakova
 (u daljnjem tekstu: \emph{algoritam}) temelji se na pretpostavci da dva susjedna
 znaka koja se nalaze u istoj liniji ostvaruju maksimalno vertikalno preklapanje.
 Vertikalno preklapanje \textit{overlap} dva znaka $A$ i $B$ definiramo izrazom:
+
 \begin{equation}
 \label{eq:overlap}
 \textit{overlap}(A, B) \vcentcolon= \frac{\max(0, \min( A_y + A_h, B_y + B_h ) - \max( A_y, B_y ))}
-                                {\min(A_h, B_y)}
+                                {\min(A_h, B_h)}
 \end{equation}
+
 Na početku svog rada algoritam uzlazno sortira sve znakove po horizontalnoj $x$
 vrijednost, zatim iterira po svakom znaku i konstruira linije gledajuću s kojom
 linijom promatrani znak ostvaruje maksimalno preklapanje. Preklapanje s linijom
 definira se kao preklapanje sa zadnjim znakom u toj liniji. Promatrani znak
 pripadne onoj liniji s kojom ostvari maksimalno preklapanje:
+
 \begin{equation}
 \label{eq:overlap-01}
 l_{max} = \argmax_{l \in L}\left\{\textit{overlap}(A, l_{-1})\right\}
 \end{equation}
+
 Skup svih dosad grupiranih linija označen je sa $L$,
 a $l_{-1}$ označava zadnji znak u promatranoj liniji. Ako je znak s nekom
-linijom ostvario preklapanje vrijednosti $0$ tada on postaje početak nove linije.
+linijom ostvario preklapanje vrijednosti $0$ tada on postaje početak nove
+linije i tako se u skup $L$ dodaje nova linija.
+
 
 \subsubsection{Rješavanje problema valovitih linija}
-
 Budući da linije u sadržaju skupa podataka kojeg promatramo mogu biti valovite
 (slika \ref{fig:aligner-01}), ponekad je poželjno izmjeriti preklapanje ne samo
 sa zadnjim znakom u liniji nego i sa zadnjih nekoliko:
@@ -785,12 +897,13 @@ l_{max} = \argmax_{l \in L,\ i \in [1, \min(|l|, c_1)]}\left\{\textit{overlap}(A
 \end{equation}
 
 Za razliku od izraza \ref{eq:overlap-01} koji uzima u obzir samo zadnji znak u
-svakoj liniji, izraz \ref{eq:overlap-02} uzet će u obzir zadnjih $\min(|l|, c_1)$
-znakova u svakoj liniji, gdje $|l|$ predstavlja duljinu linije, a $c_1$ predstavlja
-\textbf{parametar algoritma}. Eksperimentalno je utvrđeno da vrijednost parametra
-$c_1 = 1$ ostvaruje najbolje rezultate na skupu podataka s računima iz trgovine,
-a da vrijednost parametra $c_1 = 2$ ostvaruje najbolje rezultate na skupu podataka
-sa sadržajem iz knjiga.
+svakoj liniji, izraz \ref{eq:overlap-02} uzet će u obzir zadnjih
+$\min(|l|, c_1)$
+znakova u svakoj liniji, gdje $|l|$ predstavlja duljinu linije, a $c_1$
+predstavlja \textbf{parametar algoritma}. Eksperimentalno je utvrđeno da
+vrijednost parametra $c_1 = 1$ ostvaruje najbolje rezultate na sadržaju s
+računima iz trgovine, a da vrijednost parametra $c_1 = 2$ ostvaruje najbolje
+rezultate na sadržaju iz knjiga.
 
 Slika \ref{fig:aligner-01} prikazuje kako znak \lstinline{=} na desnoj strani
 crvenog pravokutnika ostvaruje maksimalno preklapanje sa znakom \lstinline{=}
@@ -804,17 +917,20 @@ trenutku.
     \label{fig:aligner-01}
 \end{figure}
 
-\subsubsection{Rješavanje problema preklapanja početaka dviju linija}
 
+\subsubsection{Rješavanje problema preklapanja početaka dviju linija}
 Slika \ref{fig:overlap-01} prikazuje kako je moguće preklapanje početaka dviju
 linija. Tako znakovi \lstinline{0} i \lstinline{D}
-ostvaruju nezanemarivo preklapanje čija će posljedica biti krivo određene linije.
-Kako bismo uspješno detektirali ovakve slučajeve uvodimo dodatan uvijet koji će
-odlučiti hoće li promatrani znak pripasti liniji s kojom ostvaruje maksimalno preklapanje:
+ostvaruju nezanemarivo preklapanje čija će posljedica biti krivo određene
+linije. Kako bismo uspješno detektirali ovakve slučajeve uvodimo dodatan uvijet
+koji će odlučiti hoće li promatrani znak pripasti liniji s kojom ostvaruje
+maksimalno preklapanje:
+
 \begin{equation}
 \label{eq:overlap-03}
 \max_{i \in [1, \min(|l_{max}|, c_1)]}\left\{\textit{overlap}(A, l_{max_{-i}})\right\} > c_2
 \end{equation}
+
 \begin{figure}[htb]
     \centering
     \captionsetup{justification=centering,margin=2cm}
@@ -822,44 +938,45 @@ odlučiti hoće li promatrani znak pripasti liniji s kojom ostvaruje maksimalno 
     \caption{Preklapanje početaka dviju linija.}
     \label{fig:overlap-01}
 \end{figure}
-Nakon što smo izrazom \ref{eq:overlap-02} odredili s kojom linijom promatrani znak
-ostvaruje maksimalno preklapanje trebamo provjeriti zadovoljava li iznos tog preklapanja
-uvijet naveden izrazom \ref{eq:overlap-03}. Uvodimo novi parametar algoritma
-$c_2$ koji predstavlja donju granicu preklapanja koju znak mora ostvariti s linijom
-da bi joj se pripojio. Eksperimentalno je utvrđeno da vrijednost parametra
-$c_2 = 0.13$ ostvaruje najbolje rezultate na skupu podataka s računima iz trgovine,
-a da vrijednost parametra $c_2 = 0.05$ ostvaruje najbolje rezultate na skupu podataka
-sa sadržajem iz knjiga.
+
+Nakon što smo izrazom \ref{eq:overlap-02} odredili s kojom linijom promatrani
+znak ostvaruje maksimalno preklapanje trebamo provjeriti zadovoljava li iznos
+tog preklapanja uvijet naveden izrazom \ref{eq:overlap-03}. Uvodimo novi
+parametar algoritma $c_2$ koji predstavlja donju granicu preklapanja koju znak
+mora ostvariti s linijom da bi joj se pripojio. Eksperimentalno je utvrđeno da
+vrijednost parametra $c_2 = 0,13$ ostvaruje najbolje rezultate na sadržaju s
+računima iz trgovine, a da vrijednost parametra $c_2 = 0,05$ ostvaruje najbolje
+rezultate na sadržaju iz knjiga.
 
 \begin{figure}[htb]
     \centering
     \captionsetup{justification=centering,margin=2cm}
     \includegraphics[width=\textwidth]{images/overlap-02.png}
-    \caption{\emph{false-positive} preklapanje}
+    \caption{Lažno pozitivno preklapanje}
     \label{fig:overlap-02}
 \end{figure}
 
-\subsubsection{Rješavanje problema \emph{false-positive} preklapanja}
 
-Slika \ref{fig:overlap-02} prikazuje slučaj kada znak pripadne krivoj liniji zato
-jer s njom ostvaruje maksimalno preklapanje zbog zakrivljenosti slike i sadržaja.
-U ovom primjeru znak \lstinline{5} pripasti će prvoj liniji \lstinline{Meat}, a
-trebao bi pripasti drugoj liniji. Promatrajući skup podataka za koji rješavamo
-problem zaključili smo kako uvijek treba dati prednost onoj liniji čiji je zadnji
-znak bliži znaku kojeg promatramo. Tako će u primjeru sa slike \ref{fig:overlap-02}
-znak \lstinline{5} pripasti drugoj liniji zato jer je njezin zadnji znak bliži
-znaku \lstinline{5} nego znak \lstinline{t} iz prve linije i zato jer s zadnjim
-znakom u drugoj liniji ipak postiže nezanemarivo preklapanje.
-Da bismo uspješno rješili navedeni problem uvest ćemo dvije funkcije i dva dodatna
-parametra algoritma. Definirajmo prvo normaliziranu udaljenost centara između dva
-znaka:
+\subsubsection{Rješavanje problema lažno pozitivnog preklapanja}
+Slika \ref{fig:overlap-02} prikazuje slučaj kada znak pripadne krivoj liniji
+zato jer s njom ostvaruje maksimalno preklapanje zbog zakrivljenosti slike i
+sadržaja. U ovom primjeru znak \lstinline{5} pripasti će prvoj liniji
+\lstinline{Meat}, a trebao bi pripasti drugoj liniji. Promatrajući skup
+podataka za koji rješavamo problem zaključili smo kako uvijek treba dati
+prednost onoj liniji čiji je zadnji znak bliži znaku kojeg promatramo. Tako će
+u primjeru sa slike \ref{fig:overlap-02} znak \lstinline{5} pripasti drugoj
+liniji zato jer je njezin zadnji znak bliži znaku \lstinline{5} nego znak
+\lstinline{t} iz prve linije i zato jer s zadnjim znakom u drugoj liniji ipak
+postiže nezanemarivo preklapanje. Da bismo uspješno rješili navedeni problem
+uvest ćemo dvije funkcije i dva dodatna parametra algoritma. Definirajmo prvo
+normaliziranu udaljenost između dva znaka:
 
 \begin{equation}
-d(A, B) = \frac{|A_x + \frac{A_w}{2} - (B_x + \frac{B_w}{2})|}{\min(A_w, B_w)}
+d(A, B) = \frac{|A_x - B_x|}{\min(A_w, B_w)}
 \end{equation}
 
 Zatim ćemo definirati navedene dvije funkcije (slika \ref{fig:function-01})
-koje koriste dva nova parametra algoritma:
+koje koriste dva nova parametra algoritma $c_3$ i $c_4$:
 
 \begin{align}
 f_1(x) &= \frac{1}{1 + c_3 \cdot x} \\[10pt]
@@ -877,41 +994,56 @@ f_2(x) &= 1 + \frac{c_4 \cdot x}{1 + c_4 \cdot x}
     \label{fig:function-01}
 \end{figure}
 
-Ideja je da koristimo navedene funckije $f_1$ i $f_2$ kako bismo linijama olakšali
-odnosno otežali postizanje preklapanja u ovisnosti o udaljenosti između njihovih
-zadnjih znakova. Recimo da u smo u postupku traženja maksimalnog preklapanja
-u jednom trenutku ostvarili maksimalno preklapanje s linijom $l_1$ iznosa $p_1$.
-S idućom linijom $l_2$ izmjerimo preklapanje $p_2$. Da bi linija $l_2$ postigla
-novo maksimalno preklapanje sa promatranim znakom mora vrijediti $p_2$ > $p_1$.
-Međutim, recimo da smo uočili da je zadnji znak linije $l_2$ bliži promatranom
-znaku nego zadnji znak linije $l_1$. Koristeći navedenu opservaciju možemo
-liniji $l_2$ olakšati postizanje novog maksimalnog preklapanja tako da ostvarno
-preklapanje linije $l_1$ umanjimo za neki iznos. Budući da je zadnji znak
-linije $l_2$ bliži promatranom znaku novi uvijet koji linija $l_2$ mora zadovoljiti
-da bi ju smatrali novim maksimalnim preklapanjem glasi:
+Ideja je da koristimo navedene funckije $f_1$ i $f_2$ kako bismo linijama
+olakšali odnosno otežali postizanje preklapanja u ovisnosti o udaljenosti između
+njihovih zadnjih znakova. Recimo da u smo u postupku traženja maksimalnog
+preklapanja u jednom trenutku ostvarili maksimalno preklapanje s linijom $l_1$
+iznosa $p_1$. S idućom linijom $l_2$ izmjerimo preklapanje $p_2$. Da bi linija
+$l_2$ postigla novo maksimalno preklapanje sa promatranim znakom mora vrijediti
+$p_2$ > $p_1$. Međutim, recimo da smo uočili da je zadnji znak linije $l_2$
+bliži promatranom znaku nego zadnji znak linije $l_1$. Koristeći navedenu
+opservaciju možemo liniji $l_2$ olakšati postizanje novog maksimalnog
+preklapanja tako da ostvarno preklapanje linije $l_1$ umanjimo za neki iznos.
+Budući da je zadnji znak linije $l_2$ bliži promatranom znaku novi uvijet koji
+linija $l_2$ mora zadovoljiti da bi ju smatrali novim maksimalnim preklapanjem
+glasi:
+
 \begin{equation}
 p_2 > p_1 \cdot f_1(d(l_{1_{-1}},l_{2_{-1}}))
 \end{equation}
 
 Funkcija $f_1$ će liniji $l_2$ pomoći tim više što su zadnji znakovi linija
-$l_1$ i $l_2$ udaljeniji. Da je zadnji znak linije $l_2$ bio dalje od promatranog
-znaka nego zadnji znak linije $l_1$ onda bismo liniji $l_2$ trebali otežati
-postizanje novog maksimalnog preklapanja čak i ako vrijedi $p_2$ > $p_1$.
-U tom slučaju novi uvijet za liniju $l_2$ glasi:
+$l_1$ i $l_2$ udaljeniji. Da je zadnji znak linije $l_2$ bio dalje od
+promatranog znaka nego zadnji znak linije $l_1$ onda bismo liniji $l_2$ trebali
+otežati postizanje novog maksimalnog preklapanja čak i ako vrijedi $p_2$ >
+$p_1$. U tom slučaju novi uvijet za liniju $l_2$ glasi:
+
 \begin{equation}
     p_2 > p_1 \cdot f_2(d(l_{1_{-1}},l_{2_{-1}}))
 \end{equation}
 
 Funkcija $f_2$ će liniji $l_2$ otežati tim više što su zadnji znakovi linija
 $l_1$ i $l_2$ udaljeniji. Eksperimentalno je utvrđeno da vrijednosti parametra
-$c_3 = c_4 = 0.13$ ostvaruje najbolje rezultate na oba skupa podataka.
+$c_3 = c_4 = 0{,}13$ ostvaruje najbolje rezultate na sadržaju s računima iz
+trgovine i na sadržaju iz knjiga.
+
+Nakon što smo svaki znak smjestili u odgovarajuću liniju, linije je potrebno
+sortirati uzlazno po $y$ vrijednosti prvih znakova linije. Naime, u početnom
+koraku sortiranja znakova po $x$ vrijednosti moguće je na primjer da prvi znak
+u sortiranim znakovima započinje neku liniju u sadržaju koja nije prva.
+Budući da će taj znak u našem algoritmu biti detektiran kao početak nove linije
+to će liniju koju taj znak započinje smjestiti na početak, a ne na mjesto kojem
+ta linija pripada.
 
 Konačno, pseudokôd algoritma za određivanje linija na temelju maksimalnog
-preklapanja znakova prikazan je u isječku.
+preklapanja znakova prikazan je u isječku. U navedenom isječku funkcije $f_1$ i
+$f_2$ implicitno koriste vrijednosti parametara $c3 = c4 = 0{,}13$.
+
 \begin{lstlisting}[
     caption={Pseudokôd algoritma za određivanje linija.},
     label={lst:algorithm-01},
-    morekeywords={def,for,end,if,else}
+    morekeywords={def,for,end,if,else,return,new},
+    firstnumber=1
 ],
 def odrediLinije(nestrukturiraniOcrRezultat)
   znakovi = sortirajPoX(nestrukturiraniOcrRezultat.sviZnakovi)
@@ -942,11 +1074,147 @@ def odrediLinije(nestrukturiraniOcrRezultat)
     if maxPreklapanje > c2
       linijaSaMaxPreklapanjem.nadodaj( znak )
     else
-      linije.nadodaj( [ znak ] )
+      linije.nadodaj([znak])
     end
   end
+
+  sortiraneLinije = sortirajPoY(linije)
+
+  return new OcrRezultat(sortiraneLinije)
 end
 \end{lstlisting}
+
+
+
+
+
+
+
+
+\section{Algoritmi za rastavljanje riječi}
+Algoritmi za rastavljanje riječi na ulaz primaju OCR-rezultat u kojemu su
+znakovi grupirani u linije u prethodnom koraku opisanom u odjeljku
+\ref{sec:algoritmi-za-odredivanje-linija}. Zadaća algoritama za rastavljanje
+riječi je da između znakova, za koje smatra da su završetak prethodne odnosno
+početak iduće riječi, ubaci znak bjeline čija će vrijednost \engl{value} biti
+$32$, a ostale informacije mogu biti proizvljne.
+
+U nastavku ovog odjeljka opisati ćemo tri algoritma za rastavljanje riječi:
+\begin{itemize}
+    \item[$\bullet$] algoritam temeljen na prosječnoj širini znaka
+    \item[$\bullet$] algoritam temeljen na prosječnoj relativnoj
+                     udaljenosti
+    \item[$\bullet$] algoritam temeljen na prosječnoj udaljenosti centara
+\end{itemize}
+
+
+
+\subsection{Algoritam temeljen na prosječnoj širini znaka}
+Algoritam temeljen na prosječnoj širini znaka najjednostaviji je od svih
+algoritama koje ćemo u ovom odjeljku opisati. Algoritam se temelji na
+pretpostavci da je širina razmaka između riječi propocionalna sa prosječnom
+širinom znakova u promatranoj liniji. Označimo prosječnu širinu znaka u liniji
+$l_i$ sa $\overline{w_i}$:
+
+\begin{equation}
+\overline{w_i} = \frac{\sum\limits_{A \in l_i} A_w}{|l_i|}
+\end{equation}
+
+Sada možemo postaviti uvijet koji će odlučiti treba li ubaciti bjelinu između
+dva znaka $A$ i $B$:
+
+\begin{equation}
+\label{eq:condition-01}
+|A_x - (B_x + B_w)| > \overline{w_i} \cdot c_1
+\end{equation}
+
+Parametar $c_1$ je jedini \textbf{parametar algoritma} za koji smo
+eksperimentalno utvrdili da najbolje rezultate za sadržaj na računima iz
+trgovine ostvaruje vrijednost $0{,}8$, a najbolje rezultate za sadržaj iz knjiga
+ostvaruje vrijednost $0{,}44$. Isječak \ref{lst:algorithm-02} prikazuje
+pseudokôd algoritma za rastavljanje riječi temeljenog na prosječnoj širini
+znaka. Izraz s lijeve strane nejednadžbe \ref{eq:condition-01} označava
+udaljenost između lijevog ruba znaka $A$ i desnog ruba znaka $B$ s pretpostavkom
+da je znak $A$ desno od znaka $B$, odnosno da vrijedi $A_x > B_x$.
+
+\begin{lstlisting}[
+    caption={
+        Pseudokôd algoritma za rastavljanje riječi temeljen na
+        prosječnoj širini znaka.
+    },
+    label={lst:algorithm-02},
+    morekeywords={def,for,end,if,else,return,while,new},
+    firstnumber=1
+],
+def rastaviRijeci(ocrRezultat)
+  for linija u ocrRezultat.linije
+    prosjecnaSirina = 0
+    for znak u linija
+      prosjecnaSirina += znak.width
+    end
+    prosjecnaSirina /= linija.duljina
+
+    i = 0
+    j = 1
+    while j < linija.duljina
+      d = linija[j].x - (linija[i].x + linija[i].width)
+      if d > prosjecnaSirina * c1
+        bjelina = new Znak()
+        bjelina.value = 32
+        bjelina.x = linija[i].x + linija[i].width
+        bjelina.y = linija[i].y
+        bjelina.width = d
+        bjelina.height = linija[i].height
+        linija.ubaciZnakPrijePozicije(j, znak)
+        i += 2
+        j += 2
+      else
+        i++
+        j++
+      end
+    end
+  end
+
+  return ocrRezultat
+end
+\end{lstlisting}
+
+Algoritam prikazan pseudokôdom \ref{lst:algorithm-02} ubacuje znak bjeline
+čija je vrijednost jednaka $32$, a ostale informacije su određene na sljedeći
+način:
+\begin{itemize}
+    \item[$\bullet$] $x$ - horizontalna pozicija gornjeg desnog kuta lijevog
+                           znaka,
+    \item[$\bullet$] $y$ - vertikalna pozicija gornjeg lijevog kuta desnog
+                           znaka,
+    \item[$\bullet$] $width$ - horizontalna udaljenost između gornjeg desnog
+                               kuta lijevog znaka i gornjeg lijevog kuta desnog
+                               znaka,
+    \item[$\bullet$] $height$ - visina lijevog znaka.
+\end{itemize}
+
+Pod \emph{lijevi znak} misli se na znak u liniji na poziciji $i$, a pod
+\emph{desni znak} misli se na znak u liniji na poziciji $j$. U liniji $20$
+ubacujemo novi znak bjeline prije znaka na poziciji $j$ što
+ima za posljedicu pomicanje svih elemenata, desno od $j$, uključujući i element
+na poziciji $j$, za jedno mjesto udesno. U liniji $12$ algoritam pretpostavlja
+da je znak na poziciji $j$ desno od znaka na poziciji $i$.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \chapter{Zaključak}
 
