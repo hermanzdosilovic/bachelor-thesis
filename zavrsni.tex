@@ -2,20 +2,27 @@
 \usepackage{booktabs}
 \usepackage{pdfpages}
 \usepackage{listings}
+\usepackage{mathtools}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{amsmath}
 
 \renewcommand{\lstlistingname}{Isječak}
+\DeclareMathOperator*{\argmax}{arg\,max}
 
 \begin{document}
 
 \lstset{
-basicstyle=\ttfamily\footnotesize,
+basicstyle=\linespread{1.2}\ttfamily\footnotesize,
 keepspaces=true,
 numbers=left,
 frame=single,
-captionpos=b,
 showspaces=false,
 numberstyle=\ttfamily,
-columns=flexible
+columns=flexible,
+extendedchars=true,
+inputencoding=utf8,
+literate={®}{{\textregistered}}1,
 }
 
 \thesisnumber{5709}
@@ -49,71 +56,71 @@ columns=flexible
 
 \chapter{Uvod}
 \chapter{Optičko raspoznavanje znakova}
-Sustav za optičko raspoznavanje znakova \engl{optical character recognition} (u daljnjem tekstu: OCR)
+Sustav za optičko raspoznavanje znakova \engl{optical character recognition} (u daljnjem tekstu: \emph{OCR-sustav})
 pretvara sliku tiskanog teksta u digitalizirani format kojim možemo jednostavno manipulirati na računalu.
 Iako je to ljudima jednostavan zadatak, računalima nije lako prepoznati tekst i pojedine znakove teksta sa slike
 zbog velike raznolikosti jezika, fonta i stila kojim tekst može biti napisan.
-OCR je stoga vrlo zahtjevan problem i mnogo je istraživačkog truda uloženo u pokušaju
+Optičko raspoznavanje znakova je stoga vrlo zahtjevan problem i mnogo je istraživačkog truda uloženo u pokušaju
 da se slike teksta pretvore u format koji računalo razumije. \citep{DBLP:journals/corr/abs-1710-05703}
 
 \section{Primjene}
 
-Osim tiskanog teksta, OCR sustavi koriste se i u prepoznavanju znakova rukom pisanog teksta.
+Osim tiskanog teksta, OCR-sustavi se koriste i u prepoznavanju znakova rukom pisanog teksta.
 Prepoznavanje znakova rukom pisanog teksta je teži problem od prepoznavanja tiskanog teksta \citep{DBLP:journals/corr/abs-1710-05703} zato jer
 se oblik znakova i njihov način pisanja razlikuje kod svake osobe (npr. rukopis odrasle osobe potpuno je drugačiji od
 rukopisa djeteta).
-OCR sustave za detekciju rukom pisanih znakova možemo podijeliti na dvije potkategorije:
-\emph{on-line} i \emph{off-line}. \emph{On-line} OCR sustavi detektiraju znakove dok
-ih korisnici unose i to im omogućuje praćenje parametara poput: brzine pisanja, broj napravljenih poteza,
-smjer pisanja, itd. \emph{Off-line} OCR sustavi izvode se nad jednom slikom na kojoj se nalazi
+OCR-sustave za detekciju rukom pisanih znakova možemo podijeliti na dvije potkategorije:
+\emph{on-line} i \emph{off-line}. \emph{On-line} OCR-sustavi detektiraju znakove dok
+ih korisnici unose i to im omogućuje praćenje parametara poput: brzine pisanja, broja napravljenih poteza,
+smjer pisanja, itd. \emph{Off-line} OCR-sustavi izvode se nad jednom slikom na kojoj se nalazi
 sav sadržaj nad kojim je potrebno napraviti detekciju. Takvi sustavi nemaju dodatne informacije koje imaju
 \emph{on-line} sustavi i zato je detekcija znakova kompliciranija \citep{DBLP:journals/corr/abs-1710-05703}. Slika \ref{fig:math-example-01} prikazuje primjer rezultata
-\emph{off-line} OCR sustava za detekciju rukom pisanih znakova.
+\emph{off-line} OCR-sustava za detekciju rukom pisanih znakova.
 
 \begin{figure}[htb]
     \centering
     \captionsetup{justification=centering,margin=2cm}
     \includegraphics[height=4cm]{images/math-example-01.png}
-    \caption{Rezultat \emph{off-line} OCR sustava za detekciju znakova rukom pisanog teksta.}
+    \caption{Rezultat \emph{off-line} OCR-sustava za detekciju znakova rukom pisanog teksta.}
     \label{fig:math-example-01}
 \end{figure}
 
 \pagebreak
 
-OCR sustavi imaju široku primjenu i možemo ih pronaći primjerice u detekciji
+OCR-sustavi imaju široku primjenu i možemo ih pronaći primjerice u detekciji
 znakova na registarskim pločicama \citep{DBLP:journals/corr/Saghaei16a}, \citep{DBLP:journals/corr/abs-1802-09567},
-u detekciji znakova na tiskanim knjigama \citep{DBLP:journals/corr/abs-1802-10033},
+u detekciji znakova sadržaja knjiga \citep{DBLP:journals/corr/abs-1802-10033},
 \citep{Christy:2017:MDE:3172938.3075645} i
 detekciji znakova na raznim dokumenatima \citep{DBLP:journals/corr/HarrajR15} \citep{verma2016ocr}. Na slici \ref{fig:receipt-example-01}
-prikazan je primjer rezultata korištenja OCR sustava za detekciju znakova na računima iz trgovine.
-Slika \ref{fig:book-example-01} prikazuje rezultat OCR sustava za detekciju znakova na tiskanim knjigama.
+prikazan je primjer rezultata korištenja OCR-sustava za detekciju znakova na računima iz trgovine.
+Slika \ref{fig:book-example-01} prikazuje rezultat OCR-sustava za detekciju znakova na tiskanim knjigama.
 
 \begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{images/receipt-example-01.png}
-    \caption{Rezultat OCR sustava za detekciju znakova na računima iz trgovine.}
+    \caption{Rezultat OCR-sustava za detekciju znakova na računima iz trgovine.}
     \label{fig:receipt-example-01}
 \end{figure}
 
 \begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{images/book-example-01.png}
-    \caption{Rezultat OCR sustava za detekciju znakova na tiskanim knjigama.}
+    \caption{Rezultat OCR-sustava za detekciju znakova na tiskanim knjigama.}
     \label{fig:book-example-01}
 \end{figure}
 
 \pagebreak
 
-\section{Proces izvođenja}
+\section{Komponente OCR-sustava}
 
 Optičko raspoznavanje znakova provodi se u nekoliko koraka \citep{DBLP:journals/corr/abs-1710-05703} \citep{kaur2016survey}:
 \begin{enumerate}
     \item pribavljanje slike,
-    \item pretprocesiranje,
+    \item predobrada,
     \item segmentacija znakova,
     \item izdvajanje značajki znakova,
     \item klasifikacija znakova i
-    \item postprocesiranje.
+    \item naknadna obrada.
 \end{enumerate}
 
 \subsubsection{Pribavljanje slike}
@@ -125,20 +132,20 @@ Nakon prvog koraka, slika dokumenta nad kojim provodimo raspoznavanje znakova sa
 samo od slikovnih elemenata \engl{pixels} \citep{Vynckier:2018:HowOcrWorks}.
 Slika \ref{fig:receipt-example-02} prikazuje primjer slike nad kojom možemo provesti
 postupak raspoznavanja znakova. Primjetimo da slika može sadržati pozadinu koju bi
-OCR sustav trebao zanemariti.
+OCR-sustav trebao zanemariti.
 
 \begin{figure}[htb]
     \centering
     \includegraphics[height=7cm]{images/receipt-example-02.jpeg}
-    \caption{Ulazna slika u OCR sustav pribavljena kamerom mobilnog uređaja.}
+    \caption{Ulazna slika u OCR-sustav pribavljena kamerom mobilnog uređaja.}
     \label{fig:receipt-example-02}
 \end{figure}
 
-\subsubsection{Pretprocesiranje}
+\subsubsection{Predobrada}
 
-U koraku pretprocesiranja slike OCR sustavi često provode niz morfoloških transformacija i filtra nad pribavljenom slikom.
+U predobradi slike OCR-sustavi često provode niz morfoloških transformacija i filtra nad pribavljenom slikom.
 Cilj ovog koraka je povećati kvalitetu slike i smanjiti informacije na slici. Binarizacija je jedan od
-potkoraka pretporocesiranja koji slike u boji ili u nijansama sive pretvara u crno-bijele. Osim binarizacije
+potkoraka predobrade koji slike u boji ili u nijansama sive pretvara u crno-bijele. Osim binarizacije
 koriste se neke morfološke transformacije poput dilatacije, rezanja i skaliranja.
 Slika \ref{fig:binarization} prikazuje primjer slike prije i nakon binarizacije. \citep{Gulan:2016:Bacherlor},
 \citep{DBLP:journals/corr/abs-1710-05703}, \citep{Jurin:2017:Master}
@@ -154,13 +161,13 @@ Slika \ref{fig:binarization} prikazuje primjer slike prije i nakon binarizacije.
 \label{subsubsec:segmentacija}
 
 Sljedeći korak, segmentacija znakova, je postupak segmentiranja slike u segmente unutar kojih se nalaze znakovi
-koje želimo klasificirati. Jedan od pristupa segmentacije izvodi se s vrha prema dnu gdje se najprije
+koje želimo klasificirati. Jedan od pristupa segmentacije izvodi se s vrha prema dnu gdje se prvo
 segmentiraju linije, zatim riječi i na kraju pojedini znakovi \citep{Jurin:2017:Master}, \citep{Vynckier:2018:HowOcrWorks}.
 Prednost ovakvog pristupa je da uz lokaciju svakog znaka dobivamo i strukturu cijelog teksta, odnosno, znamo kojoj
 liniji i kojoj riječi znak pripada. Nedostatak ovakvog pristupa je da ne postoje korekcijski mehanizmi kojima bismo
 znak pridružili nekoj drugoj liniji ili riječi ako su prva dva koraka segmentacije linije ili riječi neispravni. \citep{Jurin:2017:Master}
 
-Drugi pristupi poput \emph{ZICER OCR}\footnote{OCR sustav tvrtke \emph{Microblink}, \url{https://microblink.com}} sustava izravno
+Drugi pristupi poput \emph{ZICER OCR}\footnote{OCR-sustav tvrtke \emph{Microblink}, \url{https://microblink.com}} sustava izravno
 izvode segmentaciju cijele slike na području koji predstavljaju znakove. Prednost takvog pristupa je da
 možemo detektirati znakove teksta u kojemu nema riječi i linija, kao što je na primjer matematički izraz.
 Nedostatak takvog pristupa je da gubimo informaciju o strukturi teksta i zato postoji potreba za razvojem dodatnog sustava koji bi znakove
@@ -205,10 +212,10 @@ označio prekretnicu u klasifikaciji i lokalizaciji objekata \citep{Jurin:2017:M
     \label{fig:deep-example-01}
 \end{figure}
 
-\subsubsection{Postprocesiranje}
+\subsubsection{Naknadna obrada}
 
-Nakon klasifikacije znakova slijedi njihovo postprocesiranje koje se koristi kako
-bi se poboljšali rezultati OCR-a. Jedan od pristupa postprocesiranja koristi rezultate
+Nakon klasifikacije znakova slijedi njihova naknadna obrada koja se koristi kako
+bi se poboljšali OCR-rezultati. Jedan od pristupa postprocesiranja koristi rezultate
 više različitih klasifikatora koji mogu biti korišteni slijedno, paralelno ili hijerarhijski.
 Nakon toga rezultati klasifikatora se kombiniraju različitim pristupima. \citep{DBLP:journals/corr/abs-1710-05703}
 Kao što je spomenuto u \ref{subsubsec:segmentacija} segmentacija koja se ne provodi s vrha prema
@@ -216,11 +223,11 @@ dnu nema informaciju o strukturi teksta i zato je potrebno razviti dodatan
 \textbf{sustav za određivanje strukture teksta na temelju položaja pojedinih znakova}.
 
 Schulz i suradnici \citep{schulz2017multi} 2017. godine predstavili su arhitekturu
-tzv. \emph{post-correction} OCR sustava kojim su pokazati na koji način su
-adaptirali generički sustav za postprocesiranje OCR rezultata koristeći domensko znanje
+tzv. \emph{post-correction} OCR-sustava kojim su pokazati na koji način su
+adaptirali generički sustav za naknadnu OCR-rezultata koristeći domensko znanje
 za konkretan problem koji su rješavali. Ovim pristupom ostvarili su bolje rezultate
 za konkretni problem nego što su ostvarili koristeći postojeći generički sustav za
-postprocesiranje OCR rezultata.
+naknadnu obradu OCR-rezultata.
 
 \
 
@@ -232,25 +239,34 @@ postprocesiranje OCR rezultata.
 \end{figure}
 
 \chapter{Određivanje strukture teksta}
-Sustavi za određivanje strukture teksta na temelju OCR rezultata sastavni su dio OCR sustava. Određivanje strukture teksta
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{images/text-segmentation-01.jpg}
+    \caption{Segmentacija linija (plavo) i riječi (crveno) unutar linije.}
+    \label{fig:text-segmentation-01}
+\end{figure}
+
+Sustavi za određivanje strukture teksta na temelju OCR-rezultata sastavni su dio OCR-sustava. Određivanje strukture teksta
 podrazumjeva segmentaciju linija i segmentaciju riječi unutar linije. Neke tehnike segmentacije
-OCR znakova i njihove klasifikacije nemaju informaciju o tome kojoj liniji i riječi pojedini znak pripada.
-Prednost takvog pristupa je da takav OCR sustav možemo koristiti nad slikama koje ne sadrže linije,
-kao na primjer matematički izrazi \citep{Jurin:2017:Master}. Nedostatak je što nakon klasifikacije
-moramo razviti sustav koji će OCR znakove dodatno procesirati da bismo dobili strukturu teksta \citep{Jurin:2017:Master}.
+znakova i njihove klasifikacije nemaju informaciju o tome kojoj liniji i riječi pojedini znak pripada.
+Prednost takvog pristupa je da takav OCR-sustav možemo koristiti nad slikama koje ne sadrže linije,
+kao što su na primjer slike matematičkih izraza \citep{Jurin:2017:Master}. Nedostatak je što nakon klasifikacije
+moramo razviti sustav koji će znakove naknadno obraditi da bismo odredili strukturu teksta \citep{Jurin:2017:Master}.
 
 Tekst na slici može biti podijeljen na linije ili blokove, a u bloku
 tekst možemo podijeliti na linije. Unutar jedne linije znakove možemo grupirati riječi. Način na
 koji će se odrediti struktura teksta uvelike ovisi o problemu koji riješavamo i kakve rezultate
-želimo dobiti.
+želimo dobiti. Tekst na slici \ref{fig:text-segmentation-01} podijeljen je na linije (plavo), a unutar
+svake linije na riječi (crveno).
 
 Tain i suradnici \citep{DBLP:journals/corr/TianPHLYT16} predlažu sustav za određivanje strukture teksta
 koji će osim određivanja kojoj liniji pojedini znak pripada znati izbaciti tzv. \emph{false positive}
-znakove odnosno znakove koje je OCR sustav prepoznao, a zapravo u tekstu ne postoje. Njihov sustav temelji
+znakove odnosno znakove koje je OCR-sustav prepoznao, a zapravo u tekstu ne postoje. Njihov sustav temelji
 se na \emph{min-cost flow network} modelu koji objedinjuje izbacivanje \emph{false positive} znakova i
 pronalazak strukture teksta. Na temelju međusobne pozicije između dva prepoznata znaka i
 dodatnog parametra kojeg dobivaju od klasifikatora, a koji označava vjerojatnost ispravne detekcije, grade težinski
-usmjereni graf (Slika \ref{fig:text-flow}) koji svoj problem modeliraju \emph{min-cost flow network} modelom.
+usmjereni graf (Slika \ref{fig:text-flow}) kojim svoj problem modeliraju \emph{min-cost flow network} modelom.
 
 \begin{figure}[htb]
     \centering
@@ -262,12 +278,12 @@ usmjereni graf (Slika \ref{fig:text-flow}) koji svoj problem modeliraju \emph{mi
 
 \pagebreak
 
-Zhu i suradnici \citep{zhu2016novel} predložili su novu arhitekturu (Slika \ref{fig:novel-ocr}) OCR sustava koji se temelji na empirijskim
+Zhu i suradnici \citep{zhu2016novel} predložili su novu arhitekturu (slika \ref{fig:novel-ocr}) OCR-sustava koji se temelji na empirijskim
 rezultatima koji su pokazali da sadržaj riječi ne ovisi samo o dijelu teksta u kojem se ta riječ
-nalazi nego i o susjednim dijelovima teksta. Njihov novi OCR sustav radi dvostruku analizu strukture
+nalazi nego i o susjednim dijelovima teksta. Njihov novi OCR-sustav radi dvostruku analizu strukture
 teksta -- prije klasifikacije i nakon klasifikacije. Prva analiza strukture teksta omogućuje im da odrede
 strukturu teksta u blokovima, a druga analiza strukture teksta im omogućuje da poprave pogreške u klasifikaciji.
-Njihova nova arhitektura predstavlja hibridni OCR sustav koji iskorištava rezultate analize strukture teksta.
+Njihova nova arhitektura predstavlja hibridni OCR-sustav koji iskorištava rezultate analize strukture teksta.
 
 \
 
@@ -275,7 +291,7 @@ Njihova nova arhitektura predstavlja hibridni OCR sustav koji iskorištava rezul
     \centering
     \captionsetup{justification=centering,margin=2cm}
     \fbox{\includegraphics[height=7cm]{images/novel-ocr.png}}
-    \caption{Arhitektura novog OCR sustava kojeg predlažu Zhu i suradnici \citep{zhu2016novel}.}
+    \caption{Arhitektura novog OCR-sustava kojeg predlažu Zhu i suradnici \citep{zhu2016novel}.}
     \label{fig:novel-ocr}
 \end{figure}
 
@@ -306,7 +322,7 @@ tehniku hijerahijskog grupiranja koji postupno spaja linije koje dijele znakove 
 postoje linije koje se mogu spojiti. \citep{DBLP:journals/corr/TianPHLYT16}
 
 Liang i suradnici \citep{liang1996document} predlažu heuristički algoritam za određivanje sturkture
-teksta. Algoritam radi horizontalnu projekciju (Slika \ref{fig:histogram-projection}) omeđujućih pravokutnika na jednu ravninu i pronalazi
+teksta. Algoritam radi horizontalnu projekciju (slika \ref{fig:histogram-projection}) omeđujućih pravokutnika na jednu ravninu i pronalazi
 vrhove i doline u histogramu koji prikazuje frekvencije pojavljivanja projektiranih pravokutnika.
 Osim ovog pristupa predložili su još jedan koji spaja dva znaka u jednu cjelinu ako i samo ako
 su dva znaka dovoljno blizu da ih ima smisla spojiti. Gupta i suradnici \citep{gupta2006document} također koriste razne heuristike prema kojima
@@ -323,18 +339,24 @@ povezuju susjedne omeđujuće pravokutnike.
 \end{figure}
 
 Određivanje strukture teksta težak je postupak koji uvelike ovisi o problemu koji rješavamo. U ovom
-poglavlju smo pokazali da strukturiranje teksta može biti izvođeno u raznim fazama izvođenja OCR
-sustava. Trenutak u kojem ćemo pokrenuti analizu strukture teksta ovisi o načinu na koji smo
+poglavlju smo pokazali da strukturiranje teksta može biti izvođeno u raznim fazama izvođenja OCR-sustava.
+Trenutak u kojem ćemo pokrenuti analizu strukture teksta ovisi o načinu na koji smo
 označili segmente znakova, koje informacije o segmentu imamo i koji problem rješavamo.
 Pokazali smo da su neki pristupi postigli bolje rezultate kada se iskoristilo domensko znanje
 i kada su se u nekim heurističkim pristupima koristili parametri koji su bili pomno
 izabrani za dani problem.
-U nastavku ovog rada predložiti ćemo nekoliko pristupa za određivanje strukture teksta na temelju položaja omeđujućih pravokutnika nakon provedene klasifikacije
-znakova. Analizirati ćemo njihove prednosti i nedostatke i cijelo vrijeme ćemo znati koji točno problem rješavamo.
+U nastavku ovog rada predložit ćemo nekoliko pristupa za određivanje strukture teksta na temelju položaja omeđujućih pravokutnika nakon provedene klasifikacije
+znakova. Analizirat ćemo njihove prednosti i nedostatke i cijelo vrijeme ćemo znati koji točno problem rješavamo.
 
-\chapter{Opis problema}
-Problem koji rješavamo je određivanje strukture teksta na temelju položaja pojedinih znakova.
-Od OCR sustava dobijemo listu znakova i za svaki znak znamo sljedeće informacije:
+
+
+
+
+
+\chapter{Određivanje strukture teksta na temelju položaja pojedinih znakova}
+Sustav za određivanje strukture teksta na temelju položaja pojedinih znakova
+(u daljnjem tekstu: \emph{Sustav}) na ulaz prima od OCR-sustava listu znakova za
+koje zna sljedeće informacije:
 \begin{itemize}
     \item[$\bullet$] $x$ - horizontalnu poziciju gornjeg lijevog kuta,
     \item[$\bullet$] $y$ - vertikalnu poziciju gornjeg lijevog kuta,
@@ -343,66 +365,61 @@ Od OCR sustava dobijemo listu znakova i za svaki znak znamo sljedeće informacij
     \item[$\bullet$] $value$ - Unicode vrijednost znaka.
 \end{itemize}
 
-U sklopu ovog završnog rada rješavati ćemo problem određivanja strukture teksta
-na računima iz trgovine i sadržaja iz knjiga. Stup podataka za testiranje
-sustava biti će detaljno objašnjen u poglavlju \ref{chap:skup-padataka-za-testiranje}.
+Izlaz iz sustava su znakovi grupirani u linije, a unutar linije sustav treba
+odrediti gdje završava prethodna i započinje sljedeća riječ.
 
-\section{Primjer ulaza}
+U skolpu ovog završnog rada potrebno je razviti sustav za određivanje strukture
+teksta na računima iz trgovine i sadržaja iz knjga. Stup podataka za testiranje
+sustava biti će detaljno objašnjen u odjeljku
+\ref{chap:skup-padataka-za-testiranje}.
 
-Slika \ref{fig:book-example-02} prikazuje vizualizaciju rezultata OCR sustava koji nam je za svaki
-znak vratio omeđujući pravokutnik (označeno plavom bojom) i vrijednost znaka odnosno klasu kojoj
-znak pripada. Slike \ref{fig:receipt-example-01} i \ref{fig:book-example-01} također prikazuju
-vizualizaciju rezultata OCR sustava i primjer podataka s kakvim će se sustav za
-određivanje strukture teksta susresti.
+Slika \ref{fig:book-example-02} prikazuje vizualizaciju rezultata OCR-sustava
+koji nam je za svaki znak vratio omeđujući pravokutnik (označeno plavom bojom) i
+vrijednost znaka odnosno klasu kojoj znak pripada.
+Slike \ref{fig:receipt-example-01} i \ref{fig:book-example-01} također prikazuju
+vizualizaciju rezultata OCR sustava i primjere s kakvim će se sustav za
+određivanje strukture teksta koji razvijamo susresti.
 
-Primjer pojednostavljenog (detaljnije u poglavlju \ref{chap:skup-padataka-za-testiranje}) OCR rezultata koji će sustav za određivanje strukture teksta dobiti kao svoj
-ulaz prikazan je Isječkom \ref{lst:ocr-result-json-01}. Ulazni OCR rezultat u JSON\footnote{JSON format, \url{https://json.org}}
-formatu uvijek se sastoji od jedne linije u koju su smješteni znakovi nasumičnim redosljedom.
-
-\
-
+Primjer pojednostavljenog (detaljnije u odjeljku
+\ref{chap:skup-padataka-za-testiranje}) OCR-rezultata u formatu JSON koji će
+sustav za određivanje strukture teksta dobiti kao svoj ulaz prikazan je isječkom
+\ref{lst:ocr-result-json-01}. Ulazni OCR-rezultat u formatu
+JSON uvijek se sastoji od jedne linije u koju
+su smješteni znakovi nasumičnim redosljedom.
+\pagebreak
 \begin{figure}[htb]
     \centering
     \includegraphics[height=4cm]{images/book-example-02.png}
-    \caption{Primjer vizualizacije rezultata koji vraća OCR sustav.}
+    \caption{Vizualizacija OCR-rezultata.}
     \label{fig:book-example-02}
 \end{figure}
-
-\pagebreak
-
-
-\begin{lstlisting}[caption={Primjer OCR rezultata u JSON formatu. Ulaz u sustav za određivanje strukture teksta.},label={lst:ocr-result-json-01}]
+\begin{lstlisting}[
+    caption={Pojednostavljeni OCR-rezultat u formatu JSON.},
+    label={lst:ocr-result-json-01}
+],
 {
     "ocr_result": {
         "lines": [
             {
                 "chars": [
                     {
-                        "x": 25.95604,
-                        "y": 17.30562,
-                        "width": 10.64438,
-                        "height": 16.60289,
+                        "x": 25.95604, "y": 17.30562,
+                        "width": 10.64438, "height": 16.60289,
                         "value": 48
                     },
                     {
-                        "x": 19.77133,
-                        "y": 1.28793,
-                        "width": 16.07777,
-                        "height": 10.76925,
+                        "x": 19.77133, "y": 1.28793,
+                        "width": 16.07777, "height": 10.76925,
                         "value": 77
                     },
                     {
-                        "x": 5.50248,
-                        "y": 2.84320,
-                        "width": 12.13375,
-                        "height": 15.60966,
+                        "x": 5.50248, "y": 2.84320,
+                        "width": 12.13375, "height": 15.60966,
                         "value": 73
                     },
                     {
-                        "x": 3.19550,
-                        "y": 19.67606,
-                        "width": 14.94088,
-                        "height": 20.78798,
+                        "x": 3.19550, "y": 19.67606,
+                        "width": 14.94088, "height": 20.78798,
                         "value": 91
                     },
 
@@ -413,25 +430,27 @@ formatu uvijek se sastoji od jedne linije u koju su smješteni znakovi nasumičn
 }
 \end{lstlisting}
 
-\pagebreak
 
-\section{Zahtjevi sustava}
-Sustav za određivanje strukture teksta (u daljenjem tekstu: \emph{Sustav}) treba za dobiveni OCR rezultat u JSON formatu vratiti novi
-rezultat u JSON formatu koji će znakove grupirati u linije i koji će unutar linija biti poredani
-s lijeva na desno. Također, linije moraju biti sortirane tako da se najviša linija u dokumentu nalazi
-na prvom mjestu.
 
-Osim grupiranja linija, sustav treba odrediti gdje se nalazi razmak između riječi.
-Od sustava se očekuje da između dva znaka, gdje smatra da završava prethodna i počinje nova
-riječ, ubaci novi znak bjeline čija je vrijednost \engl{value} $32$ dok ostale informacije
-mogu biti prozivoljne.
+\section{Željena funkcionalnost}
+\label{sec:željena-funkcionalnost}
+Od sustava se očekuje da za dobiveni OCR-rezultat u formatu JSON vrati novi
+rezultat u istom formatu koji će znakove grupirati u linije i koji će unutar
+linija biti poredani s lijeva na desno. Također, linije moraju biti sortirane
+tako da se najviša linija u dokumentu nalazi na prvom mjestu.
 
-Isječak \ref{lst:ocr-result-json-02} prikazuje primjer izlaza iz sustava za dani ulaz
-iz Isječka \ref{lst:ocr-result-json-01}. Sustav je znakove grupirao u dvije linije i
-između prvog i zadnjeg znaka u drugoj liniji je ubacio znak bjeline. Vrijednost znaka
-bjeline je zahtijevana vrijednost $32$. Ostale informacije znaka bjeline mogle su biti
-proizvoljne, međutim, sustav im je dodijelio sljedeće smislenije vrijednost:
+Osim grupiranja linija od sustava se očekuje da između dva znaka, gdje smatra da
+završava prethodna i započinje nova riječ, ubaci novi znak bjeline čija je
+vrijednost \engl{value} $32$ dok ostale informacije mogu biti prozivoljne.
+Dodatan zahtjev je da sustav sve grupirane linije smjesti u jedan blok.
+Detaljnije o blokovima će biti opisano u pododjeljku \ref{sec:json-datoteke}.
 
+Isječak \ref{lst:ocr-result-json-02} prikazuje primjer izlaza iz sustava za dani
+ulaz iz isječka \ref{lst:ocr-result-json-01}. Sustav je znakove grupirao u dvije
+linije i između prvog i zadnjeg znaka u drugoj liniji je ubacio znak bjeline.
+Vrijednost znaka bjeline je zahtijevana vrijednost $32$. Ostale informacije
+znaka bjeline mogle su biti proizvoljne, međutim, sustav im je dodijelio
+sljedeće smislenije vrijednost:
 \begin{itemize}
     \item[$\bullet$] $x$ - horizontalna pozicija gornjeg desnog kuta lijevog znaka,
     \item[$\bullet$] $y$ - vertikalna pozicija gornjeg lijevog kuta desnog znaka,
@@ -440,29 +459,27 @@ proizvoljne, međutim, sustav im je dodijelio sljedeće smislenije vrijednost:
     \item[$\bullet$] $height$ - visina lijevog znaka.
 \end{itemize}
 
-Pod \emph{lijevi znak} podrazumijeva se na znak koji se nalazi prije znaka bjeline, a pod
-\emph{desni znak} podrazumijeva se na znak koji se nalazi nakon znaka bjeline.
+Pod \emph{lijevi znak} podrazumijeva se na znak koji se nalazi prije znaka
+bjeline, a pod \emph{desni znak} podrazumijeva se na znak koji se nalazi nakon
+znaka bjeline.
 
-\
-
-\begin{lstlisting}[caption={Primjer izlaza iz sustava za određivanje strukture teksta.},label={lst:ocr-result-json-02}]
+\begin{lstlisting}[
+    caption={Izlaz iz sustava za određivanje strukture teksta u formatu JSON.},
+    label={lst:ocr-result-json-02}
+]
 {
     "ocr_result": {
         "lines": [
             {
                 "chars": [
                     {
-                        "x": 5.50248,
-                        "y": 2.84320,
-                        "width": 12.13375,
-                        "height": 15.60966,
+                        "x": 5.50248, "y": 2.84320,
+                        "width": 12.13375, "height": 15.60966,
                         "value": 73
                     },
                     {
-                        "x": 19.77133,
-                        "y": 1.28793,
-                        "width": 16.07777,
-                        "height": 10.76925,
+                        "x": 19.77133, "y": 1.28793,
+                        "width": 16.07777, "height": 10.76925,
                         "value": 77
                     }
                 ]
@@ -470,24 +487,18 @@ Pod \emph{lijevi znak} podrazumijeva se na znak koji se nalazi prije znaka bjeli
             {
                 "chars": [
                     {
-                        "x": 3.19550,
-                        "y": 19.67606,
-                        "width": 14.94088,
-                        "height": 20.78798,
+                        "x": 3.19550, "y": 19.67606,
+                        "width": 14.94088, "height": 20.78798,
                         "value": 91
                     },
                     {
-                        "x": 18.13638,
-                        "y": 19.67606,
-                        "width": 7,81966,
-                        "height": 20.78798,
+                        "x": 18.13638, "y": 19.67606,
+                        "width": 7,81966, "height": 20.78798,
                         "value": 32
                     }
                     {
-                        "x": 25.95604,
-                        "y": 17.30562,
-                        "width": 10.64438,
-                        "height": 16.60289,
+                        "x": 25.95604, "y": 17.30562,
+                        "width": 10.64438, "height": 16.60289,
                         "value": 48
                     }
                 ]
@@ -497,75 +508,82 @@ Pod \emph{lijevi znak} podrazumijeva se na znak koji se nalazi prije znaka bjeli
 }
 \end{lstlisting}
 
-\chapter{Skup podataka za testiranje}
+
+
+\section{Skup podataka za testiranje}
 \label{chap:skup-padataka-za-testiranje}
-
 Skup podataka za testiranje (u daljnjem tekstu: \emph{podatci})
-sustava sastoji se od slika, JSON datoteka i tekstualnih datoteka.
-U sklopu ovog završnog rada razvijeni sustav za određivanje strukture teksta
-rješavati će problem određivanja strukture teksta na računima iz trgovine i
-sadržaja iz knjiga.
+sustava sastoji se od slika, ulaznih datoteka u formatu JSON i
+očekivanih izlaznih datoteka. U sklopu ovog završnog rada razvijeni sustav za
+određivanje strukture teksta rješavati će problem određivanja strukture teksta
+na računima iz trgovine i sadržaja iz knjiga.
 
-\section{Slike}
-\label{sec:slike}
 
-Podatci za testiranje sustava sadrže $100$ slika računa
-(Slika \ref{fig:receipt-example-04}) i $34$ slike sadržaja iz knjiga (Slika \ref{fig:book-example-03}).
-
-\
+\subsection{Slike}
+\label{subsec:slike}
+Podatci za testiranje sustava sadrže $100$ slika računa (slika
+\ref{fig:receipt-example-04}) i $34$ slike sadržaja iz knjiga (slika
+\ref{fig:book-example-03}).
 
 \begin{figure}[htb]
     \centering
     \captionsetup{justification=centering,margin=2cm}
     \includegraphics[height=8cm]{images/receipt-example-04.jpg}
-    \caption{Primjer slike računa za koji će se rješavati problem određivanja strukture teksta.}
+    \caption{
+        Primjer slike računa za koji će se rješavati problem određivanja
+        strukture teksta.
+    }
     \label{fig:receipt-example-04}
 \end{figure}
-
-\pagebreak
-
 \begin{figure}[htb]
     \centering
     \captionsetup{justification=centering,margin=2cm}
     \includegraphics[width=\textwidth]{images/book-example-03.jpg}
-    \caption{Primjer slike sadržaja iz knjige za koji će se rješavati problem određivanja strukture teksta.}
+    \caption{
+        Primjer slike sadržaja iz knjige za koji će se rješavati problem
+        određivanja strukture teksta.
+    }
     \label{fig:book-example-03}
 \end{figure}
 
-Svaki znak na svakoj slici je \textbf{ručno} označen i klasificiran. Na slikama računa
-označeno je ukupno $85068$ znakova, a na slikama sadržaja iz knjiga označeno je ukupno
-$25092$ znaka. Ručno označeni podatci oponašaju rezultate OCR sustava koji predstavljaju ulaz u
-sustav za određivanje strukture teksta.
+Svaki znak na svakoj slici je \textbf{ručno} označen i klasificiran. Na slikama
+računa označeno je ukupno $85068$ znakova, a na slikama sadržaja iz knjiga
+označeno je ukupno $25092$ znaka. Ručno označeni podatci oponašaju rezultate
+OCR-sustava koji predstavljaju ulaz u sustav za određivanje strukture teksta.
 
-Omeđujući pravokutnici označenih znakova predstavljaju područje koje označeni znak
-zauzima na slici. Stranice omeđujućih pravokutnika su uvijek paralelne sa rubovima slike.
-Slika \ref{fig:book-example-04} prikazuje isječak slike, sadržaja iz knjige, na kojoj
-su znakovi ukošeni, a stranice njihovih omeđujućih znakova paralelne su sa rubovima slike.
-Možemo uočiti kako je moguće da se dva susjedna omeđujuća pravokutnika preklapaju.
-
-\
+Omeđujući pravokutnici označenih znakova predstavljaju područje koje označeni
+znak zauzima na slici. Stranice omeđujućih pravokutnika su uvijek paralelne sa
+rubovima slike. Slika \ref{fig:book-example-04} prikazuje isječak slike,
+sadržaja iz knjige, na kojoj su znakovi ukošeni, a stranice njihovih omeđujućih
+znakova paralelne su sa rubovima slike. Možemo uočiti kako je moguće da se dva
+susjedna omeđujuća pravokutnika preklapaju.
 
 \begin{figure}[htb]
     \centering
     \captionsetup{justification=centering,margin=2cm}
     \includegraphics[width=\textwidth]{images/book-example-04.png}
-    \caption{Primjer slike s kosim tekstom. Vizualizacija OCR rezultata. Omeđujući pravokutnici su uvijek paralelni s rubovima slike.}
+    \caption{
+        Primjer slike s kosim tekstom. Vizualizacija OCR rezultata. Omeđujući
+        pravokutnici su uvijek paralelni s rubovima slike.
+    }
     \label{fig:book-example-04}
 \end{figure}
 
-\section{JSON datoteke}
-Slike opisane u \ref{sec:slike} \textbf{ne predstavljaju} ulaz u sustav za određivanje strukture
-teksta. Nakon označavanja slika podatci o označavanju svake slike se izvoze i pohranjuju u JSON datoteke.
-JSON datoteka u kojoj su zapisani podatci o označavanju Slike \ref{fig:receipt-example-04}
-prikazana je u Isječku \ref{lst:ocr-result-json-03}. Početna tri ključa
-\lstinline{meta}, \lstinline{tags} i \lstinline{crop} predstavljaju dodatne informacije
-o označenoj slici i mogu se zanemariti. Zbog specifičnosti sustava za označavanje
-slika i načina na koji on pohranjuje informacije o označavanju, svi označeni
-znakovi će biti smješteni u jednu liniju u nasumičnom poretku, a ta linija
-će biti smještena u jedan blok. Za svaki znak dostupna je informacija o Unicode
+\subsection{Ulazne datoteke}
+\label{subsec:ulazne-datoteke}
+Slike opisane u \ref{subsec:slike} \textbf{ne predstavljaju} ulaz u sustav za
+određivanje strukture teksta. Nakon označavanja slika podatci o označavanju
+svake slike se izvoze i pohranjuju u datoteke u JSON formatu. Datoteke u JSON
+formatu predstavljaju ulaz u sustav. Ulazna datoteka u formatu JSON u kojoj su
+zapisani podaci o označavanju slike \ref{fig:receipt-example-04} prikazana je
+u isječku \ref{lst:ocr-result-json-03}. Zbog specifičnosti sustava za označavanje
+slika i načina na koji pohranjuje informacije o označavanju, svi označeni znakovi
+bit će smješteni u jednu liniju u nasumičnom poretku i ta linija će biti
+smještena u jedan blok. Za svaki znak dostupna je informacija o Unicode
 vrijednosti znaka koja je smještena pod ključem \lstinline{value}. Dodatno, za
-svaki znak dostupna je informacija o poziciji i veličini njegovog omeđujućeg pravokutnika
-\engl{bounding box}. Za svaki omeđujući pravokutnik poznate su sljedeće informacije:
+svaki znak dostupna je informacija o poziciji i veličini njegovog omeđujućeg
+pravokutnika \engl{bounding box}. Za svaki omeđujući pravokutnik poznate su
+sljedeće informacije:
 \begin{itemize}
     \item[$\bullet$] $x$ - horizontalna pozicija gornjeg lijevog kuta,
     \item[$\bullet$] $y$ - vertikalna pozicija gornjeg lijevog kuta,
@@ -573,32 +591,23 @@ svaki znak dostupna je informacija o poziciji i veličini njegovog omeđujućeg 
     \item[$\bullet$] $height$ - visina.
 \end{itemize}
 
-Kako vrijednost $x$ omeđujućeg pravokutnika raste tako je znak bliže desnom rubu slike.
-Čim je vrijednost $y$ omeđujućeg pravokutnika veća time je znak niže na slici.
-Sve informacije o omeđujućem pravokutniku su vrijednosti iz skupa nenegativnih realnih
-brojeva.
+Kako vrijednost $x$ omeđujućeg pravokutnika raste tako je znak bliže desnom rubu
+slike. Kako vrijednost $y$ omeđujućeg pravokutnika raste tako je znak niže na
+slici. Sve informacije o omeđujućem pravokutniku su vrijednosti iz skupa
+nenegativnih realnih brojeva.
 
-Dodatne informacije dostupne za svaki znak smještene u ključeve
-\lstinline{font} i \lstinline{quality} mogu se zanemariti.
+Sustav za označavanje slika izvozi još neke dodatne informacije o znakovima i
+o označenoj slici. Sve informacije koje nisu ovdje navede i koje se ne nalaze u
+isječku \ref{lst:ocr-result-json-03} mogu se zanemariti.
 
-\
-
-\begin{lstlisting}[caption={JSON datoteka s podatcima o označavanju Slike \ref{fig:receipt-example-04}.},label={lst:ocr-result-json-03}]
+\begin{lstlisting}[
+    caption={
+        JSON datoteka s podatcima o označavanju slike
+        \ref{fig:receipt-example-04}.
+    },
+    label={lst:ocr-result-json-03}
+]
 {
-    "meta": {
-        "retailer": "Fred Meyer",
-        "validation_type": "turk-multiple",
-        "group": "ibotta-june-turk-multiple"
-    },
-    "tags": [
-        "ibotta-june-turk-multiple"
-    ],
-    "crop": {
-        "x": 90.0,
-        "y": 209.0,
-        "width": 496.0,
-        "height": 485.0
-    },
     "ocr_result": {
         "blocks": [
             {
@@ -606,28 +615,24 @@ Dodatne informacije dostupne za svaki znak smještene u ključeve
                     {
                         "chars": [
                             {
-                                "value": 42,
-                                "quality": 100,
-                                "font": "unknown",
+                                "value": 83,
                                 "bounding_box": {
-                                    "x": 55.678818,
-                                    "y": 1.7737274,
-                                    "width": 10.0,
-                                    "height": 12.452545
+                                    "x": 4.548218,
+                                    "y": 271.68826,
+                                    "width": 12.136101,
+                                    "height": 22.48648
                                 }
                             },
                             {
-                                "value": 42,
-                                "quality": 100,
-                                "font": "unknown",
+                                "value": 65,
                                 "bounding_box": {
-                                    "x": 66.28284,
-                                    "y": 3.0,
-                                    "width": 10.434326,
-                                    "height": 12.565659
+                                    "x": 4.244385,
+                                    "y": 247.67685,
+                                    "width": 12.59581,
+                                    "height": 21.750519
                                 }
                             },
-                            // ostalih 585 znakova...
+                            // ostalih 388 znakova
                         ]
                     }
                 ]
@@ -637,35 +642,311 @@ Dodatne informacije dostupne za svaki znak smještene u ključeve
 }
 \end{lstlisting}
 
+\subsubsection{Izlaz iz sustava za određivanje strukture teksta}
+U odjeljku \ref{sec:željena-funkcionalnost} navedeni su zahtjevi sustava i
+opisan je pojednostavljeni format izlaza iz sustava. Od sustava se očekuje da
+rezultat nakon određivanja strukture teksta prikaže u istom formatu u kojemu je
+prikazan ulaz u sustav opisan u ovom odjeljku. Sve grupirane linije potrebno je
+smjestiti u jedan blok. Sustav ne treba isporučiti informacije koje su se mogu
+zanemariti na ulazu.
+
+\subsection{Očekivane izlazne datoteke}
+Očekivane izlazne datoteke predstavljaju tekstualni sadržaj sa slike.
+Isječak \ref{lst:txt-result-04} predstavlja tekstualni sadržaj računa sa slike
+\ref{fig:receipt-example-04}. Uočimo da u tekstualnom sadržaju ne postoje
+bjeline prije početka linije koje postoje u sadržaju na slici. Osim toga,
+višestruke bjeline u sadržaju na slici predstavljene su točno jednom bjelinom
+u tekstualnom sadržaju u datoteci.
+\begin{lstlisting}[
+    caption={
+        Tekstualni sadržaj slike \ref{fig:receipt-example-04}.
+    },
+    label={lst:txt-result-04}
+]
+POINTS TO $35 REWARD 8770
+BALANCE REWARDS ACCT # *********2463
+OPENING BALANCE 20820
+EVERYDAY POINTS - RETAIL 410
+CLOSING BALANCE 21230
+*****************************************
+Walgreens 01875
+ACCT 7681
+SEQUENCE 1875220350
+PAYMENT FROM PRIMARY
+Get the flu shot that helps provide
+a lifesaving vaccine to a child in need
+Get a Shot. Give a Shot.® It's that easy
+Learn more at the pharmacy.
+\end{lstlisting}
+
+
+
+\section{Korištenje skupa podataka za testiranje}
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/sustav-01.png}
+    \caption{
+        Postupak dobivanja izlazne datoteke iz strukturiranog OCR-rezultata.
+    }
+    \label{fig:sustav-01}
+\end{figure}
+Slika \ref{fig:sustav-01} prikazuje postupak dobivanje izlazne datoteke iz
+strukturiranog OCR-rezultata kojeg je vratio sustav za određivanje strukture
+teksta. Ulaz u sustav je ulazna datoteka u formatu JSON koja predstavlja
+OCR-rezultat kao što je opisano u pododjeljku \ref{subsec:ulazne-datoteke}.
+Izlaz iz sustava je strukturirani OCR-rezultat u formatu JSON u kojemu se nalaze
+znakovi grupirani u linije i gdje su između riječi ubačeni znakovi bjeline.
+Strukturirani OCR-rezultat u formatu JSON potrebno je pretvoriti u izlaznu
+datoteku koja predstavlja strukturirani tekstualni sadržaj koji se onda
+uspoređuje sa očekivanim izlaznim datotekama dostupnim u skupu podataka za
+testiranje.
+
+Metode usporedbe izlaznih datoteka iz sustava i očekivanih izlaznih
+datoteka iz skupa podataka za testiranje biti će objašnjene u odjeljku
+\ref{sec:metrike}.
+
+
+
+
+
+
 \chapter{Algoritmi za određivanje strukture teksta}
-U ovom poglavlju trebaš napisati na koji način je podijeljen sustav za određivanje
-strukture teksta (\emph{aligner} i \emph{spacer}). Opisati način rada svakog
-i njihovu suradnju. Opisati što se očekuje od \emph{alignera}, a što od \emph{spacera}.
+Sustav za određivanje strukture teksta podijeljen je u dva podsustava:
+\textbf{sustav za određivanje linija} i \textbf{sustav za rastavljanje riječi}.
+Slika \ref{fig:sustav-02} prikazuje navedene komponente sustava i njihovu
+suradnju. Ulaz u sustav za određivanje linija je nestrukturirani OCR-rezultat
+dobiven od OCR-sustava. Izlaz iz sustava za određivanje strukture teksta
+je OCR-rezultat u kojemu su znakovi grupirani u linije kojima pripadaju. Izlaz
+iz sustava za određivanje linija je ulaz u sustav za rastavljanje riječi koji
+u svakoj liniji ubacuje na odgovarajuća mjesta znakove bjeline koji odvajaju
+riječi. Izlaz iz sustava za rastavljanje riječi je ujedno i izlaz iz sustava
+za određivanje strukture teksta.
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/sustav-02.png}
+    \caption{
+        Komponente sustava za određivanje strukture teksta.
+    }
+    \label{fig:sustav-02}
+\end{figure}
 
-\chapter{Rezultati i analiza}
-\section{Metrike}
-Opisati metrike koje su korištene za određivanje \emph{fitnesa} layoutera.
-Zašto baš ta metrika, a ne neka druga. Objasniti prednosti i mane takve metrike
-i koje su posljedice njezina korištenja.
+U nastavku ovog poglavlja objasniti ćemo implementirane algoritme za određivanje
+linija i za rastavljanje riječi.
 
-\section{Brojke}
-Brojke rezultata, grafovi ili tablice.
 
-\section{Analiza}
-Analiza rezultata. Zašto \emph{aligner} radi, a zašto ne. Isto tako i za
-\emph{spacer}. Pokazati gdje \emph{aligner} griješi i analizirati zašto. Isto i za
-\emph{spacer}.
 
-\chapter{Daljnji rad}
-Opisati što se može napraviti u bližoj budućnosti da rezultati budu bolji.
-Definitvno spomenuti potrebu za izgradnjom boljeg skupa podataka i definiranja
-metrike. Istaknuti prednosti takvog novog skupa podataka.
+\section{Algoritmi za određivanje linija}
+Algoritmi za određivanje linija trebaju na temelju omeđujućih pravokutnika
+svakog znaka znakove grupirati u linije. Slika \ref{fig:line-semgentation-01}
+predstavlja vizualizaciju očekivanog rezultata algoritma za određivanje linija.
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/line-segmentation-01.jpg}
+    \caption{
+        Vizualizacija detektiranih linija u sadržaju iz knjige.
+    }
+    \label{fig:line-semgentation-01}
+\end{figure}
 
-\chapter{Dodaci}
-U dodacima rada opisati strukturu \emph{test-data} direktorija. Opisati
-na koji način čitatelj može reproducirati rezultate i kako može isprobati rad
-\emph{Layouter} na nekom svom skupu podataka. Pogledaj kako se ispravno dodaju
-dodaci i u kojem dijelu rada dodatak mora biti.
+\subsection{Algoritam za određivanje linija na temelju maksimalnog preklapanja znakova}
+Algoritam za određivanje linija na temelju maksimalnog preklapanja znakova
+(u daljnjem tekstu: \emph{algoritam}) temelji se na pretpostavci da dva susjedna
+znaka koja se nalaze u istoj liniji ostvaruju maksimalno vertikalno preklapanje.
+Vertikalno preklapanje \textit{overlap} dva znaka $A$ i $B$ definiramo izrazom:
+\begin{equation}
+\label{eq:overlap}
+\textit{overlap}(A, B) \vcentcolon= \frac{\max(0, \min( A_y + A_h, B_y + B_h ) - \max( A_y, B_y ))}
+                                {\min(A_h, B_y)}
+\end{equation}
+Na početku svog rada algoritam uzlazno sortira sve znakove po horizontalnoj $x$
+vrijednost, zatim iterira po svakom znaku i konstruira linije gledajuću s kojom
+linijom promatrani znak ostvaruje maksimalno preklapanje. Preklapanje s linijom
+definira se kao preklapanje sa zadnjim znakom u toj liniji. Promatrani znak
+pripadne onoj liniji s kojom ostvari maksimalno preklapanje:
+\begin{equation}
+\label{eq:overlap-01}
+l_{max} = \argmax_{l \in L}\left\{\textit{overlap}(A, l_{-1})\right\}
+\end{equation}
+Skup svih dosad grupiranih linija označen je sa $L$,
+a $l_{-1}$ označava zadnji znak u promatranoj liniji. Ako je znak s nekom
+linijom ostvario preklapanje vrijednosti $0$ tada on postaje početak nove linije.
+
+\subsubsection{Rješavanje problema valovitih linija}
+
+Budući da linije u sadržaju skupa podataka kojeg promatramo mogu biti valovite
+(slika \ref{fig:aligner-01}), ponekad je poželjno izmjeriti preklapanje ne samo
+sa zadnjim znakom u liniji nego i sa zadnjih nekoliko:
+\begin{equation}
+\label{eq:overlap-02}
+l_{max} = \argmax_{l \in L,\ i \in [1, \min(|l|, c_1)]}\left\{\textit{overlap}(A, l_{-i})\right\}
+\end{equation}
+
+Za razliku od izraza \ref{eq:overlap-01} koji uzima u obzir samo zadnji znak u
+svakoj liniji, izraz \ref{eq:overlap-02} uzet će u obzir zadnjih $\min(|l|, c_1)$
+znakova u svakoj liniji, gdje $|l|$ predstavlja duljinu linije, a $c_1$ predstavlja
+\textbf{parametar algoritma}. Eksperimentalno je utvrđeno da vrijednost parametra
+$c_1 = 1$ ostvaruje najbolje rezultate na skupu podataka s računima iz trgovine,
+a da vrijednost parametra $c_1 = 2$ ostvaruje najbolje rezultate na skupu podataka
+sa sadržajem iz knjiga.
+
+Slika \ref{fig:aligner-01} prikazuje kako znak \lstinline{=} na desnoj strani
+crvenog pravokutnika ostvaruje maksimalno preklapanje sa znakom \lstinline{=}
+na lijevoj strani crvenog pravokutnika koji nije zadnji znak u liniji u tom
+trenutku.
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/aligner-01.png}
+    \caption{Valovite linije otežavaju određivanje linija.}
+    \label{fig:aligner-01}
+\end{figure}
+
+\subsubsection{Rješavanje problema preklapanja početaka dviju linija}
+
+Slika \ref{fig:overlap-01} prikazuje kako je moguće preklapanje početaka dviju
+linija. Tako znakovi \lstinline{0} i \lstinline{D}
+ostvaruju nezanemarivo preklapanje čija će posljedica biti krivo određene linije.
+Kako bismo uspješno detektirali ovakve slučajeve uvodimo dodatan uvijet koji će
+odlučiti hoće li promatrani znak pripasti liniji s kojom ostvaruje maksimalno preklapanje:
+\begin{equation}
+\label{eq:overlap-03}
+\max_{i \in [1, \min(|l_{max}|, c_1)]}\left\{\textit{overlap}(A, l_{max_{-i}})\right\} > c_2
+\end{equation}
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/overlap-01.png}
+    \caption{Preklapanje početaka dviju linija.}
+    \label{fig:overlap-01}
+\end{figure}
+Nakon što smo izrazom \ref{eq:overlap-02} odredili s kojom linijom promatrani znak
+ostvaruje maksimalno preklapanje trebamo provjeriti zadovoljava li iznos tog preklapanja
+uvijet naveden izrazom \ref{eq:overlap-03}. Uvodimo novi parametar algoritma
+$c_2$ koji predstavlja donju granicu preklapanja koju znak mora ostvariti s linijom
+da bi joj se pripojio. Eksperimentalno je utvrđeno da vrijednost parametra
+$c_2 = 0.13$ ostvaruje najbolje rezultate na skupu podataka s računima iz trgovine,
+a da vrijednost parametra $c_2 = 0.05$ ostvaruje najbolje rezultate na skupu podataka
+sa sadržajem iz knjiga.
+
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/overlap-02.png}
+    \caption{\emph{false-positive} preklapanje}
+    \label{fig:overlap-02}
+\end{figure}
+
+\subsubsection{Rješavanje problema \emph{false-positive} preklapanja}
+
+Slika \ref{fig:overlap-02} prikazuje slučaj kada znak pripadne krivoj liniji zato
+jer s njom ostvaruje maksimalno preklapanje zbog zakrivljenosti slike i sadržaja.
+U ovom primjeru znak \lstinline{5} pripasti će prvoj liniji \lstinline{Meat}, a
+trebao bi pripasti drugoj liniji. Promatrajući skup podataka za koji rješavamo
+problem zaključili smo kako uvijek treba dati prednost onoj liniji čiji je zadnji
+znak bliži znaku kojeg promatramo. Tako će u primjeru sa slike \ref{fig:overlap-02}
+znak \lstinline{5} pripasti drugoj liniji zato jer je njezin zadnji znak bliži
+znaku \lstinline{5} nego znak \lstinline{t} iz prve linije i zato jer s zadnjim
+znakom u drugoj liniji ipak postiže nezanemarivo preklapanje.
+Da bismo uspješno rješili navedeni problem uvest ćemo dvije funkcije i dva dodatna
+parametra algoritma. Definirajmo prvo normaliziranu udaljenost centara između dva
+znaka:
+
+\begin{equation}
+d(A, B) = \frac{|A_x + \frac{A_w}{2} - (B_x + \frac{B_w}{2})|}{\min(A_w, B_w)}
+\end{equation}
+
+Zatim ćemo definirati navedene dvije funkcije (slika \ref{fig:function-01})
+koje koriste dva nova parametra algoritma:
+
+\begin{align}
+f_1(x) &= \frac{1}{1 + c_3 \cdot x} \\[10pt]
+f_2(x) &= 1 + \frac{c_4 \cdot x}{1 + c_4 \cdot x}
+\end{align}
+
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/function-01.png}
+    \caption{
+        Grafovi funkcije $f_1$ (crveno) i funkcije $f_2$ (plavo) za parametre
+        $c_3 = c_4 = 1$.
+    }
+    \label{fig:function-01}
+\end{figure}
+
+Ideja je da koristimo navedene funckije $f_1$ i $f_2$ kako bismo linijama olakšali
+odnosno otežali postizanje preklapanja u ovisnosti o udaljenosti između njihovih
+zadnjih znakova. Recimo da u smo u postupku traženja maksimalnog preklapanja
+u jednom trenutku ostvarili maksimalno preklapanje s linijom $l_1$ iznosa $p_1$.
+S idućom linijom $l_2$ izmjerimo preklapanje $p_2$. Da bi linija $l_2$ postigla
+novo maksimalno preklapanje sa promatranim znakom mora vrijediti $p_2$ > $p_1$.
+Međutim, recimo da smo uočili da je zadnji znak linije $l_2$ bliži promatranom
+znaku nego zadnji znak linije $l_1$. Koristeći navedenu opservaciju možemo
+liniji $l_2$ olakšati postizanje novog maksimalnog preklapanja tako da ostvarno
+preklapanje linije $l_1$ umanjimo za neki iznos. Budući da je zadnji znak
+linije $l_2$ bliži promatranom znaku novi uvijet koji linija $l_2$ mora zadovoljiti
+da bi ju smatrali novim maksimalnim preklapanjem glasi:
+\begin{equation}
+p_2 > p_1 \cdot f_1(d(l_{1_{-1}},l_{2_{-1}}))
+\end{equation}
+
+Funkcija $f_1$ će liniji $l_2$ pomoći tim više što su zadnji znakovi linija
+$l_1$ i $l_2$ udaljeniji. Da je zadnji znak linije $l_2$ bio dalje od promatranog
+znaka nego zadnji znak linije $l_1$ onda bismo liniji $l_2$ trebali otežati
+postizanje novog maksimalnog preklapanja čak i ako vrijedi $p_2$ > $p_1$.
+U tom slučaju novi uvijet za liniju $l_2$ glasi:
+\begin{equation}
+    p_2 > p_1 \cdot f_2(d(l_{1_{-1}},l_{2_{-1}}))
+\end{equation}
+
+Funkcija $f_2$ će liniji $l_2$ otežati tim više što su zadnji znakovi linija
+$l_1$ i $l_2$ udaljeniji. Eksperimentalno je utvrđeno da vrijednosti parametra
+$c_3 = c_4 = 0.13$ ostvaruje najbolje rezultate na oba skupa podataka.
+
+Konačno, pseudokôd algoritma za određivanje linija na temelju maksimalnog
+preklapanja znakova prikazan je u isječku.
+\begin{lstlisting}[
+    caption={Pseudokôd algoritma za određivanje linija.},
+    label={lst:algorithm-01},
+    morekeywords={def,for,end,if,else}
+],
+def odrediLinije(nestrukturiraniOcrRezultat)
+  znakovi = sortirajPoX(nestrukturiraniOcrRezultat.sviZnakovi)
+  linije = []
+
+  for znak u znakovi
+    maxPreklapanje = 0
+    linijaSaMaxPreklapanjem = null
+    for linija u linije
+      p = 0
+      tezina = 1
+      for i u [0, min(c1, linija.duljina)]
+        p = max(p, overlap(znak, linija[-i]))
+      end
+      if linijaSaMaxPreklapanjem != null
+        if linijaSaMaxPreklapanjem[-1].x < linija[-1].x
+          tezina = f1(d(linijaSaMaxPreklapanjem[-1], linija[-1]))
+        else
+          tezina = f2(d(linijaSaMaxPreklapanjem[-1], linija[-1]))
+        end
+      end
+      if p > maxPreklapanje * tezina
+        maxPreklapanje = p
+        linijaSaMaxPreklapanjem = linija
+      end
+    end
+
+    if maxPreklapanje > c2
+      linijaSaMaxPreklapanjem.nadodaj( znak )
+    else
+      linije.nadodaj( [ znak ] )
+    end
+  end
+end
+\end{lstlisting}
 
 \chapter{Zaključak}
 
