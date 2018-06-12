@@ -1173,7 +1173,7 @@ znaka.
 
 \begin{lstlisting}[
     caption={
-        Pseudokôd algoritma za rastavljanje riječi temeljen na
+        Pseudokôd algoritma za rastavljanje riječi temeljenog na
         prosječnoj širini znaka.
     },
     label={lst:algorithm-02},
@@ -1237,6 +1237,7 @@ na poziciji $j$, za jedno mjesto udesno.
 
 
 \subsection{Algoritam temeljen na prosječnoj relativnoj udaljenosti}
+\label{subsec:algoritam-temeljen-na-prosjecnoj-relativnoj-udaljenosti}
 Algoritam temeljen na prosječnoj relativnoj udaljenosti temelji se na
 pretpostavci da je udaljenost znaka $A$ s vrijednosti \engl{value} $A_v$
 proporcionalna s prosječnom udaljenosti koju svi znakovi s
@@ -1335,7 +1336,7 @@ određuje na isti način kao i algoritam opisan u pododjeljku
 
 \begin{lstlisting}[
     caption={
-        Pseudokôd algoritma za rastavljanje riječi temeljen na
+        Pseudokôd algoritma za rastavljanje riječi temeljenog na
         prosječnoj relativnoj udaljenosti.
     },
     label={lst:algorithm-03},
@@ -1368,6 +1369,114 @@ def rastaviRijeci(ocrRezultat)
       avgRelDistJ = sumMap[linija[j].value]/cntMap[linja[j].value]
       if udaljenost > avgRelDistI * c2 ||
          udaljenost > avgRelDistJ * c2
+        bjelina = new Znak()
+        bjelina.value = 32
+        bjelina.x = linija[i].x + linija[i].width
+        bjelina.y = linija[i].y
+        bjelina.width = udaljenost
+        bjelina.height = linija[i].height
+        linija.ubaciZnakPrijePozicije(j, znak)
+        i += 2
+        j += 2
+      else
+        i++
+        j++
+      end
+    end
+  end
+
+  return ocrRezultat
+end
+\end{lstlisting}
+
+
+
+
+\subsection{Algoritam temeljen na prosječnoj udaljenosti centara}
+Algoritam temeljen na prosječnoj udaljenosti centara (u daljnjem tekstu:
+\emph{algoritam}) temelji se na pretpostavci da je širina razmaka između riječi
+propocionalna s prosječnom udaljenosti centara između susjednih znakova.
+Skup svih susjeda znaka $A$ definirati ćemo na isti način kao i u algoritmu
+opisanom u odjeljku
+\ref{subsec:algoritam-temeljen-na-prosjecnoj-relativnoj-udaljenosti}. Ponovimo,
+skup svih susjeda znaka $A$ definiramo kao skup svih znakova $B$ koji su
+različiti od $A$, koji se nalaze u istoj liniji kao i $A$, i za koje vrijedi
+izraz:
+
+\begin{equation}
+\hat{d_c}(A, B) < c_1 \texttt{.}
+\end{equation}
+
+Skup svih susjeda znaka $A$ označiti ćemo s $S(A)$. Parametar $c_1$ prvi je
+parametar algoritma za koji je eksperimentalno utvrđeno
+da se najbolji rezultati za sadržaj s računa iz trgovina postižu za vrijednost
+$3{,}0$ i da se najbolji rezultati za sadržaj iz knjiga postižu za vrijednost
+$1{,}5$. Parametar $c_1$ kontrolira koliko najviše dva znaka smiju biti udaljena
+da bi se smatrali susjedima.
+
+Pomoću skupa $S(A)$ definirati ćemo prosječnu udaljenost centara između
+susjednih znakova u liniji $l$:
+
+\begin{equation}
+\overline{d_c}(l) =
+\frac{
+    \mathlarger{\sum}\limits_{A \in l}
+    \Bigg[
+    \mathlarger{\sum}\limits_{B \in S(A)} d_c(A, B)
+    \Bigg]
+}
+{\bigg|\bigcup\limits_{A \in l} S(A)\bigg|}
+\end{equation}
+
+Napokon, algoritam ubacuje znak bjeline između znakova $A$ i $B$ ako je ispunjen
+uvijet:
+
+\begin{equation}
+d_c(A, B) > \overline{d_c}(l) \cdot c_2 \texttt{.}
+\end{equation}
+
+Parametar algoritma $c_2$ kontrolira koliko minimalno udaljenost između znaka
+$A$ i $B$ treba biti veća od prosječne udaljenosti centara između susjednih
+znakova u liniji $l$ da bi znakovi bili razdvojeni. Eksperimentalno je utvrđeno
+da se najbolji rezultati za sadržaj s računa iz trgovina postižu za vrijednost
+$1{,}2$ i da se najbolji rezultati za sadržaj iz knjiga postižu za vrijednost
+$1{,}4$.
+
+Isječak \ref{lst:algorithm-04} prikazuje pseudokôd algoritma temeljenog na
+prosječnoj udaljenosti centara. U liniji $5$ koristi se funkcija $\hat{d_c}$,
+a u liniji $6$ funkcija $d_c$. U liniji $24$ ubacujemo novi znak bjeline prije
+znaka na poziciji $j$ što ima za posljedicu pomicanje svih elemenata desno od
+$j$, uključujući i element na poziciji $j$, za jedno mjesto udesno. Algoritam
+ostale informacije o znaku bjeline određuje na isti način kao i algoritam
+opisan u pododjeljku
+\ref{subsec:algoritam-temeljen-na-prosjecnoj-sirini znaka}.
+
+\begin{lstlisting}[
+    caption={
+        Pseudokôd algoritma za rastavljanje riječi temeljenog na
+        prosječnoj udaljenosti centara.
+    },
+    label={lst:algorithm-04},
+    morekeywords={def,for,end,if,else,return,while,new},
+    firstnumber=1
+],
+def rastaviRijeci(ocrRezultat)
+  for linija u ocrRezultat.linije
+    brojac = 0
+    for i = 1; i < linija.duljina; i++
+      if ndc(linija[i], linija[i-1] < c1
+        avgUdaljenost += dc(linija[i], linija[i-1])
+        brojac++
+      end
+    end
+
+    avgUdaljenost /= brojac
+
+    i = 0
+    j = 1
+    while j < linija.duljina
+      udaljenost = dc(linija[i], linija[j])
+      if udaljenost > avgUdaljenost * c2
         bjelina = new Znak()
         bjelina.value = 32
         bjelina.x = linija[i].x + linija[i].width
