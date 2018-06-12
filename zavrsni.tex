@@ -249,7 +249,7 @@ naknadnu obradu OCR-rezultata.
 \end{figure}
 
 Sustavi za određivanje strukture teksta na temelju OCR-rezultata sastavni su dio OCR-sustava. Određivanje strukture teksta
-podrazumjeva segmentaciju linija i segmentaciju riječi unutar linije. Neke tehnike segmentacije
+podrazumijeva segmentaciju linija i segmentaciju riječi unutar linije. Neke tehnike segmentacije
 znakova i njihove klasifikacije nemaju informaciju o tome kojoj liniji i riječi pojedini znak pripada.
 Prednost takvog pristupa je da takav OCR-sustav možemo koristiti nad slikama koje ne sadrže linije,
 kao što su na primjer slike matematičkih izraza \citep{Jurin:2017:Master}. Nedostatak je što nakon klasifikacije
@@ -257,7 +257,7 @@ moramo razviti sustav koji će znakove naknadno obraditi da bismo odredili struk
 
 Tekst na slici može biti podijeljen na linije ili blokove, a u bloku
 tekst možemo podijeliti na linije. Unutar jedne linije znakove možemo grupirati riječi. Način na
-koji će se odrediti struktura teksta uvelike ovisi o problemu koji riješavamo i kakve rezultate
+koji će se odrediti struktura teksta uvelike ovisi o problemu koji rješavamo i kakve rezultate
 želimo dobiti. Tekst na slici \ref{fig:text-segmentation-01} podijeljen je na linije (plavo), a unutar
 svake linije na riječi (crveno).
 
@@ -322,7 +322,7 @@ Još jedan pristup predložili su Yin i suradnici \citep{DBLP:journals/corr/abs-
 tehniku hijerahijskog grupiranja koji postupno spaja linije koje dijele znakove dok god
 postoje linije koje se mogu spojiti. \citep{DBLP:journals/corr/TianPHLYT16}
 
-Liang i suradnici \citep{liang1996document} predlažu heuristički algoritam za određivanje sturkture
+Liang i suradnici \citep{liang1996document} predlažu heuristički algoritam za određivanje strukture
 teksta. Algoritam radi horizontalnu projekciju (slika \ref{fig:histogram-projection}) omeđujućih pravokutnika na jednu ravninu i pronalazi
 vrhove i doline u histogramu koji prikazuje frekvencije pojavljivanja projektiranih pravokutnika.
 Osim ovog pristupa predložili su još jedan koji spaja dva znaka u jednu cjelinu ako i samo ako
@@ -402,9 +402,9 @@ obradama koje ovise o problemu koji se rješava i u ovom završnom radu o njima
 neće biti riječi. Slika \ref{fig:sustav-01} prikazuje vizualizaciju navedenih
 suradnji.
 
-U skolpu ovog završnog rada potrebno je razviti sustav za određivanje strukture
+U sklopu ovog završnog rada potrebno je razviti sustav za određivanje strukture
 teksta koji će rješavati problem određivanja strukture teksta na računima iz
-trgovine i sadržaja iz knjga. Stup podataka za testiranje
+trgovine i sadržaja iz knjiga. Stup podataka za testiranje
 sustava biti će detaljno objašnjen u odjeljku
 \ref{sec:skup-padataka-za-testiranje}.
 
@@ -420,7 +420,7 @@ Primjer pojednostavljenog (detaljnije u odjeljku
 JSON koji će sustav za određivanje strukture teksta dobiti kao svoj ulaz
 prikazan je isječkom \ref{lst:ocr-result-json-01}. Ulazni nestrukturirani
 OCR-rezultat u formatu JSON uvijek se sastoji od jedne linije u koju
-su smješteni svi segmentirani i klasificirani znakovi u nasumičnim redosljedom.
+su smješteni svi segmentirani i klasificirani znakovi u nasumičnim redoslijedom.
 
 \begin{figure}[htb]
     \centering
@@ -484,7 +484,7 @@ nalazi na prvom mjestu.
 
 Osim grupiranja linija od sustava se očekuje da između dva znaka, gdje smatra da
 završava prethodna i započinje nova riječ, ubaci novi znak bjeline čija je
-vrijednost \engl{value} $32$ dok ostale informacije mogu biti prozivoljne.
+vrijednost \engl{value} $32$ dok ostale informacije mogu biti proizvoljne.
 Dodatan zahtjev je da sustav sve grupirane linije smjesti u jedan blok.
 Detaljnije o blokovima će biti opisano u pododjeljku
 \ref{subsec:ulazne-datoteke}.
@@ -765,7 +765,7 @@ datoteku koja predstavlja strukturirani tekstualni sadržaj u formatu opisanom u
 pododjeljku \ref{subsec:očekivane-izlazne-datoteke} koji se onda
 uspoređuje sa očekivanim izlaznim datotekama dostupnim u skupu podataka za
 testiranje. Isječak \ref{lst:ocr-result-to-txt} prikazuje pseudokôd algoritma
-za ispis OCR-rezultata na standradni izlaz.
+za ispis OCR-rezultata na standardni izlaz.
 
 \begin{lstlisting}[
     caption={Pseudokôd algoritma za ispis OCR-rezultata na standardni izlaz.},
@@ -1033,7 +1033,7 @@ f_2(x) &= 1 + \frac{c_4 \cdot x}{1 + c_4 \cdot x}
     \label{fig:function-01}
 \end{figure}
 
-Ideja je da koristimo navedene funckije $f_1$ i $f_2$ kako bismo linijama
+Ideja je da koristimo navedene funkcije $f_1$ i $f_2$ kako bismo linijama
 olakšali odnosno otežali postizanje preklapanja u ovisnosti o udaljenosti između
 njihovih zadnjih znakova. Recimo da u smo u postupku traženja maksimalnog
 preklapanja u jednom trenutku ostvarili maksimalno preklapanje s linijom $l$
@@ -1148,7 +1148,7 @@ znakovi grupirani u linije u prethodnom koraku opisanom u odjeljku
 \ref{sec:algoritmi-za-odredivanje-linija}. Zadaća algoritama za rastavljanje
 riječi je da između znakova, za koje smatra da su završetak prethodne odnosno
 početak iduće riječi, ubaci znak bjeline čija će vrijednost \engl{value} biti
-$32$, a ostale informacije mogu biti proizvljne.
+$32$, a ostale informacije mogu biti proizvoljne.
 
 U nastavku ovog odjeljka opisati ćemo tri algoritma za rastavljanje riječi:
 \begin{itemize}
@@ -1164,9 +1164,9 @@ U nastavku ovog odjeljka opisati ćemo tri algoritma za rastavljanje riječi:
 \subsection{Algoritam temeljen na prosječnoj širini znaka}
 \label{subsec:algoritam-temeljen-na-prosjecnoj-sirini znaka}
 Algoritam temeljen na prosječnoj širini znaka (u daljnjem tekstu: \emph
-{algoritam}) najjednostaviji je od svih algoritama koje ćemo u ovom odjeljku
+{algoritam}) najjednostavniji je od svih algoritama koje ćemo u ovom odjeljku
 opisati. Algoritam se temelji na pretpostavci da je širina razmaka između
-riječi propocionalna sa prosječnom širinom znakova u promatranoj liniji.
+riječi proporcionalna sa prosječnom širinom znakova u promatranoj liniji.
 Označimo prosječnu širinu znaka u liniji $l$ sa $\overline{w_l}$:
 
 \begin{equation}
@@ -1356,7 +1356,7 @@ se mape u kojima će se čuvati informacije u ukupnoj udaljenosti susjednih
 znakova i o tome koliko susjednih znakova je uzeto u obzir za svaku Unicode
 vrijednost. U liniji $7$ koristi se funkcija $d_c$, a u liniji $8$ funkcija
 $\hat{d_c}$. U linijama $23$ i $24$ koriste se navedene mape s kojima se računa
-prosječna udaljnost koju Unicode vrijednost ostvaruje sa susjednim znakovima,
+prosječna udaljenost koju Unicode vrijednost ostvaruje sa susjednim znakovima,
 zatim se u uvjetu u liniji $25$ detektira razmak. U liniji $33$
 ubacujemo novi znak bjeline prije znaka na poziciji $j$ što ima za posljedicu
 pomicanje svih elemenata desno od $j$, uključujući i element na poziciji $j$,
@@ -1443,7 +1443,7 @@ mape ukupna složenost algoritma biti će $\mathcal{O}(n \cdot \log(n))$.
 \subsection{Algoritam temeljen na prosječnoj udaljenosti centara}
 Algoritam temeljen na prosječnoj udaljenosti centara (u daljnjem tekstu:
 \emph{algoritam}) temelji se na pretpostavci da je širina razmaka između riječi
-propocionalna s prosječnom udaljenosti centara između susjednih znakova.
+proporcionalna s prosječnom udaljenosti centara između susjednih znakova.
 Skup svih susjeda znaka $A$ definirati ćemo na isti način kao i u algoritmu
 opisanom u odjeljku
 \ref{subsec:algoritam-temeljen-na-prosjecnoj-relativnoj-udaljenosti}. Ponovimo,
