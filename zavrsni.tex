@@ -805,7 +805,7 @@ u odjeljku.
 \chapter{Algoritmi za određivanje strukture teksta}
 Sustav za određivanje strukture teksta podijeljen je u dva podsustava:
 \textbf{sustav za određivanje linija} i \textbf{sustav za rastavljanje riječi}.
-Slika \ref{fig:sustav-02} prikazuje navedene komponente sustava i njihovu
+Slika \ref{fig:sustav-03} prikazuje navedene komponente sustava i njihovu
 suradnju. Ulaz u sustav za određivanje linija je nestrukturirani OCR-rezultat
 dobiven od OCR-sustava koji je ujedno i ulaz u sustav za određivanje strukture
 teksta. Izlaz iz sustava za određivanje linija je OCR-rezultat
@@ -827,19 +827,18 @@ za određivanje strukture teksta.
 U formalnoj definiciji i analizi algoritama koristit ćemo sljedeće oznake:
 \begin{itemize}
     \item[$\bullet$] $C$ - označava skup svih znakova u OCR-rezultatu,
-    \item[$\bullet$] $A$ i $B$ - označavaju pojedini znak u OCR-rezultatu koji ima svoju širinu $A_w$, visinu $A_h$, horizontalnu $x$ poziciju lijevog
-    gornjeg kuta $A_x$, vertikalnu $y$ poziciju lijevog gornjeg kuta $A_y$ i
+    \item[$\bullet$] $A$ i $B$ - označavaju pojedini znak u OCR-rezultatu koji ima svoju: širinu $A_w$, visinu $A_h$, horizontalnu poziciju lijevog
+    gornjeg kuta $A_x$, vertikalnu poziciju lijevog gornjeg kuta $A_y$ i
     Unicode vrijednost $A_v$,
     \item[$\bullet$] $v$ - označava Unicode vrijednost,
     \item[$\bullet$] $L$ - označava skup svih linija u OCR-rezultatu,
     \item[$\bullet$] $l$ i $k$ - označavaju pojedinu liniju u OCR-rezultatu,
-    \item[$\bullet$] $l_{-i}$ - označava $i$-ti znak od kraja u liniji $l$, pa
-    tako npr.\ $l_{-1}$ označava zadnji znak u liniji $l$,
-    \item[$\bullet$] $l_i$ - označava $i$-ti znak od početka u liniji $l$, pa
-    tako npr.\ $l_1$ označava prvi znak u liniji $l$.
+    \item[$\bullet$] $l_{-i}$ - označava $i$-ti znak od kraja linije
+    (npr.\ $l_{-1}$ označava zadnji znak u liniji),
+    \item[$\bullet$] $l_i$ - označava $i$-ti znak od početka linije (npr.\ $l_1$ označava prvi znak u liniji).
 \end{itemize}
 
-Linije također smatramo skupovima pa će $|l|$ označavati duljinu linije $l$,
+Linije su skupovi pa će $|l|$ označavati duljinu linije $l$,
 a za znak $A$ reći ćemo da pripada liniji $l$ ako vrijedi $A \in l$.
 
 Za dva znaka $A$ i $B$ kažemo da su jednaki ako i samo ako vrijedi:
@@ -900,11 +899,13 @@ sustav za određivanje strukture teksta. Izlaz iz algoritma je OCR-rezultat u
 kojemu su znakovi grupirani u linije, sortirani s lijeva na desno i u kojemu
 su linije sortirane tako da se najviša linija na slici nalazi na prvom mjestu.
 
+U ovom odjeljku opisat ćemo jedan algoritam za određivanje linija temeljen
+na maksimalnom preklapanju znakova.
 
 
 
 \subsection{Algoritam temeljen na maksimalnom preklapanju znakova}
-Algoritam za određivanje linija na temelju maksimalnog preklapanja znakova
+Algoritam za određivanje linija temeljen na maksimalnom preklapanja znakova
 (u daljnjem tekstu: \emph{algoritam}) temelji se na pretpostavci da dva susjedna
 znaka koja se nalaze u istoj liniji ostvaruju maksimalno vertikalno preklapanje.
 Vertikalno preklapanje \textit{overlap} dva znaka $A$ i $B$ definiramo izrazom:
@@ -926,10 +927,10 @@ pripadne onoj liniji s kojom ostvari maksimalno preklapanje:
 l_{max} = \argmax_{l \in L}\left\{\textit{overlap}(A, l_{-1})\right\}
 \end{equation}
 
-Ako je znak s nekom linijom ostvario preklapanje u vrijednosti $0$ tada on
-postaje početak nove linije i u skup $L$ dodaje se ta nova linija. Na ovaj
-način algoritam zapravo konstruira linije i skup $L$ koji je na početku
-prazan.
+Ako je promatrani znak s nekom linijom ostvario preklapanje vrijednosti $0$
+u skup $L$ dodaje se nova linija i promatrani znak postaje početak te linije.
+Na ovaj način algoritam konstruira linije i skup svih linija $L$ koji je na
+početku prazan.
 
 
 \subsubsection{Rješavanje problema valovitih linija}
@@ -944,12 +945,14 @@ l_{max} = \argmax_{l \in L,\ i \in [1, \min(|l|, c_1)]}\left\{\textit{overlap}(A
 Za razliku od izraza \ref{eq:overlap-01} koji uzima u obzir samo zadnji znak u
 svakoj liniji, izraz \ref{eq:overlap-02} uzet će u obzir zadnjih
 $\min(|l|, c_1)$
-znakova u svakoj liniji, gdje $c_1$ predstavlja \textbf{parametar algoritma}. Eksperimentalno je utvrđeno da vrijednost parametra $c_1 = 1$ ostvaruje najbolje rezultate na sadržaju s računima iz trgovine, a da vrijednost parametra $c_1 = 2$ ostvaruje najbolje rezultate na sadržaju iz knjiga.
+znakova u svakoj liniji, gdje $c_1$ predstavlja \textbf{parametar algoritma}. Eksperimentalno je utvrđeno da se za vrijednost $1$ parametra $c_1$ ostvaruju najbolji rezultati za sadržaj s računa iz trgovine i da se za vrijednost $2$ parametra $c_1$ ostvaruju najbolji rezultati za sadržaj iz knjiga.
 
 Slika \ref{fig:aligner-01} prikazuje kako znak \lstinline{=} na desnoj strani
 crvenog pravokutnika ostvaruje maksimalno preklapanje sa znakom \lstinline{=}
 na lijevoj strani crvenog pravokutnika koji nije zadnji znak u liniji u tom
-trenutku.
+trenutku. Ovakvi i još mnogi drugi primjeri opravdavaju uvođenje parametra
+$c_1$.
+
 \begin{figure}[htb]
     \centering
     \captionsetup{justification=centering,margin=2cm}
@@ -985,15 +988,15 @@ znak ostvaruje maksimalno preklapanje trebamo provjeriti zadovoljava li iznos
 tog preklapanja uvijet naveden izrazom \ref{eq:overlap-03}. Uvodimo novi
 parametar algoritma $c_2$ koji predstavlja donju granicu preklapanja koju znak
 mora ostvariti s linijom da bi joj se pripojio. Eksperimentalno je utvrđeno da
-vrijednost parametra $c_2 = 0,13$ ostvaruje najbolje rezultate na sadržaju s
-računima iz trgovine, a da vrijednost parametra $c_2 = 0,05$ ostvaruje najbolje
-rezultate na sadržaju iz knjiga.
+se za vrijednost $0{,}13$ parametra $c_2$ ostvaruju najbolji rezultati za
+sadržaj s računa iz trgovine i da se za vrijednost $0{,}05$ parametra $c_2$
+ostvaruju najbolji rezultati za sadržaj iz knjiga.
 
 \begin{figure}[htb]
     \centering
     \captionsetup{justification=centering,margin=2cm}
     \includegraphics[width=\textwidth]{images/overlap-02.png}
-    \caption{Lažno pozitivno preklapanje}
+    \caption{Lažno pozitivno preklapanje.}
     \label{fig:overlap-02}
 \end{figure}
 
@@ -1058,16 +1061,14 @@ otežati postizanje novog maksimalnog preklapanja čak i ako vrijedi $p_k > p_l$
 \end{equation}
 
 Funkcija $f_2$ će liniji $k$ otežati tim više što su zadnji znakovi linija
-$l$ i $k$ udaljeniji. Eksperimentalno je utvrđeno da vrijednosti parametra
-$c_3 = c_4 = 0{,}13$ ostvaruje najbolje rezultate na sadržaju s računima iz
-trgovine i na sadržaju iz knjiga.
+$l$ i $k$ udaljeniji. Eksperimentalno je utvrđeno da se za vrijednosti parametra
+$c_3 = c_4 = 0{,}13$ ostvaruju najbolji rezultati za sadržaj s računa iz
+trgovine i za sadržaj iz knjiga.
 
 Nakon što smo svaki znak smjestili u odgovarajuću liniju, linije je potrebno
 sortirati uzlazno po $y$ vrijednosti prvih znakova linije. Naime, u početnom
 koraku sortiranja znakova po $x$ vrijednosti moguće je da prvi znak
-u sortiranim znakovima započinje neku liniju u sadržaju koja nije prva.
-Budući da će taj znak u našem algoritmu biti detektiran kao početak nove linije
-koju ćemo zatim smjesitit na početak, a ne na mjesto kojem ta linija pripada.
+u sortiranim znakovima započinje neku liniju u sadržaju koja nije prva u sadržaju. Taj znak će u našem algoritmu biti detektiran kao početak nove linije koju ćemo zatim ubaciti u skup svih linija $L$.
 
 Konačno, pseudokôd algoritma za određivanje linija na temelju maksimalnog
 preklapanja znakova prikazan je u isječku. U navedenom isječku funkcije $f_1$ i
@@ -1120,6 +1121,21 @@ end
 \end{lstlisting}
 
 
+\subsubsection{Vremenska složenost algoritma}
+U petlji koja počinje linijom $6$ prolazimo kroz sve znakove koji provjeravaju
+s kojom linijom ostvaruju maksimalno preklapanje. U najgorem slučaju trebamo
+svaki znak smjestiti u zasebnu liniju što znači da će zadnji ($n$-ti) znak provjeriti preklapanje sa svakom linijom (odnosno sa svakim znakom jer je svaki znak u zasebnoj liniji) što nas dovodi do složenosti
+$\mathcal{O}(n^2)$, gdje je $n$ ukupan broj znakova. Parametar $c_1$ na prvi
+pogled utječe na složenost, ali jednostavnom analizom možemo se uvjeriti da to
+nije slučaj. Recimo da parametar $c_1$ postavimo na vrijednost
+puno veću od ukupnog broja znakova $n$. Zadnji znak u petlji s početkom
+linije $6$ treba provjeriti preklapanje sa svakom linijom. Dodatno, zbog petlje
+koja počinje linijom $11$ promatrani znak mora izmjeriti preklapanje sa svakim
+znakom u liniji što nas opet dovodi do složenosti $\mathcal{O}(n^2)$.
+Budući da sortiranja u linijama $2$ i $36$ imaju složenost
+$\mathcal{O}(n \cdot \log(n))$ one ne utječu na ukupnu složenost algoritma.
+
+
 
 
 
@@ -1144,13 +1160,14 @@ U nastavku ovog odjeljka opisati ćemo tri algoritma za rastavljanje riječi:
 
 
 
+
 \subsection{Algoritam temeljen na prosječnoj širini znaka}
 \label{subsec:algoritam-temeljen-na-prosjecnoj-sirini znaka}
-Algoritam temeljen na prosječnoj širini znaka najjednostaviji je od svih
-algoritama koje ćemo u ovom odjeljku opisati. Algoritam se temelji na
-pretpostavci da je širina razmaka između riječi propocionalna sa prosječnom
-širinom znakova u promatranoj liniji. Označimo prosječnu širinu znaka u liniji
-$l$ sa $\overline{w_l}$:
+Algoritam temeljen na prosječnoj širini znaka (u daljnjem tekstu: \emph
+{algoritam}) najjednostaviji je od svih algoritama koje ćemo u ovom odjeljku
+opisati. Algoritam se temelji na pretpostavci da je širina razmaka između
+riječi propocionalna sa prosječnom širinom znakova u promatranoj liniji.
+Označimo prosječnu širinu znaka u liniji $l$ sa $\overline{w_l}$:
 
 \begin{equation}
 \overline{w_l} = \frac{\mathlarger{\sum}\limits_{A \in l} A_w}{|l|}
@@ -1234,14 +1251,27 @@ ima za posljedicu pomicanje svih elemenata desno od $j$, uključujući i element
 na poziciji $j$, za jedno mjesto udesno.
 
 
+\subsubsection{Vremenska složenost algoritma}
+Ako su u najgorem slučaju svi znakovi smješteni u istu liniju vremenska
+složenost ovog algoritma biti će $\mathcal{O}(n)$, gdje je $n$ ukupan broj
+znakova. U analizi vremenske složenosti nije uzeta u obzir vremenska složenost
+ubacivanja elementa u liniji $20$ zato jer postoje
+strukture podataka (npr.\ povezana lista) nad kojima je moguće izvesti operaciju
+ubacivanja u konstantnoj složenosti.
+
+
+
+
+
+
 
 
 \subsection{Algoritam temeljen na prosječnoj relativnoj udaljenosti}
 \label{subsec:algoritam-temeljen-na-prosjecnoj-relativnoj-udaljenosti}
-Algoritam temeljen na prosječnoj relativnoj udaljenosti temelji se na
-pretpostavci da je udaljenost znaka $A$ s vrijednosti \engl{value} $A_v$
-proporcionalna s prosječnom udaljenosti koju svi znakovi s
-vrijednosti $A_v$ ostvaruju sa svojim susjedima.
+Algoritam temeljen na prosječnoj relativnoj udaljenosti (u daljnjem tekstu:
+\emph{algoritam}) temelji se na pretpostavci da je udaljenost znaka $A$ s
+vrijednosti \engl{value} $A_v$ proporcionalna s prosječnom udaljenosti koju svi
+znakovi s vrijednosti $A_v$ ostvaruju sa svojim susjedima.
 
 Skup svih susjeda znaka $A$ definiramo kao skup svih znakova $B$ koji su
 različiti od $A$, koji se nalaze u istoj liniji kao i $A$, i za koje vrijedi:
@@ -1258,7 +1288,8 @@ $1{,}5$. Parametar $c_1$ kontrolira koliko najviše dva znaka smiju biti udaljen
 da bi se smatrali susjedima.
 
 Skup svih susjeda vrijednosti $v$ definiramo kao uniju svih skupova susjeda
-znakova $A$ za koje vrijedi $A_v = v$. Formalno, skup svih susjeda vrijednosti $v$ definiramo kao:
+znakova $A$ za koje vrijedi $A_v = v$. Formalno, skup svih susjeda vrijednosti
+$v$ definiramo kao:
 
 \begin{equation}
 s(v) = \bigcup\limits_{A \in C}\left\{S(A) \vert A_v = v\right\}
@@ -1312,7 +1343,7 @@ udaljenosti $\overline{d_c}$.
 Ovaj algoritam pogodan je za održavanje veze između dva znaka koje bi
 algoritam opisan u pododjeljku
 \ref{subsec:algoritam-temeljen-na-prosjecnoj-sirini znaka} razdvojio znakom
-bjeline zbog krive procjene. Cijela ideja ovog algoritma temelji se na
+bjeline zbog krive procjene. Ideja ovog algoritma temelji se na
 pretpostavci da su znakovi koji imaju istu vrijednost u prosjeku jednako
 udaljeni od znakova s kojima su neposredni susjedi. Ovaj algoritam se u ovoj
 inačici može koristiti kao dobar pokazatelj da između neka dva znaka zapravo
@@ -1324,7 +1355,7 @@ prosječnoj relativnoj udaljenosti znakova. U linijama $2$ i $3$ inicijaliziraju
 se mape u kojima će se čuvati informacije u ukupnoj udaljenosti susjednih
 znakova i o tome koliko susjednih znakova je uzeto u obzir za svaku Unicode
 vrijednost. U liniji $7$ koristi se funkcija $d_c$, a u liniji $8$ funkcija
-$\hat{d_c}$. U linijama $23$ i $24$ koriste se navedene mape kojima se računa
+$\hat{d_c}$. U linijama $23$ i $24$ koriste se navedene mape s kojima se računa
 prosječna udaljnost koju Unicode vrijednost ostvaruje sa susjednim znakovima,
 zatim se u uvjetu u liniji $25$ detektira razmak. U liniji $33$
 ubacujemo novi znak bjeline prije znaka na poziciji $j$ što ima za posljedicu
@@ -1332,7 +1363,6 @@ pomicanje svih elemenata desno od $j$, uključujući i element na poziciji $j$,
 za jedno mjesto udesno. Algoritam ostale informacije o znaku bjeline
 određuje na isti način kao i algoritam opisan u pododjeljku
 \ref{subsec:algoritam-temeljen-na-prosjecnoj-sirini znaka}.
-
 
 \begin{lstlisting}[
     caption={
@@ -1388,6 +1418,24 @@ def rastaviRijeci(ocrRezultat)
   return ocrRezultat
 end
 \end{lstlisting}
+
+
+\subsubsection{Vremenska složenost algoritma}
+Ako su u najgorem slučaju svi znakovi smješteni u istu liniju vremenska
+složenost ovog algoritma biti će $\mathcal{O}(n)$, gdje je $n$ ukupan broj
+znakova. U analizi vremenske složenosti nije uzeta u obzir vremenska složenost
+ubacivanja elementa u liniji $33$ zato jer postoje strukture podataka
+(npr.\ povezana lista) nad kojima je moguće izvesti operaciju ubacivanja u
+konstantnoj složenosti. U analizi složenosti isto tako nije uzeta u obzir
+vremenska složenost ubacivanja i dohvaćanja elemenata iz mape zato jer bismo
+takvu mapu mogli ostvariti jednim nizom u kojem bi pozicija ključa bila jednaka
+vrijednosti ključa. Korištenje takvog niza omogućilo bi nam da operacije
+ubacivanja i dohvaćanja radimo u konstantnom vremenu. Dodatno, korištenje
+takvog niza bilo bi memorijski skupo jer bismo u najgorem slučaju trebali imati
+mjesta za svaku Unicode vrijednost. Ako bismo htjeli izbjeći takav niz možemo
+koristiti mapu s vremenskom složenosti $\mathcal{O}(\log(n))$ za operacije
+ubacivanja i dohvaćanja, gdje je $n$ ukupan broj znakova. Korištenjem takve
+mape ukupna složenost algoritma biti će $\mathcal{O}(n \cdot \log(n))$.
 
 
 
@@ -1496,6 +1544,11 @@ def rastaviRijeci(ocrRezultat)
   return ocrRezultat
 end
 \end{lstlisting}
+
+
+\subsubsection{Vremenska složenost algoritma}
+Vremenska složenost ovog algoritma za najgori slučaj je $\mathcal{O}(n)$ budući
+da se svaki znak u liniji posjeti samo jednom. U analizi vremenske složenosti nije uzeta u obzir vremenska složenost ubacivanja elementa u liniji $24$ zato jer postoje strukture podataka (npr.\ povezana lista) nad kojima je moguće izvesti operaciju ubacivanja u konstantnoj složenosti.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
