@@ -6,6 +6,7 @@
 \usepackage{algorithmic}
 \usepackage{algorithm}
 \usepackage{amsmath}
+\usepackage{relsize}
 
 \renewcommand{\lstlistingname}{Isječak}
 \DeclareMathOperator*{\argmax}{arg\,max}
@@ -67,8 +68,8 @@ da se slike teksta pretvore u format koji računalo razumije. \citep{DBLP:journa
 
 Osim tiskanog teksta, OCR-sustavi se koriste i u prepoznavanju znakova rukom pisanog teksta.
 Prepoznavanje znakova rukom pisanog teksta je teži problem od prepoznavanja tiskanog teksta \citep{DBLP:journals/corr/abs-1710-05703} zato jer
-se oblik znakova i njihov način pisanja razlikuje kod svake osobe (npr. rukopis odrasle osobe potpuno je drugačiji od
-rukopisa djeteta).
+se oblik znakova i njihov način pisanja razlikuje kod svake osobe (npr.\
+rukopis odrasle osobe potpuno je drugačiji od rukopisa djeteta).
 OCR-sustave za detekciju rukom pisanih znakova možemo podijeliti na dvije potkategorije:
 \emph{on-line} i \emph{off-line}. \emph{On-line} OCR-sustavi detektiraju znakove dok
 ih korisnici unose i to im omogućuje praćenje parametara poput: brzine pisanja, broja napravljenih poteza,
@@ -823,9 +824,53 @@ za određivanje strukture teksta.
     \label{fig:sustav-03}
 \end{figure}
 
-U nastavku ovog poglavlja objasniti ćemo implementirane algoritme za određivanje
-linija i za rastavljanje riječi, a u poglavlju bit će opisani rezultati i
-kratka analiza algoritama.
+U formalnoj definiciji i analizi algoritama koristit ćemo sljedeće oznake:
+\begin{itemize}
+    \item[$\bullet$] $C$ - označava skup svih znakova u OCR-rezultatu,
+    \item[$\bullet$] $A$ i $B$ - označavaju pojedini znak u OCR-rezultatu koji ima svoju širinu $A_w$, visinu $A_h$, horizontalnu $x$ poziciju lijevog
+    gornjeg kuta $A_x$, vertikalnu $y$ poziciju lijevog gornjeg kuta $A_y$ i
+    Unicode vrijednost $A_v$,
+    \item[$\bullet$] $v$ - označava Unicode vrijednost,
+    \item[$\bullet$] $L$ - označava skup svih linija u OCR-rezultatu,
+    \item[$\bullet$] $l$ i $k$ - označavaju pojedinu liniju u OCR-rezultatu,
+    \item[$\bullet$] $l_{-i}$ - označava $i$-ti znak od kraja u liniji $l$, pa
+    tako npr.\ $l_{-1}$ označava zadnji znak u liniji $l$,
+    \item[$\bullet$] $l_i$ - označava $i$-ti znak od početka u liniji $l$, pa
+    tako npr.\ $l_1$ označava prvi znak u liniji $l$.
+\end{itemize}
+
+Linije također smatramo skupovima pa će $|l|$ označavati duljinu linije $l$,
+a za znak $A$ reći ćemo da pripada liniji $l$ ako vrijedi $A \in l$.
+
+Za dva znaka $A$ i $B$ kažemo da su jednaki ako i samo ako vrijedi:
+\[
+A = B \iff
+A_w = B_w \land A_h = B_h \land A_x = B_x \land A_y = B_y \land A_v = B_v
+\]
+
+Definirajmo unaprijed nekoliko horizontalnih udaljenosti između dva znaka $A$ i
+$B$:
+\begin{align}
+d(A, B) &= |\max(A_x, B_x) - \min(A_x + A_w, B_x + B_w)| \\
+d_l(A, B) &= |A_x - B_x| \\
+d_c(A, B) &= |A_x + \frac{A_w}{2} - (B_x + \frac{B_w}{2})| \\
+\hat{d}(A, B) &= \frac{d(A, B)}{\min(A_w, B_w)} \\
+\hat{d_l}(A, B) &= \frac{d_l(A, B)}{\min(A_w, B_w)} \\
+\hat{d_c}(A, B) &= \frac{d_c(A, B)}{\min(A_w, B_w)}
+\end{align}
+
+Udaljenost $d$ predstavlja udaljenost između desnog ruba lijevog znaka i
+lijevog ruba desnog znaka. Udaljenost $d_l$ predstavlja udaljenost lijevih
+rubova znakova, a udaljenost $d_c$ predstavlja udaljenost centara znakova.
+Udaljenosti $\hat{d}$, $\hat{d_l}$ i $\hat{d_c}$ predstavljaju normalizirane
+udaljenosti $d$, $d_l$ i $d_c$.
+
+S ovako definiranim oznakama možemo npr.\ definirati skup svih znakova koji
+imaju Unicode vrijednost jednaku $v$:
+\[ S(v) = \left\{A \vert A \in C, A_v = v\right\} \]
+
+U nastavku ovog poglavlja koristiti ćemo navedene oznake u formalnoj definiciji
+algoritama za određivanje linija i algoritama za rastavljanje riječi.
 
 
 
@@ -866,8 +911,8 @@ Vertikalno preklapanje \textit{overlap} dva znaka $A$ i $B$ definiramo izrazom:
 
 \begin{equation}
 \label{eq:overlap}
-\textit{overlap}(A, B) \vcentcolon= \frac{\max(0, \min( A_y + A_h, B_y + B_h ) - \max( A_y, B_y ))}
-                                {\min(A_h, B_h)}
+\textit{overlap}(A, B) =
+\frac{\max(0, \min( A_y + A_h, B_y + B_h ) - \max( A_y, B_y ))}{\min(A_h, B_h)}
 \end{equation}
 
 Na početku svog rada algoritam uzlazno sortira sve znakove po horizontalnoj $x$
@@ -881,10 +926,10 @@ pripadne onoj liniji s kojom ostvari maksimalno preklapanje:
 l_{max} = \argmax_{l \in L}\left\{\textit{overlap}(A, l_{-1})\right\}
 \end{equation}
 
-Skup svih dosad grupiranih linija označen je sa $L$,
-a $l_{-1}$ označava zadnji znak u promatranoj liniji. Ako je znak s nekom
-linijom ostvario preklapanje vrijednosti $0$ tada on postaje početak nove
-linije i tako se u skup $L$ dodaje nova linija.
+Ako je znak s nekom linijom ostvario preklapanje u vrijednosti $0$ tada on
+postaje početak nove linije i u skup $L$ dodaje se ta nova linija. Na ovaj
+način algoritam zapravo konstruira linije i skup $L$ koji je na početku
+prazan.
 
 
 \subsubsection{Rješavanje problema valovitih linija}
@@ -899,11 +944,7 @@ l_{max} = \argmax_{l \in L,\ i \in [1, \min(|l|, c_1)]}\left\{\textit{overlap}(A
 Za razliku od izraza \ref{eq:overlap-01} koji uzima u obzir samo zadnji znak u
 svakoj liniji, izraz \ref{eq:overlap-02} uzet će u obzir zadnjih
 $\min(|l|, c_1)$
-znakova u svakoj liniji, gdje $|l|$ predstavlja duljinu linije, a $c_1$
-predstavlja \textbf{parametar algoritma}. Eksperimentalno je utvrđeno da
-vrijednost parametra $c_1 = 1$ ostvaruje najbolje rezultate na sadržaju s
-računima iz trgovine, a da vrijednost parametra $c_1 = 2$ ostvaruje najbolje
-rezultate na sadržaju iz knjiga.
+znakova u svakoj liniji, gdje $c_1$ predstavlja \textbf{parametar algoritma}. Eksperimentalno je utvrđeno da vrijednost parametra $c_1 = 1$ ostvaruje najbolje rezultate na sadržaju s računima iz trgovine, a da vrijednost parametra $c_1 = 2$ ostvaruje najbolje rezultate na sadržaju iz knjiga.
 
 Slika \ref{fig:aligner-01} prikazuje kako znak \lstinline{=} na desnoj strani
 crvenog pravokutnika ostvaruje maksimalno preklapanje sa znakom \lstinline{=}
@@ -967,15 +1008,10 @@ prednost onoj liniji čiji je zadnji znak bliži znaku kojeg promatramo. Tako ć
 u primjeru sa slike \ref{fig:overlap-02} znak \lstinline{5} pripasti drugoj
 liniji zato jer je njezin zadnji znak bliži znaku \lstinline{5} nego znak
 \lstinline{t} iz prve linije i zato jer s zadnjim znakom u drugoj liniji ipak
-postiže nezanemarivo preklapanje. Da bismo uspješno rješili navedeni problem
-uvest ćemo dvije funkcije i dva dodatna parametra algoritma. Definirajmo prvo
-normaliziranu udaljenost između dva znaka:
+postiže nezanemarivo preklapanje.
 
-\begin{equation}
-d(A, B) = \frac{|A_x - B_x|}{\min(A_w, B_w)}
-\end{equation}
-
-Zatim ćemo definirati navedene dvije funkcije (slika \ref{fig:function-01})
+Za rješavanje ovog problema definirat ćemo dvije funkcije (slika
+\ref{fig:function-01})
 koje koriste dva nova parametra algoritma $c_3$ i $c_4$:
 
 \begin{align}
@@ -997,47 +1033,46 @@ f_2(x) &= 1 + \frac{c_4 \cdot x}{1 + c_4 \cdot x}
 Ideja je da koristimo navedene funckije $f_1$ i $f_2$ kako bismo linijama
 olakšali odnosno otežali postizanje preklapanja u ovisnosti o udaljenosti između
 njihovih zadnjih znakova. Recimo da u smo u postupku traženja maksimalnog
-preklapanja u jednom trenutku ostvarili maksimalno preklapanje s linijom $l_1$
-iznosa $p_1$. S idućom linijom $l_2$ izmjerimo preklapanje $p_2$. Da bi linija
-$l_2$ postigla novo maksimalno preklapanje sa promatranim znakom mora vrijediti
-$p_2$ > $p_1$. Međutim, recimo da smo uočili da je zadnji znak linije $l_2$
-bliži promatranom znaku nego zadnji znak linije $l_1$. Koristeći navedenu
-opservaciju možemo liniji $l_2$ olakšati postizanje novog maksimalnog
-preklapanja tako da ostvarno preklapanje linije $l_1$ umanjimo za neki iznos.
-Budući da je zadnji znak linije $l_2$ bliži promatranom znaku novi uvijet koji
-linija $l_2$ mora zadovoljiti da bi ju smatrali novim maksimalnim preklapanjem
+preklapanja u jednom trenutku ostvarili maksimalno preklapanje s linijom $l$
+iznosa $p_l$. S idućom linijom $k$ izmjerimo preklapanje $p_k$. Da bi linija
+$k$ postigla novo maksimalno preklapanje sa promatranim znakom mora vrijediti
+$p_k > p_l$. Međutim, recimo da smo uočili da je zadnji znak linije $k$
+bliži promatranom znaku nego zadnji znak linije $l$. Koristeći navedenu
+opservaciju možemo liniji $k$ olakšati postizanje novog maksimalnog
+preklapanja tako da ostvareno preklapanje linije $l$ umanjimo za neki iznos.
+Budući da je zadnji znak linije $k$ bliži promatranom znaku novi uvijet koji
+linija $k$ mora zadovoljiti da bi ju smatrali novim maksimalnim preklapanjem
 glasi:
 
 \begin{equation}
-p_2 > p_1 \cdot f_1(d(l_{1_{-1}},l_{2_{-1}}))
+p_k > p_l \cdot f_1(\hat{d_l}(l_{-1},k_{-1}))
 \end{equation}
 
-Funkcija $f_1$ će liniji $l_2$ pomoći tim više što su zadnji znakovi linija
-$l_1$ i $l_2$ udaljeniji. Da je zadnji znak linije $l_2$ bio dalje od
-promatranog znaka nego zadnji znak linije $l_1$ onda bismo liniji $l_2$ trebali
-otežati postizanje novog maksimalnog preklapanja čak i ako vrijedi $p_2$ >
-$p_1$. U tom slučaju novi uvijet za liniju $l_2$ glasi:
+Funkcija $f_1$ će liniji $k$ pomoći tim više što su zadnji znakovi linija
+$l$ i $k$ udaljeniji. Da je zadnji znak linije $k$ bio dalje od
+promatranog znaka nego zadnji znak linije $l$ onda bismo liniji $k$ trebali
+otežati postizanje novog maksimalnog preklapanja čak i ako vrijedi $p_k > p_l$. U tom slučaju novi uvijet za liniju $k$ glasi:
 
 \begin{equation}
-    p_2 > p_1 \cdot f_2(d(l_{1_{-1}},l_{2_{-1}}))
+    p_k > p_l \cdot f_2(\hat{d_l}(l_{-1},k_{-1}))
 \end{equation}
 
-Funkcija $f_2$ će liniji $l_2$ otežati tim više što su zadnji znakovi linija
-$l_1$ i $l_2$ udaljeniji. Eksperimentalno je utvrđeno da vrijednosti parametra
+Funkcija $f_2$ će liniji $k$ otežati tim više što su zadnji znakovi linija
+$l$ i $k$ udaljeniji. Eksperimentalno je utvrđeno da vrijednosti parametra
 $c_3 = c_4 = 0{,}13$ ostvaruje najbolje rezultate na sadržaju s računima iz
 trgovine i na sadržaju iz knjiga.
 
 Nakon što smo svaki znak smjestili u odgovarajuću liniju, linije je potrebno
 sortirati uzlazno po $y$ vrijednosti prvih znakova linije. Naime, u početnom
-koraku sortiranja znakova po $x$ vrijednosti moguće je na primjer da prvi znak
+koraku sortiranja znakova po $x$ vrijednosti moguće je da prvi znak
 u sortiranim znakovima započinje neku liniju u sadržaju koja nije prva.
 Budući da će taj znak u našem algoritmu biti detektiran kao početak nove linije
-to će liniju koju taj znak započinje smjestiti na početak, a ne na mjesto kojem
-ta linija pripada.
+koju ćemo zatim smjesitit na početak, a ne na mjesto kojem ta linija pripada.
 
 Konačno, pseudokôd algoritma za određivanje linija na temelju maksimalnog
 preklapanja znakova prikazan je u isječku. U navedenom isječku funkcije $f_1$ i
-$f_2$ implicitno koriste vrijednosti parametara $c3 = c4 = 0{,}13$.
+$f_2$ implicitno koriste vrijednost $0{,}13$ za parametare $c_3$ i $c_4$.
+U pseudokôdu funkcija \lstinline{dln} označava funkciju udaljenosti $\hat{d_l}$.
 
 \begin{lstlisting}[
     caption={Pseudokôd algoritma za određivanje linija.},
@@ -1060,9 +1095,9 @@ def odrediLinije(nestrukturiraniOcrRezultat)
       end
       if linijaSaMaxPreklapanjem != null
         if linijaSaMaxPreklapanjem[-1].x < linija[-1].x
-          tezina = f1(d(linijaSaMaxPreklapanjem[-1], linija[-1]))
+          tezina = f1(dln(linijaSaMaxPreklapanjem[-1], linija[-1]))
         else
-          tezina = f2(d(linijaSaMaxPreklapanjem[-1], linija[-1]))
+          tezina = f2(dln(linijaSaMaxPreklapanjem[-1], linija[-1]))
         end
       end
       if p > maxPreklapanje * tezina
@@ -1110,14 +1145,15 @@ U nastavku ovog odjeljka opisati ćemo tri algoritma za rastavljanje riječi:
 
 
 \subsection{Algoritam temeljen na prosječnoj širini znaka}
+\label{subsec:algoritam-temeljen-na-prosjecnoj-sirini znaka}
 Algoritam temeljen na prosječnoj širini znaka najjednostaviji je od svih
 algoritama koje ćemo u ovom odjeljku opisati. Algoritam se temelji na
 pretpostavci da je širina razmaka između riječi propocionalna sa prosječnom
 širinom znakova u promatranoj liniji. Označimo prosječnu širinu znaka u liniji
-$l_i$ sa $\overline{w_i}$:
+$l$ sa $\overline{w_l}$:
 
 \begin{equation}
-\overline{w_i} = \frac{\sum\limits_{A \in l_i} A_w}{|l_i|}
+\overline{w_l} = \frac{\mathlarger{\sum}\limits_{A \in l} A_w}{|l|}
 \end{equation}
 
 Sada možemo postaviti uvijet koji će odlučiti treba li ubaciti bjelinu između
@@ -1125,7 +1161,7 @@ dva znaka $A$ i $B$:
 
 \begin{equation}
 \label{eq:condition-01}
-|A_x - (B_x + B_w)| > \overline{w_i} \cdot c_1
+d(A, B) > \overline{w_l} \cdot c_1
 \end{equation}
 
 Parametar $c_1$ je jedini \textbf{parametar algoritma} za koji smo
@@ -1133,9 +1169,7 @@ eksperimentalno utvrdili da najbolje rezultate za sadržaj na računima iz
 trgovine ostvaruje vrijednost $0{,}8$, a najbolje rezultate za sadržaj iz knjiga
 ostvaruje vrijednost $0{,}44$. Isječak \ref{lst:algorithm-02} prikazuje
 pseudokôd algoritma za rastavljanje riječi temeljenog na prosječnoj širini
-znaka. Izraz s lijeve strane nejednadžbe \ref{eq:condition-01} označava
-udaljenost između lijevog ruba znaka $A$ i desnog ruba znaka $B$ s pretpostavkom
-da je znak $A$ desno od znaka $B$, odnosno da vrijedi $A_x > B_x$.
+znaka.
 
 \begin{lstlisting}[
     caption={
@@ -1157,13 +1191,13 @@ def rastaviRijeci(ocrRezultat)
     i = 0
     j = 1
     while j < linija.duljina
-      d = linija[j].x - (linija[i].x + linija[i].width)
-      if d > prosjecnaSirina * c1
+      udaljenost = d(linija[i], linija[j])
+      if udaljenost > prosjecnaSirina * c1
         bjelina = new Znak()
         bjelina.value = 32
         bjelina.x = linija[i].x + linija[i].width
         bjelina.y = linija[i].y
-        bjelina.width = d
+        bjelina.width = udaljenost
         bjelina.height = linija[i].height
         linija.ubaciZnakPrijePozicije(j, znak)
         i += 2
@@ -1196,9 +1230,163 @@ način:
 Pod \emph{lijevi znak} misli se na znak u liniji na poziciji $i$, a pod
 \emph{desni znak} misli se na znak u liniji na poziciji $j$. U liniji $20$
 ubacujemo novi znak bjeline prije znaka na poziciji $j$ što
-ima za posljedicu pomicanje svih elemenata, desno od $j$, uključujući i element
-na poziciji $j$, za jedno mjesto udesno. U liniji $12$ algoritam pretpostavlja
-da je znak na poziciji $j$ desno od znaka na poziciji $i$.
+ima za posljedicu pomicanje svih elemenata desno od $j$, uključujući i element
+na poziciji $j$, za jedno mjesto udesno.
+
+
+
+
+\subsection{Algoritam temeljen na prosječnoj relativnoj udaljenosti}
+Algoritam temeljen na prosječnoj relativnoj udaljenosti temelji se na
+pretpostavci da je udaljenost znaka $A$ s vrijednosti \engl{value} $A_v$
+proporcionalna s prosječnom udaljenosti koju svi znakovi s
+vrijednosti $A_v$ ostvaruju sa svojim susjedima.
+
+Skup svih susjeda znaka $A$ definiramo kao skup svih znakova $B$ koji su
+različiti od $A$, koji se nalaze u istoj liniji kao i $A$, i za koje vrijedi:
+
+\begin{equation}
+\hat{d_c}(A, B) < c_1 \texttt{.}
+\end{equation}
+
+Skup svih susjeda znaka $A$ označiti ćemo s $S(A)$. Parametar $c_1$ prvi je
+parametar algoritma za koji je eksperimentalno utvrđeno
+da se najbolji rezultati za sadržaj s računa iz trgovina postižu za vrijednost
+$4{,}0$ i da se najbolji rezultati za sadržaj iz knjiga postižu za vrijednost
+$1{,}5$. Parametar $c_1$ kontrolira koliko najviše dva znaka smiju biti udaljena
+da bi se smatrali susjedima.
+
+Skup svih susjeda vrijednosti $v$ definiramo kao uniju svih skupova susjeda
+znakova $A$ za koje vrijedi $A_v = v$. Formalno, skup svih susjeda vrijednosti $v$ definiramo kao:
+
+\begin{equation}
+s(v) = \bigcup\limits_{A \in C}\left\{S(A) \vert A_v = v\right\}
+\end{equation}
+
+Konačno, prosječnu udaljenost znaka $A$ od susjednih znakova definiramo kao
+prosječnu udaljenost koju imaju svi znakovi $B$, za koje vrijedi $A_v = B_v$, sa svojim susjedima:
+
+\begin{equation}
+\label{eq:relative-distance-01}
+\overline{d_c}(A) =
+\frac{
+    \mathlarger{\sum}\limits_{B \in C,\ B_v = A_v}
+    \Bigg[
+    \mathlarger{\sum}\limits_{D \in S(B)} d_c(B, D)
+    \Bigg]
+}{|s(A_v)|}
+\end{equation}
+
+Budući da funkcija $\overline{d_c}$ ne ovisi o $A$ u izrazu \ref{eq:relative-distance-01} definirati ćemo ju u ovisnosti o vrijednosti $v$:
+
+\begin{equation}
+\label{eq:relative-distance-02}
+\overline{d_c}(v) =
+\frac{
+    \mathlarger{\sum}\limits_{B \in C,\ B_v = v}
+    \Bigg[
+    \mathlarger{\sum}\limits_{D \in S(B)} d_c(B, D)
+    \Bigg]
+}{|s(v)|}
+\end{equation}
+
+Funkcijom $\overline{d_c}$ dobivamo informaciju kolika je prosječna udaljenost
+između znakova $A$, za koje vrijedi $A_v = v$, i njihovih susjeda. Sada možemo
+dodatnim uvjetom odrediti postoji li razmak između dva susjedna znaka $A$ i $B$.
+
+Algoritam detektira razmak između znakova $A$ i $B$ ako i samo ako vrijedi:
+\begin{equation}
+\label{eq:relative-distance-03}
+    d_c(A, B) > \overline{d_c}(A_v) \cdot c_2 \quad \lor \quad
+    d_c(A, B) > \overline{d_c}(B_v) \cdot c_2 \texttt{.}
+\end{equation}
+
+Parametar $c_2$ označava drugi parametar ovog algoritma za koji je
+eksperimentalno utvrđeno da se najbolji rezultati za sadržaj s računa iz
+trgovina postižu za vrijednost $1{,}2$ i da se najbolji rezultati za sadržaj iz
+knjiga postižu za vrijednost $1{,}7$. Parametar $c_2$ kontrolira koliko
+minimalno udaljenost između znaka $A$ i $B$ treba biti veća od prosječne
+udaljenosti $\overline{d_c}$.
+
+Ovaj algoritam pogodan je za održavanje veze između dva znaka koje bi
+algoritam opisan u pododjeljku
+\ref{subsec:algoritam-temeljen-na-prosjecnoj-sirini znaka} razdvojio znakom
+bjeline zbog krive procjene. Cijela ideja ovog algoritma temelji se na
+pretpostavci da su znakovi koji imaju istu vrijednost u prosjeku jednako
+udaljeni od znakova s kojima su neposredni susjedi. Ovaj algoritam se u ovoj
+inačici može koristiti kao dobar pokazatelj da između neka dva znaka zapravo
+ne treba ubaciti znak bjeline iako bi možda neki drugi algoritam opisan u ovom
+poglavlju ubacio znak bjeline i time vrlo vjerojatno napravio pogrešku.
+
+Isječak \ref{lst:algorithm-03} prikazuje pseudokôd algoritma temeljenog na
+prosječnoj relativnoj udaljenosti znakova. U linijama $2$ i $3$ inicijaliziraju
+se mape u kojima će se čuvati informacije u ukupnoj udaljenosti susjednih
+znakova i o tome koliko susjednih znakova je uzeto u obzir za svaku Unicode
+vrijednost. U liniji $7$ koristi se funkcija $d_c$, a u liniji $8$ funkcija
+$\hat{d_c}$. U linijama $23$ i $24$ koriste se navedene mape kojima se računa
+prosječna udaljnost koju Unicode vrijednost ostvaruje sa susjednim znakovima,
+zatim se u uvjetu u liniji $25$ detektira razmak. U liniji $33$
+ubacujemo novi znak bjeline prije znaka na poziciji $j$ što ima za posljedicu
+pomicanje svih elemenata desno od $j$, uključujući i element na poziciji $j$,
+za jedno mjesto udesno. Algoritam ostale informacije o znaku bjeline
+određuje na isti način kao i algoritam opisan u pododjeljku
+\ref{subsec:algoritam-temeljen-na-prosjecnoj-sirini znaka}.
+
+
+\begin{lstlisting}[
+    caption={
+        Pseudokôd algoritma za rastavljanje riječi temeljen na
+        prosječnoj relativnoj udaljenosti.
+    },
+    label={lst:algorithm-03},
+    morekeywords={def,for,end,if,else,return,while,new},
+    firstnumber=1
+],
+def rastaviRijeci(ocrRezultat)
+  sumMap = map<unicode value, float>()
+  cntMap = map<unicode value, int>()
+
+  for linija u ocrRezultat.linije
+    for i = 1; i < linija.duljina; i++
+      udaljenost = dc(linija[i], linija[i-1])
+      normUdaljenost = ndc(linija[i], linija[i-1])
+      if normUdaljenost < c1
+        sumMap[linija[i].value] += udaljenost
+        cntMap[linija[i].value]++
+        sumMap[linija[i-1].value] += udaljenost
+        cntMap[linija[i-1].value]++
+      end
+    end
+  end
+
+  for linija u ocrRezultat.linije
+    i = 0
+    j = 1
+    while j < linija.duljina
+      udaljenost = dc(linija[i], linija[j])
+      avgRelDistI = sumMap[linija[i].value]/cntMap[linja[i].value]
+      avgRelDistJ = sumMap[linija[j].value]/cntMap[linja[j].value]
+      if udaljenost > avgRelDistI * c2 ||
+         udaljenost > avgRelDistJ * c2
+        bjelina = new Znak()
+        bjelina.value = 32
+        bjelina.x = linija[i].x + linija[i].width
+        bjelina.y = linija[i].y
+        bjelina.width = udaljenost
+        bjelina.height = linija[i].height
+        linija.ubaciZnakPrijePozicije(j, znak)
+        i += 2
+        j += 2
+      else
+        i++
+        j++
+      end
+    end
+  end
+
+  return ocrRezultat
+end
+\end{lstlisting}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
