@@ -7,6 +7,7 @@
 \usepackage{algorithm}
 \usepackage{amsmath}
 \usepackage{relsize}
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 
 \renewcommand{\lstlistingname}{Isječak}
 \DeclareMathOperator*{\argmax}{arg\,max}
@@ -433,7 +434,7 @@ su smješteni svi segmentirani i klasificirani znakovi u nasumičnim redoslijedo
     caption={Pojednostavljeni nestrukturirani OCR-rezultat u formatu JSON.},
     label={lst:ocr-result-json-01},
     firstnumber=1
-],
+]
 {
     "ocr_result": {
         "lines": [
@@ -705,7 +706,7 @@ zanemariti na ulazu.
 
 
 \subsection{Očekivane izlazne datoteke}
-\label{subsec:očekivane-izlazne-datoteke}
+\label{subsec:ocekivane-izlazne-datoteke}
 Očekivane izlazne datoteke predstavljaju ispravni strukturirani tekstualni
 sadržaj sa slike. Isječak \ref{lst:txt-result-04} predstavlja ispravni
 strukturirani tekstualni sadržaj računa sa slike \ref{fig:receipt-example-04}.
@@ -744,6 +745,7 @@ Learn more at the pharmacy.
 
 
 \section{Korištenje skupa podataka za testiranje}
+\label{sec:koristenje-skupa-podataka-za-testiranje}
 \begin{figure}[htb]
     \centering
     \captionsetup{justification=centering,margin=2cm}
@@ -757,22 +759,20 @@ Slika \ref{fig:sustav-02} prikazuje postupak dobivanja izlazne datoteke iz
 strukturiranog OCR-rezultata kojeg je vratio sustav za određivanje strukture
 teksta. Ulaz u sustav je ulazna datoteka u formatu JSON koja predstavlja
 nestrukturirani OCR-rezultat kao što je opisano u pododjeljku
-\ref{subsec:ulazne-datoteke}.
-Izlaz iz sustava je strukturirani OCR-rezultat u formatu JSON u kojemu se nalaze
-znakovi grupirani u linije i gdje su između riječi ubačeni znakovi bjeline.
-Strukturirani OCR-rezultat u formatu JSON potrebno je pretvoriti u izlaznu
-datoteku koja predstavlja strukturirani tekstualni sadržaj u formatu opisanom u
-pododjeljku \ref{subsec:očekivane-izlazne-datoteke} koji se onda
-uspoređuje sa očekivanim izlaznim datotekama dostupnim u skupu podataka za
-testiranje. Isječak \ref{lst:ocr-result-to-txt} prikazuje pseudokôd algoritma
-za ispis OCR-rezultata na standardni izlaz.
+\ref{subsec:ulazne-datoteke}. Izlaz iz sustava je strukturirani OCR-rezultat u
+formatu JSON u kojemu se nalaze znakovi grupirani u linije i gdje su između
+riječi ubačeni znakovi bjeline. Strukturirani OCR-rezultat potrebno je zapisati
+u izlaznu datoteku u formatu opisanom u odjeljku
+\ref{subsec:ocekivane-izlazne-datoteke}. Isječak \ref{lst:ocr-result-to-txt}
+prikazuje pseudokôd algoritma za ispis OCR-rezultata u format opisan u
+pododjeljku \ref{subsec:ocekivane-izlazne-datoteke}.
 
 \begin{lstlisting}[
-    caption={Pseudokôd algoritma za ispis OCR-rezultata na standardni izlaz.},
+    caption={Pseudokôd algoritma za ispis OCR-rezultata.},
     label={lst:ocr-result-to-txt},
     morekeywords={def,for,end,if,else,return},
     firstnumber=1
-],
+]
 def ispisi(ocrRezultat)
   for linija u ocrRezultat.linije
     for znak u linija
@@ -783,9 +783,10 @@ def ispisi(ocrRezultat)
 end
 \end{lstlisting}
 
-Metode usporedbe izlaznih datoteka dobivenih iz strukturiranih OCR-rezultata i
-očekivanih izlaznih datoteka iz skupa podataka za testiranje biti će objašnjene
-u odjeljku.
+Metode usporedbe sadržaja izlaznih datoteka dobivenih iz strukturiranih
+OCR-rezultata i sadržaja očekivanih izlaznih datoteka iz skupa podataka za
+testiranje biti će objašnjene u odjeljku
+\ref{sec:mjera-tocnosti-algoritama}.
 
 
 
@@ -803,6 +804,7 @@ u odjeljku.
 
 
 \chapter{Algoritmi za određivanje strukture teksta}
+\label{chap:algoritmi-za-odredivanje-strukture-teksta}
 Sustav za određivanje strukture teksta podijeljen je u dva podsustava:
 \textbf{sustav za određivanje linija} i \textbf{sustav za rastavljanje riječi}.
 Slika \ref{fig:sustav-03} prikazuje navedene komponente sustava i njihovu
@@ -905,6 +907,7 @@ na maksimalnom preklapanju znakova.
 
 
 \subsection{Algoritam temeljen na maksimalnom preklapanju znakova}
+\label{subsec:algoritam-temeljen-na-maksimalnom-preklapanju-znakova}
 Algoritam za određivanje linija temeljen na maksimalnom preklapanja znakova
 (u daljnjem tekstu: \emph{algoritam}) temelji se na pretpostavci da dva susjedna
 znaka koja se nalaze u istoj liniji ostvaruju maksimalno vertikalno preklapanje.
@@ -1080,7 +1083,7 @@ U pseudokôdu funkcija \lstinline{dln} označava funkciju udaljenosti $\hat{d_l}
     label={lst:algorithm-01},
     morekeywords={def,for,end,if,else,return,new},
     firstnumber=1
-],
+]
 def odrediLinije(nestrukturiraniOcrRezultat)
   znakovi = sortirajPoX(nestrukturiraniOcrRezultat.sviZnakovi)
   linije = []
@@ -1143,6 +1146,7 @@ $\mathcal{O}(n \cdot \log(n))$ one ne utječu na ukupnu složenost algoritma.
 
 
 \section{Algoritmi za rastavljanje riječi}
+\label{sec:algoritmi-za-rastavljanje-riječi}
 Algoritmi za rastavljanje riječi na ulaz primaju OCR-rezultat u kojemu su
 znakovi grupirani u linije u prethodnom koraku opisanom u odjeljku
 \ref{sec:algoritmi-za-odredivanje-linija}. Zadaća algoritama za rastavljanje
@@ -1196,7 +1200,7 @@ znaka.
     label={lst:algorithm-02},
     morekeywords={def,for,end,if,else,return,while,new},
     firstnumber=1
-],
+]
 def rastaviRijeci(ocrRezultat)
   for linija u ocrRezultat.linije
     prosjecnaSirina = 0
@@ -1372,7 +1376,7 @@ određuje na isti način kao i algoritam opisan u pododjeljku
     label={lst:algorithm-03},
     morekeywords={def,for,end,if,else,return,while,new},
     firstnumber=1
-],
+]
 def rastaviRijeci(ocrRezultat)
   sumMap = map<unicode value, float>()
   cntMap = map<unicode value, int>()
@@ -1441,6 +1445,7 @@ mape ukupna složenost algoritma biti će $\mathcal{O}(n \cdot \log(n))$.
 
 
 \subsection{Algoritam temeljen na prosječnoj udaljenosti centara}
+\label{subsec:algoritam-temeljen-na-prosjecnoj-udaljenosti-centara}
 Algoritam temeljen na prosječnoj udaljenosti centara (u daljnjem tekstu:
 \emph{algoritam}) temelji se na pretpostavci da je širina razmaka između riječi
 proporcionalna s prosječnom udaljenosti centara između susjednih znakova.
@@ -1507,7 +1512,7 @@ opisan u pododjeljku
     label={lst:algorithm-04},
     morekeywords={def,for,end,if,else,return,while,new},
     firstnumber=1
-],
+]
 def rastaviRijeci(ocrRezultat)
   for linija u ocrRezultat.linije
     brojac = 0
@@ -1548,8 +1553,376 @@ end
 
 \subsubsection{Vremenska složenost algoritma}
 Vremenska složenost ovog algoritma za najgori slučaj je $\mathcal{O}(n)$ budući
-da se svaki znak u liniji posjeti samo jednom. U analizi vremenske složenosti nije uzeta u obzir vremenska složenost ubacivanja elementa u liniji $24$ zato jer postoje strukture podataka (npr.\ povezana lista) nad kojima je moguće izvesti operaciju ubacivanja u konstantnoj složenosti.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+da se svaki znak u liniji posjeti samo jednom. U analizi vremenske složenosti
+nije uzeta u obzir vremenska složenost ubacivanja elementa u liniji $24$ zato
+jer postoje strukture podataka (npr.\ povezana lista) nad kojima je moguće
+izvesti operaciju ubacivanja u konstantnoj složenosti.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\chapter{Rezultati i analiza}
+U ovom poglavlju ćemo prikazati i analizirati rezultate rada svakog algoritma
+opisanog u poglavlju \ref{chap:algoritmi-za-odredivanje-strukture-teksta}.
+
+U odjeljku \ref{sec:mjera-tocnosti-algoritama} bit će opisana metoda
+za određivanje točnosti svakog algoritma, objašnjene prednosti i mane, i
+dat ćemo smjernice za budući rad. U odjeljcima
+\ref{sec:rezultati-i-analiza-algoritama-za-odredivanje-linija} i
+\ref{sec:rezultati-i-analiza-algoritama-za-rastavljanje-rijeci} prikazat ćemo
+i analizirati rezultate rada algoritama za određivanje linija i algoritama za
+rastavljanje riječi.
+
+
+
+
+
+
+
+
+\section{Mjere točnosti algoritama}
+\label{sec:mjera-tocnosti-algoritama}
+U odjeljku \ref{sec:koristenje-skupa-podataka-za-testiranje} opisan je način
+uporabe skupa podataka za testiranje. Sustav za određivanje strukture teksta
+(u daljnjem tekstu: \emph{Sustav}) na ulaz dobiva nestrukturirani OCR-rezultat,
+a na izlazu daje strukturirani OCR-rezultat koji je potrebno zapisati u izlaznu datoteku u formatu opisanom u pododjeljku
+\ref{subsec:ocekivane-izlazne-datoteke}. Sadržaj izlazne datoteke uspoređuje se sa sadržajem očekivane
+izlazne datoteke dostupne u skupu podataka za testiranje. Rezultat usporedbe
+odredit će točnost sustava za određivanje strukture teksta. Da bismo objasnili
+način određivanja točnosti algoritama prvo moramo objasniti kako određujemo
+točnost cijelog sustava.
+
+Za usporedbu sadržaja koristi se Levenshteinova udaljenost između niza znakova
+sadržaja očekivane izlazne datoteke i niza znakova sadržaja izlazne datoteke
+stvorene na temelju OCR-rezultata dobivenog iz sustava.
+Algoritam Levenshteinove udaljenosti dobro je opisan u literaturi i u ovom radu
+nećemo ulaziti u detalje njegova rada.
+
+Način određivanja točnosti pokazat ćemo na primjeru isječaka \ref{lst:output-01}
+i \ref{lst:output-02}. Isječak \ref{lst:output-01} prikazuje sadržaj očekivane
+izlazne datoteke, a isječak \ref{lst:output-02} prikazuje sadržaj izlazne
+datoteke stvorene na temelju OCR-rezultata dobivenog iz sustava. Možemo
+primjetiti da je sustav progriješio u određivanju linija time što je riječ
+\lstinline{ipsum} stavio u drugu liniju. Osim toga, progriješio je i u
+razdvajanju riječi u obje linije. Levenshteinova udaljenost sadržaja te
+dvije datoteke je $17$, međutim, ta informacija nam ne govori ništa o točnosti
+sustava. Rezultat Levenshteinove udaljenosti možemo smatrati kao broj pogrešaka
+koji sustav radi u odnosu na referentne vrijednosti (očekivane izlazne
+datoteke). Maksimalan broj pogrešaka koje je sustav mogao napraviti je zapravo
+maksimalna moguća Levenshteinova udaljenost između dva niza znakova koja je
+jednaka duljini duljeg niza znakova. U našem primjeru dulji niz znakova je niz
+znakova iz isječka \ref{lst:output-02} koji se sastoji od $59$ znakova
+(uključujući i znak za novi redak \lstinline{\n}). Sada možemo reći da je
+sustav napravio $17$ pogrešaka od maksimalno $59$, odnosno da njegova greška
+iznosi $\frac{17}{59} \cdot 100\% = 29\%$. Iz pogreške možemo izračunati točnost koja iznosi $71\%$.
+
+\begin{lstlisting}[
+    caption={Primjer sadržaja očekivane izlazne datoteke.},
+    label={lst:output-01},
+    firstnumber=1
+]
+Lorem ipsum dolor sit amet,
+consectetur adipiscing elit.
+\end{lstlisting}
+
+\begin{lstlisting}[
+    caption={
+        Primjer sadržaja izlazne datoteke stvorene na temelju OCR-rezultata
+        dobivenog iz sustava.
+    },
+    label={lst:output-02},
+    firstnumber=1
+]
+Lorem dolors it amet ,
+consecte tur ipsum ad ipiscing elit.
+\end{lstlisting}
+
+Formalno, točnost ili dobrotu \engl{fitness} sustava određujemo izrazom:
+
+\begin{equation}
+\label{eq:fitness}
+f(a, b) = 1 - \frac{d_\textit{levenshtein}(a, b)}{\max(|a|, |b|)} \texttt{.}
+\end{equation}
+
+U izrazu smo s $a$ i $b$ označili ulazne nizove znakova, a s
+$d_\textit{levenshtein}$ Levenshteinovu funkciju udaljenosti. U nastavku ovog
+poglavlja točnost sustava iskazivati ćemo u vrijednostima
+između $0$ i $1$, a ne u postocima.
+
+Slika \ref{fig:result-example-01} prikazuje graf točnosti (dobrote) sustava za
+određivanje strukture teksta za sadržaj računa iz trgovine. Za svaki testni
+primjer izmjerena je dobrota sustava, zatim su izmjerete dobrote uzlazno
+sortirane i tako su nanesene na graf dobrote te je zbog toga graf monotono
+rastući. Na ovaj način ćemo prikazivati grafove dobrote u rezultatima svih
+algoritama.
+
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/result-example-01.png}
+    \caption{Graf točnosti sustava.}
+    \label{fig:result-example-01}
+\end{figure}
+
+
+
+
+\subsection{Mjera točnosti algoritama za određivanje linija}
+Mjera točnosti algoritama za određivanje linija svodi se na usporedbu
+sadržaja očekivane izlazne datoteke iz koje su izbrisani svi znakovi bjeline.
+Sadržaj takve (modificirane) datoteke smatra se referentnim sadržajem prilikom
+određivanja točnosti. Isječak \ref{lst:output-03} prikazuje referentni sadržaj
+za određivanje točnosti algoritama za određivanje linija dobiven brisanjem
+znakova bjeline iz sadržaja datoteke prikazane isječkom \ref{lst:output-01}.
+
+\begin{lstlisting}[
+    caption={
+        Primjer referentnog sadržaja datoteke za određivanje točnosti
+        algoritama za određivanje linija.
+    },
+    label={lst:output-03},
+    firstnumber=1
+]
+Loremipsumdolorsitamet,
+consecteturadipiscingelit.
+\end{lstlisting}
+
+Slika \ref{fig:sustav-04} prikazuje postupak dobivanja izlazne datoteke iz
+OCR-rezultata s grupiranim linijama. Format izlazne datoteke opisan je u
+pododjeljku \ref{subsec:ocekivane-izlazne-datoteke}. Sadržaj dobivene izlazne
+datoteke uspoređuje se sa referentnim sadržajem.
+
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/sustav-04.png}
+    \caption{
+        Postupak dobivanja izlazne datoteke iz OCR-rezultata dobivenog od
+        sustava za određivanje linija.
+    }
+    \label{fig:sustav-04}
+\end{figure}
+
+\begin{lstlisting}[
+    caption={
+        Primjer sadržaja izlazne datoteke stvorene na temelju OCR-rezultata
+        dobivenog od sustava za određivanje linija.
+    },
+    label={lst:output-04},
+    firstnumber=1
+]
+Loremdolorsitamet,
+consecteturipsumadipiscingelit.
+\end{lstlisting}
+
+Isječak \ref{lst:output-04} prikazuje primjer sadržaja izlazne datoteke stvorene
+na temelju OCR-rezultata dobivenog od sustava za određivanje linija. Primjetimo
+kako u sadržaju ne postoje razmaci zato jer OCR-rezultat nije još prošao kroz
+sustav za rastavljanje riječi. Točnost sadržaja izlazne datoteke u odnosu na
+referentni sadržaj iz isječka \ref{lst:output-03} možemo izračunati koristeći
+izraz \ref{eq:fitness} pomoću kojeg dobivamo točnost $0{,}8$.
+
+Na opisani način računat ćemo točnost za algoritme za određivanje linija, a
+funkciju točnosti prikazivat ćemo kao na slici \ref{fig:result-example-01}.
+
+
+\subsection{Mjera točnosti algoritama za rastavljanje riječi}
+Za određivanje točnosti algoritama za rastavljanje riječi koristit ćemo
+očekivane izlazne datoteke kao referentne datoteke koje će se uspoređivati sa
+sadržajem izlazne datoteke stvorene na temelju OCR-rezultata dobivenog od
+sustava za rastavljanje riječi. Slika \ref{fig:sustav-05} prikazuje postupak dobivanja izlazne datoteke iz OCR-rezultata dobivenog od sustava za rastavljanje riječi. Ulaz u sustav za rastavljanje riječi je OCR-rezultat s grupiranim linijama dobiven iz sustava za određivanje linija. Budući da je moguće da je sustav za određivanje linija neispravno odredio linije ne možemo od sustava za rastavljanje riječi očekivati bolju dobrotu od dobrote sustava za određivanje linija. Određivanje točnosti algoritama za rastavljanje riječi je time ovisno o točnosti algoritama za određivanje linija što je najveći nedostatak ovog pristupa za mjerenje točnosti algoritama za rastavljanje riječi.
+
+Budući da je ulazni OCR-rezultat u sustav za rastavljanje riječi rezultat kojeg je vratio sustav za određivanje linija, mjera točnosti sustava za rastavljanje riječi je ujedno i mjera točnosti cijelog sustava za određivanje strukture teksta.
+
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/sustav-05.png}
+    \caption{
+        Postupak dobivanja izlazne datoteke iz OCR-rezultata dobivenog od
+        sustava za rastavljanje riječi.
+    }
+    \label{fig:sustav-05}
+\end{figure}
+
+\subsection{Daljnja poboljšanja u određivanju točnosti}
+Prednost navedenih metoda za određivanje točnosti je to što nam daju dovoljno dobar uvid u stvarnu točnost sustava za određivanje linija i sustava za određivanje strukture teksta. Oslanjajući se na rezultate navedenih metoda uspješno smo interpretirali i poboljšali rezultate sustava za vrijeme njegova razvoja. Prednost trenutnog skupa za testiranje je što ga možemo jednostavno generirati koristeći metodu početnog podizanja \engl{bootstrapping}. Kada su nam na raspolaganju samo označeni znakovi s omeđujućim pravokutnicima možemo, na nekoliko jednostavnih unaprijed ručno napisanih očekivanih izlaznih datoteka, napraviti prvu verziju sustava za određivanje strukture teksta. Analizom rezultata, sustav poboljšavamo dok god ne dobijemo zadovoljavajuću točnost. Nakon toga, iskoristimo prvu verziju sustava za generiranje kompliciranijih očekivanih izlaznih datoteka u kojima je potrebno ispraviti pogreške koje je sustav napravio, ali zato ne treba ručno sastavljati cijelu očekivanu izlaznu datoteku. Zatim ponovo možemo raditi na razvoju sustava i interpretaciji rezultata da bismo sustav poboljšali dok ne dobijemo zadovoljavajuću točnost. Ovom metodom, korištenom u ovom radu, možemo brzo stvoriti skup podataka za testiranje.
+
+Najveći nedostatak u navedenim metodama za određivanje točnosti je to što točnost
+sustava za rastavljanje riječi ovisi o točnosti sustava za određivanje linija.
+Osim toga, usporedbom sa sadržajem očekivane izlazne datoteke gubimo informaciju o tome koji znak s omeđujućim pravokutnikom predstavlja zapisani znak u datoteci. Oba problema mogu se rješiti boljim skupom podataka za testiranje koji bi se trebao sastojati od unaprijed strukturiranih OCR-rezultata u formatu JSON koji predstavljaju očekivani OCR-rezultat. S takvim skupom podataka mogli bismo nezavisno testirati i analizirati ponašanje sustava za određivanje linija i sustava za rastavljanje riječi. Dodatno, takav skup podataka omogućio bi nam da koristimo bolje metode mjerenja točnosti koje bi se temeljile na usporedbi znakova iz OCR-rezultata, a ne znakova iz datoteka.
+Stvaranje takvog skupa za testiranje zahtjeva implementaciju posebnog sustava za označavanje linija i riječi na slici, odnosno sustava koji bi nam omogućio da označene znakove (dostupne u sadašnjem skupu podataka) spojimo u odgovarajuće linije i riječi.
+
+Za daljnji rad preporuča se sastavljanje novog skupa podataka i definiranja novih mjera točnosti koje bi dale bolji uvid u način rada pojedinih algoritama.
+
+
+
+
+
+
+
+
+\section{Rezultati i analiza algoritama za određivanje linija}
+\label{sec:rezultati-i-analiza-algoritama-za-odredivanje-linija}
+Grafovi točnosti algoritma za određivanje linija temeljenog na maksimalnom preklapanju znakova prikazani su na slikama \ref{fig:result-01} i \ref{fig:result-02}. Rezultati u tablici \ref{tbl:result-01} pokazuju kako se za $57\%$ primjera računa i $64.7\%$ primjera iz knjiga ostvaruje maksimalna točnost iznosa $1$. Prikazani rezultati ostvareni su s algoritmom koji koristi optimalne parametre navedene u pododjeljku \ref{subsec:algoritam-temeljen-na-maksimalnom-preklapanju-znakova}.
+
+\begin{table}[htb]
+\caption{Točnost algoritma za određivanje linija.}
+\label{tbl:result-01}
+\centering
+\begin{tabular}{lccccc} \hline
+& Min. & Sred. & Med. & Maks. & Udio primjera s maks. točnosti \\ \hline
+Računi & 0.821555 & 0.985377 & 1 & 1 & 0.57 \\
+Knjige & 0.671031 & 0.980016 & 1 & 1 & 0.647059 \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/result-01.png}
+    \caption{
+        Graf točnosti algoritma za određivanje linija u sadržaju s računa iz trgovine.
+    }
+    \label{fig:result-01}
+\end{figure}
+
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/result-02.png}
+    \caption{
+        Graf točnosti algoritma za određivanje linija u sadržaju iz knjiga.
+    }
+    \label{fig:result-02}
+\end{figure}
+
+Na slici \ref{fig:error-01} prikazana su dva primjera za koje algoritam griješi
+u detekciji linija. U prvom slučaju algoritam nije mogao zadovoljiti minimalni iznos preklapanja da poveže znakove \lstinline{.} i \lstinline{I} u istu liniju. Ovaj problem se rješava povećanjem parametra $c_1$ na vrijednost $2$, ali eksperimenti su pokazali kako to nije optimalan parametar za sadržaj s računa iz trgovina. Ovaj problem bi se mogao rješiti tako da algoritam mjeri preklapanje samo između znakova koji su relativno iste visine. U ovom primjeru to bi značilo da će algoritam zanemariti znak \lstinline{.} i izmjeriti će preklapanje sa znakom \lstinline{D}. U drugom slučaju algoritam ne može spojiti lijevu i desnu stranu u istu liniju zbog prevelike zakrivljenosti sadržaja. Ovaj problem mogao bi se rješiti tako da algoritam ima informaciju o maksimalnoj $x$ vrijednost na kojoj se može nalaziti znak koji započinje liniju. S takvom informacijom može se forsirati spajanje znakova s krajnje desne strane s grupiranim linijama s lijeve strane.
+
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/error-01.png}
+    \caption{
+        Neispavna detekcija linija u računima zbog prevelike zakrivljenosti sadržaja.
+    }
+    \label{fig:error-01}
+\end{figure}
+
+
+
+
+
+
+
+
+\section{Rezultati i analiza algoritama za rastavljanje riječi}
+Slike \ref{fig:result-03} i \ref{fig:result-04} prikazuju rezultate algoritama za rastavljanje riječi koji koriste optimalne parametre navedene u pododjeljcima \ref{subsec:algoritam-temeljen-na-prosjecnoj-sirini znaka},
+\ref{subsec:algoritam-temeljen-na-prosjecnoj-relativnoj-udaljenosti} i
+\ref{subsec:algoritam-temeljen-na-prosjecnoj-udaljenosti-centara}. U tablicama \ref{tbl:result-02} i \ref{tbl:result-03} algoritmi iz odjeljka \ref{sec:algoritmi-za-rastavljanje-riječi} imenovani su kraticama: \emph{avgcharwidth}, \emph{avgreldist} i \emph{avgcenterdist}. Prikazani rezultati pokazuju točnost algoritama za rastavljanje riječi, a ujedno i točnost cijelog sustava za određivanje strukture teksta.
+Rezultati pokazuju kako se s algoritmom temeljenog na prosječnoj udaljenosti centara može potpuno točno odrediti struktura teksta, u sadržaju s računa iz trgovina, za $54\%$ testnih primjera. Isti algoritam postiže znatno lošije rezultate u određivanju strukture teksta u sadržaju iz knjiga. Ovakvi rezultati mogu se objasniti činjenicom da je sadržaj na računima iz trgovina tiskan fontom konstantne širine \engl{monospaced font}, i to iskorištava algoritam \emph{avgcenterdist}. Rezultati pokazuju kako je za rastavljanje riječi u sadržaju iz knjiga pogodnije koristiti algoritme koji se ne oslanjaju na udaljenost centara, nego na udaljenost rubova znakova. U budućem radu trebala bi se koristiti ta informacija kako bi se poboljšali rezultati u rastavljanju riječi u sadržaju iz knjiga.
+
+Najčešća pogreška koju sva tri algoritma rade je da ubacuju razmake između znakova koji se horizontalno preklapaju (slika \ref{fig:error-02}). U budućem radu trebao bi se uvesti mehanizam detekcije horizontalno preklapajućih znakova koji ne bi dozvolio njihovo razdvajanje. Algoritmi također griješe u razdvajanju uskih interpunkcijskih znakova koji su zbog svoje širine udaljeniji od svojih susjeda u odnosu na promatrani prosjek udaljenosti ostalih znakova. U budućem radu treba uzeti u obzir uske znakove koje ne treba razdvajati od susjeda ako su od njih udaljeniji od nekog promatranog prosjeka.
+
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/result-03.png}
+    \caption{
+        Graf točnosti algoritama za rastavljanje riječi u sadržaju s računa iz trgovine.
+    }
+    \label{fig:result-03}
+\end{figure}
+
+\begin{table}[htb]
+\caption{Točnost algoritama za rastavljanje riječi u sadržaju s računa iz trgovine.}
+\label{tbl:result-02}
+\centering
+\begin{tabular}{lccccc} \hline
+& Min. & Sred. & Med. & Maks. & Udio primjera s maks. točnosti \\ \hline
+avgcharwidth & 0.826709 & 0.982789 & 0.997109 & 1 & 0.34 \\
+avgreldist & 0.820189 & 0.97895 & 0.995475 & 1 & 0.33 \\
+avgcenterdist & 0.826709 & 0.985186 & 1 & 1 & 0.54 \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/result-04.png}
+    \caption{
+        Graf točnosti algoritma za rastavljanje riječi u sadržaju iz knjiga.
+    }
+    \label{fig:result-04}
+\end{figure}
+
+\begin{table}[htb]
+\caption{Točnost algoritama za rastavljanje riječi u sadržaju iz knjiga.}
+\label{tbl:result-03}
+\centering
+\begin{tabular}{lccccc} \hline
+& Min. & Sred. & Med. & Maks. & Udio primjera s maks. točnosti \\ \hline
+avgcharwidth & 0.601124 & 0.957271 & 0.975903 & 1 & 0.205882 \\
+avgreldist & 0.606742 & 0.915852 & 0.927881 & 0.961436 & 0.606742 \\
+avgcenterdist & 0.591292 & 0.92926 & 0.947823 & 1 & 0.0294118 \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[htb]
+    \centering
+    \captionsetup{justification=centering,margin=2cm}
+    \includegraphics[width=\textwidth]{images/error-02.png}
+    \caption{
+        Horizontalno preklapanje znakova.
+    }
+    \label{fig:error-02}
+\end{figure}
+
+% result-04.png Knjige
+% avgcharwidth
+% median = 0.975903
+% avg = 0.957271
+% el = 0.205882
+% max = 1
+% min = 0.601124
+%
+% avgreldist
+% median = 0.927881
+% avg = 0.915852
+% el = 0.0294118
+% max = 0.961436
+% min = 0.606742
+%
+% avgcenterdist
+% median = 0.947823
+% avg = 0.92926
+% el = 0.0294118
+% max = 1
+% min = 0.591292
+
+
+
+
+
+
+
+
+
+
+
 
 
 
