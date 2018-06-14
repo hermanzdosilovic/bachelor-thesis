@@ -72,7 +72,7 @@
 Optičko raspoznavanje znakova sve je više zastupljeno u našem svakodnevnom
 životu. Koristi se u provjeri osobnih dokumenata, prepoznavanju registarskih
 tablica, digitalizaciji starih tiskanih knjiga, digitalizaciji raznih tiskanih
-dokumenata, automatskom unosu podataka s uplatinica itd. U nekim primjenama
+dokumenata, automatskom unosu podataka s uplatnica itd. U nekim primjenama
 optičkog raspoznavanja znakova potrebna nam je i struktura očitanog sadržaja
 nad kojom bi se mogla provesti daljnja analiza. Na primjer, u digitalizaciji
 knjiga potrebna nam je struktura sadržaja u kojoj su znakovi grupirani u linije
@@ -85,13 +85,13 @@ Sustavi za određivanje strukture teksta sastavni su dio optičkog raspoznavanja
 znakova. U ovom završnom radu predložit ćemo nekoliko načina za određivanje
 strukture teksta koji će u nestrukturiranom sadržaju odrediti linije i riječi
 samo na temelju položaju pojedinih znakova. Sustav za određivanje strukture
-teksta na temelju položaja pojedinih znakova, implementiran u skopu ovog rada,
+teksta na temelju položaja pojedinih znakova, implementiran u sklopu ovog rada,
 rješavat će problem određivanje strukture teksta u sadržaju s računa iz
-trgovine i u sadržaju iz knjiga. Sustav će biti podjeljen na dva podsustava od
+trgovine i u sadržaju iz knjiga. Sustav će biti podijeljen na dva podsustava od
 kojih će prvi odrediti linije, a drugi će rastaviti riječi u svakoj liniji.
 
 U drugom poglavlju opisane su primjene i način rada sustava za optičko
-raspoznavanje znakova. Treće poglavlje daje uvid u dosadašni rad u području
+raspoznavanje znakova. Treće poglavlje daje uvid u dosadašnji rad u području
 određivanja strukture teksta, a četvrto poglavlje detaljno opisuje problem koji
 rješava ovaj rad. Također, u okviru četvrtog poglavlja bit će opisan skup
 podataka za testiranje razvijenog sustava. Poglavlje
@@ -99,7 +99,7 @@ podataka za testiranje razvijenog sustava. Poglavlje
 algoritama za određivanje linija i algoritama za rastavljanje riječi koji
 zajedno čine sustav za određivanje strukture teksta. Rezultati i analiza
 algoritama, kao i korištene mjere točnosti opisane su u šestom poglavlju. U
-sklopu analize dane su smjerince za budući rad.
+sklopu analize dane su smjernice za budući rad.
 
 
 
@@ -159,7 +159,7 @@ pločicama \citep{DBLP:journals/corr/Saghaei16a},
 \citep{DBLP:journals/corr/abs-1802-09567}, u detekciji znakova sadržaja knjiga
 \citep{DBLP:journals/corr/abs-1802-10033},
 \citep{Christy:2017:MDE:3172938.3075645} i detekciji znakova na raznim
-dokumenatima \citep{DBLP:journals/corr/HarrajR15} \citep{verma2016ocr}. Na
+dokumentima \citep{DBLP:journals/corr/HarrajR15} \citep{verma2016ocr}. Na
 slici \ref{fig:receipt-example-01} prikazan je primjer rezultata korištenja
 OCR-sustava za detekciju znakova na računima iz trgovine. Slika
 \ref{fig:book-example-01} prikazuje rezultat OCR-sustava za detekciju znakova
@@ -469,7 +469,7 @@ Liang i suradnici \citep{liang1996document} predlažu heuristički algoritam za
 određivanje strukture teksta. Algoritam radi horizontalnu projekciju (slika
 \ref{fig:histogram-projection}) omeđujućih pravokutnika na jednu ravninu i
 pronalazi vrhove i doline u histogramu koji prikazuje frekvencije pojavljivanja
-projektiranih pravokntnika. Osim ovog pristupa predložili su još jedan koji
+projektiranih pravokutnika. Osim ovog pristupa predložili su još jedan koji
 spaja dva znaka u jednu cjelinu ako i samo ako su dva znaka dovoljno blizu da
 ih ima smisla spojiti. \citep{gupta2006document} također
 koriste razne heuristike prema kojima povezuju susjedne omeđujuće pravokutnike.
@@ -1810,8 +1810,8 @@ Lorem dolors it amet ,
 consecte tur ipsum ad ipiscing elit.
 \end{lstlisting}
 
-Sustav je progriješio u određivanju linija time što je riječ \lstinline{ipsum}
-stavio u drugu liniju. Osim toga, progriješio je i u razdvajanju riječi u obje
+Sustav je pogriješio u određivanju linija time što je riječ \lstinline{ipsum}
+stavio u drugu liniju. Osim toga, pogriješio je i u razdvajanju riječi u obje
 linije. Levenshteinova udaljenost sadržaja te dvije datoteke je $17$, međutim,
 ta informacija ne govori ništa o točnosti sustava. Rezultat Levenshteinove
 udaljenosti određuje broj pogrešaka koje sustav radi u odnosu na referentne
@@ -1838,7 +1838,7 @@ između $0$ i $1$, a ne u postocima.
 
 Slika \ref{fig:result-example-01} prikazuje graf točnosti (dobrote) sustava za
 određivanje strukture teksta za sadržaj računa iz trgovine. Za svaki testni
-primjer izmjerena je dobrota sustava, zatim su izmjerete dobrote uzlazno
+primjer izmjerena je dobrota sustava, zatim su izmjerene dobrote uzlazno
 sortirane i tako su nanesene na graf dobrote te je zbog toga graf monotono
 rastući. Na ovaj će se način prikazivati grafove dobrote u rezultatima svih
 algoritama.
@@ -1967,7 +1967,7 @@ Najveći nedostatak u navedenim metodama za određivanje točnosti je to što
 točnost sustava za rastavljanje riječi ovisi o točnosti sustava za određivanje
 linija. Osim toga, usporedbom sa sadržajem očekivane izlazne datoteke gubimo
 informaciju o tome koji znak s omeđujućim pravokutnikom predstavlja zapisani
-znak u datoteci. Oba problema mogu se rješiti boljim skupom podataka za
+znak u datoteci. Oba problema mogu se riješiti boljim skupom podataka za
 testiranje koji bi se trebao sastojati od unaprijed strukturiranih
 OCR-rezultata u formatu JSON koji predstavljaju očekivani OCR-rezultat. S
 takvim skupom podataka može se nezavisno testirati i analizirati ponašanje
@@ -2022,7 +2022,7 @@ preklapanje samo između znakova koji su relativno iste visine. U ovom primjeru
 to bi značilo da će algoritam zanemariti znak \lstinline{.} i izmjerit će
 preklapanje sa znakom \lstinline{D}. U drugom slučaju algoritam ne može spojiti
 lijevu i desnu stranu u istu liniju zbog prevelike zakrivljenosti sadržaja.
-Ovaj problem mogao bi se rješiti tako da algoritam ima informaciju o
+Ovaj problem mogao bi se riješiti tako da algoritam ima informaciju o
 maksimalnoj $x$ vrijednost na kojoj se može nalaziti znak koji započinje
 liniju. S takvom informacijom može se forsirati spajanje znakova s krajnje
 desne strane s grupiranim linijama s lijeve strane.
@@ -2034,7 +2034,7 @@ desne strane s grupiranim linijama s lijeve strane.
     \captionsetup{justification=centering}
     \includegraphics[width=\textwidth]{images/error-01.png}
     \caption{
-        Neispavna detekcija linija u računima zbog prevelike zakrivljenosti
+        Neispravna detekcija linija u računima zbog prevelike zakrivljenosti
         sadržaja.
     }
     \label{fig:error-01}
@@ -2193,7 +2193,7 @@ strukture koriste položaj pojedinih znakova i zajedno čine sustav za određiva
 strukture teksta.
 
 Predstavljeni sustav za određivanje strukture teksta na temelju položaja
-pojedinih znakova namjenjen je i testiran za određivanje strukture na sadržaju s
+pojedinih znakova namijenjen je i testiran za određivanje strukture na sadržaju s
 računa iz trgovina i na sadržaju iz knjiga. Rezultati i analiza pokazuju kako
 postoji još prostora za poboljšanje algoritama i mjera za određivanje
 točnosti. Algoritam za određivanje linija temelji se na pretpostavci da dva
@@ -2215,9 +2215,9 @@ parametara.
 
 \begin{sazetak}
 U ovom radu predstavljen je sustav za određivanje strukture teksta na temelju
-položaja pojedinih znakova namjenjen za rješavanje problema određivanja
+položaja pojedinih znakova namijenjen za rješavanje problema određivanja
 strukture teksta u sadržaju s računa iz trgovina i sadržaju iz knjiga. Sustav je
-podjeljen na dva podsustava od kojih prvi određuje linije, a drugi rastavlja
+podijeljen na dva podsustava od kojih prvi određuje linije, a drugi rastavlja
 riječi u sadržaju. Algoritam za određivanje linija temelji se na pretpostavci
 da dva susjedna znaka, koja se nalaze u istoj liniji, ostvaruju maksimalno
 vertikalno preklapanje. Algoritmi za rastavljanje riječi na razne načine
@@ -2225,7 +2225,7 @@ koriste statističke podatke o širini i udaljenosti znakova. Svaki algoritam
 koristi parametre koji utječu na način određivanja linija i razdvajanja riječi
 
 
-\kljucnerijeci{sustav za određivanje strukture teksta, optičko raspozavanje znakova, algoritmi za određivanje linija, algoritmi za razdvajanje riječi, segmentacija teksta, segmentacija linija}
+\kljucnerijeci{sustav za određivanje strukture teksta, optičko raspoznavanje znakova, algoritmi za određivanje linija, algoritmi za razdvajanje riječi, segmentacija teksta, segmentacija linija}
 \end{sazetak}
 
 \engtitle{Text Layout Analysis System Based on Individual Character Positions}
