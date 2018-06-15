@@ -78,7 +78,7 @@ nad kojom bi se mogla provesti daljnja analiza. Na primjer, u digitalizaciji
 knjiga potrebna nam je struktura sadržaja u kojem su znakovi grupirani u linije
 i riječi kako bismo nad takvim strukturiranim sadržajem mogli provesti neku
 drugu obradu. U provjeri osobnih dokumenata potrebna nam je struktura sadržaja
-kako bismo mogli povratiti informacije o osobnim podacima korisnika kao što su
+kako bismo mogli očitati informacije o osobnim podacima korisnika kao što su
 npr.\ njegovo ime i prezime.
 
 Sustavi za određivanje strukture teksta sastavni su dio optičkog raspoznavanja
@@ -86,15 +86,15 @@ znakova. U ovom završnom radu predložit ćemo nekoliko načina za određivanje
 strukture teksta koji će u nestrukturiranom sadržaju odrediti linije i riječi
 samo na temelju položaju pojedinih znakova. Sustav za određivanje strukture
 teksta na temelju položaja pojedinih znakova, implementiran u sklopu ovog rada,
-rješavat će problem određivanje strukture teksta u sadržaju s računa iz
+rješavat će problem određivanja strukture teksta u sadržaju s računa iz
 trgovine i u sadržaju iz knjiga. Sustav će biti podijeljen na dva podsustava od
-kojih će prvi određivati linije, a drugi će rastavljati riječi u svakoj liniji.
+kojih će prvi određivati linije, a drugi rastavljati riječi u svakoj liniji.
 
 U drugom poglavlju opisane su primjene i način rada sustava za optičko
 raspoznavanje znakova. Treće poglavlje daje uvid u dosadašnji rad u području
 određivanja strukture teksta, a četvrto poglavlje detaljno opisuje problem koji
-rješava ovaj rad. Također, u okviru četvrtog poglavlja opisan je skup
-podataka za testiranje razvijenog sustava. Poglavlje
+rješava ovaj rad. U okviru četvrtog poglavlja opisan je i skup
+podataka za ispitivanje razvijenog sustava. Poglavlje
 \ref{chap:algoritmi-za-odredivanje-strukture-teksta} formalno opisuje način rada
 algoritama za određivanje linija i algoritama za rastavljanje riječi koji
 zajedno čine sustav za određivanje strukture teksta. Rezultati i analiza
@@ -118,7 +118,7 @@ sklopu analize dane su smjernice za budući rad.
 
 \chapter{Optičko raspoznavanje znakova}
 \label{chap:opticko-raspoznavanje-znakova}
-Sustav za optičko raspoznavanje znakova \engl{optical character recognition} (u
+Sustav za optičko raspoznavanje znakova \engl{optical character recognition}; (u
 daljnjem tekstu: \emph{OCR-sustav})
 pretvara sliku tiskanog teksta u digitalizirani format kojim možemo jednostavno
 manipulirati na računalu.
@@ -127,8 +127,8 @@ pojedine znakove teksta sa slike
 zbog velike raznolikosti jezika, fonta i stila kojim tekst može biti napisan.
 Optičko raspoznavanje znakova je stoga vrlo zahtjevan problem i mnogo je
 istraživačkog truda uloženo u pokušaju
-da se slike teksta pretvore u format koji računalo razumije. \citep
-{DBLP:journals/corr/abs-1710-05703}
+da se slike teksta pretvore u format koji računalo razumije.
+\citep{DBLP:journals/corr/abs-1710-05703}
 
 
 
@@ -141,7 +141,7 @@ da se slike teksta pretvore u format koji računalo razumije. \citep
 \section{Primjene}
 Osim tiskanog teksta, OCR-sustavi koriste se i u prepoznavanju znakova rukom
 pisanog teksta. Prepoznavanje znakova rukom pisanog teksta je teži problem od
-prepoznavanja tiskanog teksta \citep{DBLP:journals/corr/abs-1710-05703} zato jer
+prepoznavanja tiskanog teksta \citep{DBLP:journals/corr/abs-1710-05703} zato što
 se oblik znakova i njihov način pisanja razlikuje kod svake osobe (npr.\
 rukopis odrasle osobe potpuno je drugačiji od rukopisa djeteta).
 OCR-sustave za detekciju rukom pisanih znakova možemo podijeliti na dvije
@@ -155,12 +155,13 @@ detekcija znakova kompliciranija \citep{DBLP:journals/corr/abs-1710-05703}.
 Slika \ref{fig:math-example-01} prikazuje primjer rezultata \emph{off-line}
 OCR-sustava za detekciju rukom pisanih znakova. OCR-sustavi imaju široku
 primjenu i možemo ih pronaći primjerice u detekciji znakova na registarskim
-pločicama \citep{DBLP:journals/corr/Saghaei16a},
-\citep{DBLP:journals/corr/abs-1802-09567}, u detekciji znakova sadržaja knjiga
-\citep{DBLP:journals/corr/abs-1802-10033},
-\citep{Christy:2017:MDE:3172938.3075645} i detekciji znakova na raznim
-dokumentima \citep{DBLP:journals/corr/HarrajR15} \citep{verma2016ocr}. Na
-slici \ref{fig:receipt-example-01} prikazan je primjer rezultata korištenja
+pločicama
+\citep{DBLP:journals/corr/Saghaei16a,DBLP:journals/corr/abs-1802-09567}, u
+detekciji znakova sadržaja knjiga
+\citep{DBLP:journals/corr/abs-1802-10033,Christy:2017:MDE:3172938.3075645} i
+detekciji znakova na raznim dokumentima
+\citep{DBLP:journals/corr/HarrajR15,verma2016ocr}. Na slici
+\ref{fig:receipt-example-01} prikazan je primjer rezultata korištenja
 OCR-sustava za detekciju znakova na računima iz trgovine. Slika
 \ref{fig:book-example-01} prikazuje rezultat OCR-sustava za detekciju znakova
 na tiskanim knjigama.
@@ -204,7 +205,7 @@ na tiskanim knjigama.
 \section{Komponente OCR-sustava}
 \label{sec:komponente-ocr-sustava}
 Optičko raspoznavanje znakova provodi se u nekoliko koraka
-\citep{DBLP:journals/corr/abs-1710-05703} \citep{kaur2016survey}:
+\citep{DBLP:journals/corr/abs-1710-05703,kaur2016survey}:
 
 \begin{enumerate}
     \item pribavljanje slike,
@@ -224,7 +225,7 @@ dokumenata \engl{scanner}. Nakon prvog koraka, slika dokumenta nad kojim
 provodimo raspoznavanje znakova sastoji se samo od slikovnih elemenata
 \engl{pixels} \citep{Vynckier:2018:HowOcrWorks}. Slika
 \ref{fig:receipt-example-02} prikazuje primjer slike nad kojom možemo provesti
-postupak raspoznavanja znakova. Slika može sadržati pozadinu koju
+postupak raspoznavanja znakova. Slika može sadržavati pozadinu koju
 bi OCR-sustav trebao zanemariti.
 
 \
@@ -239,13 +240,13 @@ bi OCR-sustav trebao zanemariti.
 
 \subsubsection{Predobrada}
 U predobradi slike OCR-sustavi često provode niz morfoloških transformacija i
-filtra nad pribavljenom slikom. Cilj ovog koraka je povećati kvalitetu slike i
-smanjiti informacije na slici. Binarizacija je jedan od potkoraka predobrade
-koji slike u boji ili u nijansama sive pretvara u crno-bijele. Osim binarizacije
-koriste se neke morfološke transformacije poput dilatacije, rezanja i
+filtara nad pribavljenom slikom. Cilj ovog koraka je povećati kvalitetu slike i
+smanjiti informacije na slici. Binarizacija je jedan od podkoraka predobrade
+koji slike u boji ili u nijansama sive pretvara u crno-bijele. Osim
+binarizacije, koriste se i morfološke transformacije poput dilatacije, rezanja i
 skaliranja. Slika \ref{fig:binarization} prikazuje primjer slike prije i nakon
-binarizacije. \citep{Gulan:2016:Bacherlor}
-\citep{DBLP:journals/corr/abs-1710-05703} \citep{Jurin:2017:Master}
+binarizacije.
+\citep{Gulan:2016:Bacherlor,DBLP:journals/corr/abs-1710-05703,Jurin:2017:Master}
 
 \
 
@@ -265,23 +266,23 @@ binarizacije. \citep{Gulan:2016:Bacherlor}
 Sljedeći korak, segmentacija znakova, je postupak segmentiranja slike u
 segmente unutar kojih se nalaze znakovi koje želimo klasificirati. Jedan od
 pristupa segmentacije izvodi se s vrha prema dnu gdje se prvo segmentiraju
-linije, zatim riječi i na kraju pojedini znakovi \citep{Jurin:2017:Master}
-\citep{Vynckier:2018:HowOcrWorks}. Prednost ovakvog pristupa je da uz lokaciju
-svakog znaka dobivamo i strukturu cijelog teksta, odnosno, znamo kojoj liniji i
-kojoj riječi znak pripada. Nedostatak ovakvog pristupa je da ne postoje
-korekcijski mehanizmi kojima bismo znak pridružili nekoj drugoj liniji ili
-riječi ako su prva dva koraka segmentacije linije ili riječi neispravni.
-\citep{Jurin:2017:Master}
+linije, zatim riječi i na kraju pojedini znakovi
+\citep{Jurin:2017:Master,Vynckier:2018:HowOcrWorks}. Prednost ovakvog pristupa
+je da uz lokaciju svakog znaka dobivamo i strukturu cijelog teksta, odnosno,
+znamo kojoj liniji i kojoj riječi znak pripada. Nedostatak ovakvog pristupa je
+da ne postoje korekcijski mehanizmi kojima bismo znak pridružili nekoj drugoj
+liniji ili riječi ako su prva dva koraka segmentacije linije ili riječi
+neispravni. \citep{Jurin:2017:Master}
 
-Drugi pristupi poput \emph{ZICER OCR}\footnote{OCR-sustav tvrtke
-\emph{Microblink}, \url{https://microblink.com}} sustava izravno
-izvode segmentaciju cijele slike na području koji predstavljaju znakove.
-Prednost takvog pristupa je da možemo detektirati znakove teksta u kojemu nema
-riječi i linija, kao što je na primjer matematički izraz. Nedostatak takvog
-pristupa je da gubimo informaciju o strukturi teksta i zato postoji potreba za
-razvojem dodatnog sustava koji bi znakove grupirao u riječi, a riječi u linije
-\citep{Jurin:2017:Master}. Slika \ref{fig:segmentation} prikazuje rezultat
-segmentacije pojedinih znakova.
+Drugi pristupi poput sustava \emph{ZICER OCR}\footnote{OCR-sustav tvrtke
+\emph{Microblink}, \url{https://microblink.com}} izravno
+izvode segmentaciju cijele slike kako bi odredili područja koja
+predstavljaju znakove. Prednost takvog pristupa je da možemo detektirati
+znakove teksta u kojemu nema riječi i linija, kao što je na primjer matematički
+izraz. Nedostatak takvog pristupa je da gubimo informaciju o strukturi teksta i
+zato postoji potreba za razvojem dodatnog sustava koji bi znakove grupirao u
+riječi, a riječi u linije \citep{Jurin:2017:Master}. Slika
+\ref{fig:segmentation} prikazuje rezultat segmentacije pojedinih znakova.
 
 \begin{figure}[htb]
     \centering
@@ -303,9 +304,8 @@ potrebno uzeti u obzir za kvalitetnu i ispravnu klasifikaciju.
 
 \subsubsection{Klasifikacija}
 Klasifikacija je najvažniji korak optičkog raspoznavanja znakova
-\citep{verma2012survey} \citep{zhu2016novel} koji koristi izdvojene značajke za
-određivanje klase pojedinog znaka \citep{lehal1999feature}
-\citep{kaur2016survey}. Statistički pristupi klasifikacije koriste
+\citep{verma2012survey,zhu2016novel} koji koristi izdvojene značajke za
+određivanje klase pojedinog znaka \citep{lehal1999feature,kaur2016survey}. Statistički pristupi klasifikacije koriste
 diskriminativne funkcije za određivanje klase znaka
 \citep{DBLP:journals/corr/abs-1710-05703}, a u novije vrijeme koriste se duboke
 neuronske mreže \citep{Jurin:2017:Master}. Neki od statističkih pristupa su:
@@ -330,7 +330,7 @@ pobijedila na natječaju \emph{ImageNet 2012} u području klasifikacije objekata
 Nakon klasifikacije znakova slijedi njihova naknadna obrada koja se koristi kako
 bi se poboljšali OCR-rezultati. Jedan od pristupa postprocesiranja koristi
 rezultate više različitih klasifikatora koji mogu biti korišteni slijedno,
-paralelno ili hijerarhijski. Nakon toga rezultati klasifikatora se kombiniraju
+paralelno ili hijerarhijski. Nakon toga, rezultati klasifikatora se kombiniraju
 različitim pristupima \citep{DBLP:journals/corr/abs-1710-05703}. Kao što je
 prije spomenuto, segmentacija koja se ne provodi s vrha
 prema dnu nema informaciju o strukturi teksta i zato je potrebno razviti dodatan
@@ -552,8 +552,8 @@ razmatrane.
 
 U sklopu ovog rada potrebno je razviti sustav za određivanje strukture
 teksta koji će rješavati problem određivanja strukture teksta na računima iz
-trgovine i sadržaja iz knjiga. Stup podataka za testiranje
-sustava detaljno je objašnjen u odjeljku \ref{sec:skup-padataka-za-testiranje}.
+trgovine i sadržaja iz knjiga. Stup podataka za ispitivanje
+sustava detaljno je objašnjen u odjeljku \ref{sec:skup-podataka-za-ispitivanje}.
 
 Slika \ref{fig:book-example-02} prikazuje vizualizaciju rezultata OCR-sustava
 koji je za svaki znak vratio omeđujući pravokutnik (označeno plavom bojom) i
@@ -562,7 +562,7 @@ Slike \ref{fig:receipt-example-01} i \ref{fig:book-example-01} također prikazuj
 vizualizaciju rezultata OCR-sustava i primjere s kakvim će se sustav susresti.
 
 Primjer pojednostavljenog (detaljnije u odjeljku
-\ref{sec:skup-padataka-za-testiranje}) nestrukturiranog OCR-rezultata u formatu
+\ref{sec:skup-podataka-za-ispitivanje}) nestrukturiranog OCR-rezultata u formatu
 JSON koji će sustav za određivanje strukture teksta dobiti kao svoj ulaz
 prikazan je isječkom \ref{lst:ocr-result-json-01}. Ulazni nestrukturirani
 OCR-rezultat u formatu JSON sastoji se uvijek od jedne linije u koju
@@ -715,9 +715,9 @@ znaka bjeline.
 
 
 
-\section{Skup podataka za testiranje}
-\label{sec:skup-padataka-za-testiranje}
-Skup podataka za testiranje (u daljnjem tekstu: \emph{podatci})
+\section{Skup podataka za ispitivanje}
+\label{sec:skup-podataka-za-ispitivanje}
+Skup podataka za ispitivanje (u daljnjem tekstu: \emph{podatci})
 sustava sastoji se od slika, ulaznih datoteka u formatu JSON i
 očekivanih izlaznih datoteka. U sklopu ovog rada razvijeni sustav za
 određivanje strukture teksta rješavat će problem određivanja strukture teksta
@@ -728,7 +728,7 @@ na računima iz trgovine i sadržaja iz knjiga.
 
 \subsection{Slike}
 \label{subsec:slike}
-Podatci za testiranje sustava sadrže $100$ slika računa (primjer na slici
+Podatci za ispitivanje sustava sadrže $100$ slika računa (primjer na slici
 \ref{fig:receipt-example-04}) i $34$ slike sadržaja iz knjiga (primjer na slici
 \ref{fig:book-example-03}).
 
@@ -742,7 +742,7 @@ Omeđujući pravokutnici označenih znakova predstavljaju područje koje označe
 znak zauzima na slici. Stranice omeđujućih pravokutnika su uvijek paralelne sa
 rubovima slike. Slika \ref{fig:book-example-04} prikazuje isječak slike,
 sadržaja iz knjige, na kojoj su znakovi ukošeni, a stranice njihovih omeđujućih
-znakova paralelne su sa rubovima slike. Možemo uočiti kako je moguće da se dva
+znakova paralelne su s rubovima slike. Možemo uočiti kako je moguće da se dva
 susjedna omeđujuća pravokutnika preklapaju.
 
 \
@@ -908,8 +908,8 @@ Learn more at the pharmacy.
 
 
 
-\section{Korištenje skupa podataka za testiranje}
-\label{sec:koristenje-skupa-podataka-za-testiranje}
+\section{Korištenje skupa podataka za ispitivanje}
+\label{sec:koristenje-skupa-podataka-za-ispitivanje}
 Slika \ref{fig:sustav-02} prikazuje postupak dobivanja izlazne datoteke iz
 strukturiranog OCR-rezultata kojeg je vratio sustav za određivanje strukture
 teksta. Ulaz u sustav je ulazna datoteka u formatu JSON koja predstavlja
@@ -938,7 +938,7 @@ u izlaznu datoteku u formatu opisanom u odjeljku
 prikazuje pseudokôd algoritma za ispis OCR-rezultata u formatu opisanom u
 pododjeljku \ref{subsec:ocekivane-izlazne-datoteke}. Izlazne datoteke stvorene
 na temelju strukturiranih OCR-rezultata i očekivane ulazne datoteke dostupne u
-skupu podataka za testiranje uspoređuju se metodom objašnjenom u odjeljku
+skupu podataka za ispitivanje uspoređuju se metodom objašnjenom u odjeljku
 \ref{sec:mjera-tocnosti-algoritama}.
 
 \
@@ -1095,11 +1095,11 @@ Vertikalno preklapanje \textit{overlap} dva znaka $A$ i $B$ definira se izrazom:
 \frac{\max(0, \min( A_y + A_h, B_y + B_h ) - \max( A_y, B_y ))}{\min(A_h, B_h)}
 \end{equation}
 
-Na početku svog rada algoritam uzlazno sortira sve znakove po horizontalnoj $x$
+Na početku rada, algoritam uzlazno sortira sve znakove po horizontalnoj $x$
 vrijednost, zatim iterira po svakom znaku i konstruira linije gledajuću s kojom
 linijom promatrani znak ostvaruje maksimalno preklapanje. Preklapanje s linijom
 definira se kao preklapanje sa zadnjim znakom u toj liniji. Promatrani znak
-pripadne onoj liniji s kojom ostvari maksimalno preklapanje:
+pridružuje se onoj liniji s kojom ostvari maksimalno preklapanje:
 
 \begin{equation}
 \label{eq:overlap-01}
@@ -1192,14 +1192,14 @@ ostvaruju najbolji rezultati za sadržaj iz knjiga.
 
 \subsubsection{Rješavanje problema lažno pozitivnog preklapanja}
 Slika \ref{fig:overlap-02} prikazuje slučaj kada znak pripadne krivoj liniji
-zato jer s njom ostvaruje maksimalno preklapanje zbog zakrivljenosti slike i
+zato što s njom ostvaruje maksimalno preklapanje zbog zakrivljenosti slike i
 sadržaja. U ovom primjeru znak \lstinline{5} pripast će prvoj liniji
 \lstinline{Meat}, a trebao bi pripasti drugoj liniji. Promatrajući skup
 podataka za koji se rješava problem zaključeno je kako uvijek treba dati
 prednost onoj liniji čiji je zadnji znak bliži znaku kojeg promatramo. Tako će
 u primjeru sa slike \ref{fig:overlap-02} znak \lstinline{5} pripasti drugoj
-liniji zato jer je njezin zadnji znak bliži znaku \lstinline{5} nego znak
-\lstinline{t} iz prve linije i zato jer s zadnjim znakom u drugoj liniji ipak
+liniji zato što je njezin zadnji znak bliži znaku \lstinline{5} nego znak
+\lstinline{t} iz prve linije i jer sa zadnjim znakom u drugoj liniji ipak
 postiže nezanemarivo preklapanje.
 
 Za rješavanje ovog problema definiraju se dvije funkcije (slika
@@ -1229,12 +1229,12 @@ olakšalo, odnosno otežalo postizanje preklapanja u ovisnosti o udaljenosti
 između njihovih zadnjih znakova. Recimo da u smo u postupku traženja maksimalnog
 preklapanja u jednom trenutku ostvarili maksimalno preklapanje s linijom $l$
 iznosa $p_l$. S idućom linijom $k$ izmjerimo preklapanje $p_k$. Da bi linija
-$k$ postigla novo maksimalno preklapanje sa promatranim znakom mora vrijediti
+$k$ postigla novo maksimalno preklapanje s promatranim znakom mora vrijediti
 $p_k > p_l$. Međutim, recimo da smo uočili da je zadnji znak linije $k$
-bliži promatranom znaku nego zadnji znak linije $l$. Koristeći navedenu
-opservaciju možemo liniji $k$ olakšati postizanje novog maksimalnog
+bliži promatranom znaku nego zadnji znak linije $l$. Koristeći navedeno
+opažanje možemo liniji $k$ olakšati postizanje novog maksimalnog
 preklapanja tako da ostvareno preklapanje linije $l$ umanjimo za neki iznos.
-Budući da je zadnji znak linije $k$ bliži promatranom znaku novi uvijet koji
+Budući da je zadnji znak linije $k$ bliži promatranom znaku, novi uvijet koji
 linija $k$ mora zadovoljiti da bi ju smatrali novim maksimalnim preklapanjem
 glasi:
 
@@ -1350,10 +1350,10 @@ početak iduće riječi, ubaci znak bjeline čija će vrijednost \engl{value} bi
 $32$, a ostale informacije mogu biti proizvoljne.
 Ovaj odjeljak opisat će tri algoritma za rastavljanje riječi:
 \begin{itemize}
-    \item[$\bullet$] algoritam temeljen na prosječnoj širini znaka
+    \item[$\bullet$] algoritam temeljen na prosječnoj širini znaka,
     \item[$\bullet$] algoritam temeljen na prosječnoj relativnoj
-                     udaljenosti
-    \item[$\bullet$] algoritam temeljen na prosječnoj udaljenosti centara
+                     udaljenosti i
+    \item[$\bullet$] algoritam temeljen na prosječnoj udaljenosti centara.
 \end{itemize}
 
 
@@ -1364,8 +1364,8 @@ Ovaj odjeljak opisat će tri algoritma za rastavljanje riječi:
 Algoritam temeljen na prosječnoj širini znaka (u daljnjem tekstu:
 \emph{algoritam}) najjednostavniji je od svih algoritama u ovom odjeljku.
 Algoritam se temelji na pretpostavci da je širina razmaka između
-riječi proporcionalna sa prosječnom širinom znakova u promatranoj liniji.
-Označimo prosječnu širinu znaka u liniji $l$ sa $\overline{w_l}$:
+riječi proporcionalna prosječnoj širini znakova u promatranoj liniji.
+Označimo prosječnu širinu znaka u liniji $l$ s $\overline{w_l}$:
 
 \begin{equation}
 \overline{w_l} = \frac{\mathlarger{\sum}\limits_{A \in l} A_w}{|l|}
@@ -1452,10 +1452,10 @@ na poziciji $j$, za jedno mjesto udesno.
 
 
 \subsubsection{Vremenska složenost algoritma}
-Ako su u najgorem slučaju svi znakovi smješteni u istu liniju vremenska
+Ako su u najgorem slučaju svi znakovi smješteni u istu liniju, vremenska
 složenost ovog algoritma bit će $\mathcal{O}(n)$, gdje je $n$ ukupan broj
 znakova. U analizi vremenske složenosti nije uzeta u obzir vremenska složenost
-ubacivanja elementa u liniji $20$ zato jer postoje
+ubacivanja elementa u liniji $20$ zato što postoje
 strukture podataka (npr.\ povezana lista) nad kojima je moguće izvesti operaciju
 ubacivanja u konstantnoj složenosti $\mathcal{O}(1)$.
 
@@ -1471,7 +1471,7 @@ ubacivanja u konstantnoj složenosti $\mathcal{O}(1)$.
 \label{subsec:algoritam-temeljen-na-prosjecnoj-relativnoj-udaljenosti}
 Algoritam temeljen na prosječnoj relativnoj udaljenosti (u daljnjem tekstu:
 \emph{algoritam}) temelji se na pretpostavci da je udaljenost znaka $A$ s
-vrijednosti \engl{value} $A_v$ proporcionalna s prosječnom udaljenosti koju svi
+vrijednosti \engl{value} $A_v$ proporcionalna prosječnoj udaljenosti koju svi
 znakovi s vrijednosti $A_v$ ostvaruju sa svojim susjedima.
 
 Skup svih susjeda znaka $A$ definiramo kao skup svih znakova $B$ koji su
@@ -1626,21 +1626,16 @@ end
 
 
 \subsubsection{Vremenska složenost algoritma}
-Ako su u najgorem slučaju svi znakovi smješteni u istu liniju vremenska
+Ako su u najgorem slučaju svi znakovi smješteni u istu liniju, vremenska
 složenost algoritma bit će $\mathcal{O}(n)$, gdje je $n$ ukupan broj
 znakova. U analizi vremenske složenosti nije uzeta u obzir vremenska složenost
-ubacivanja elementa u liniji $33$ zato jer postoje strukture podataka
+ubacivanja elementa u liniji $33$ zato što postoje strukture podataka
 (npr.\ povezana lista) nad kojima je moguće izvesti operaciju ubacivanja u
-konstantnoj složenosti. U analizi složenosti isto tako nije uzeta u obzir
-vremenska složenost ubacivanja i dohvaćanja elemenata iz mape zato jer bismo
-takvu mapu mogli ostvariti jednim nizom u kojem bi pozicija ključa bila jednaka
-vrijednosti ključa. Korištenje takvog niza omogućilo bi nam da operacije
-ubacivanja i dohvaćanja radimo u konstantnom vremenu. Dodatno, korištenje
-takvog niza bilo bi memorijski skupo jer bismo u najgorem slučaju trebali imati
-mjesta za svaku Unicode vrijednost. Ako bismo htjeli izbjeći takav niz možemo
-koristiti mapu s vremenskom složenosti $\mathcal{O}(\log(n))$ za operacije
-ubacivanja i dohvaćanja, gdje je $n$ ukupan broj znakova. Korištenjem takve
-mape ukupna složenost algoritma bila bi $\mathcal{O}(n \cdot \log(n))$.
+konstantnoj složenosti. U analizi složenosti, isto tako, nije uzeta u obzir
+vremenska složenost ubacivanja i dohvaćanja elemenata iz mape zato što
+postoje strukture podataka (npr. tablica raspršenog adresiranja) nad kojima je
+moguće izvesti operaciju ubacivanja i dohvaćanja elemenata u konstantnom
+vremenu.
 
 
 
@@ -1796,14 +1791,14 @@ algoritama za rastavljanje riječi.
 
 \section{Mjere točnosti algoritama}
 \label{sec:mjera-tocnosti-algoritama}
-U odjeljku \ref{sec:koristenje-skupa-podataka-za-testiranje} opisan je način
-uporabe skupa podataka za testiranje. Sustav za određivanje strukture teksta
+U odjeljku \ref{sec:koristenje-skupa-podataka-za-ispitivanje} opisan je način
+uporabe skupa podataka za ispitivanje. Sustav za određivanje strukture teksta
 (u daljnjem tekstu: \emph{Sustav}) na ulaz dobiva nestrukturirani OCR-rezultat,
 a na izlazu daje strukturirani OCR-rezultat koji je potrebno zapisati u izlaznu
 datoteku u formatu opisanom u pododjeljku
 \ref{subsec:ocekivane-izlazne-datoteke}. Sadržaj izlazne datoteke uspoređuje se
 sa sadržajem očekivane izlazne datoteke dostupne u skupu podataka za
-testiranje. Rezultat usporedbe odredit će točnost sustava za određivanje
+ispitivanje. Rezultat usporedbe odredit će točnost sustava za određivanje
 strukture teksta.
 
 Za usporedbu sadržaja koristi se Levenshteinova udaljenost između niza znakova
@@ -1872,9 +1867,9 @@ poglavlja točnost sustava iskazivat će se u vrijednostima
 između $0$ i $1$, a ne u postocima.
 
 Slika \ref{fig:result-example-01} prikazuje graf točnosti (dobrote) sustava za
-određivanje strukture teksta za sadržaj iz knjiga. Za svaki testni
+određivanje strukture teksta za sadržaj iz knjiga. Za svaki ispitni
 primjer izmjerena je dobrota sustava, zatim su izmjerene dobrote uzlazno
-sortirane i tako su nanesene na graf dobrote te je zbog toga graf monotono
+sortirane i tako su unesene na graf dobrote zbog čega je graf monotono
 rastući. Na ovaj će se način prikazivati grafovi dobrote u rezultatima svih
 algoritama.
 
@@ -1913,7 +1908,7 @@ consecteturadipiscingelit.
 Slika \ref{fig:sustav-04} prikazuje postupak dobivanja izlazne datoteke iz
 OCR-rezultata s grupiranim linijama. Format izlazne datoteke opisan je u
 pododjeljku \ref{subsec:ocekivane-izlazne-datoteke}. Sadržaj dobivene izlazne
-datoteke uspoređuje se sa referentnim sadržajem koristeći izraz
+datoteke uspoređuje se s referentnim sadržajem koristeći izraz
 \ref{eq:fitness}.
 
 \begin{figure}[htb]
@@ -1931,7 +1926,7 @@ datoteke uspoređuje se sa referentnim sadržajem koristeći izraz
 
 Isječak \ref{lst:output-04} prikazuje primjer sadržaja izlazne datoteke stvorene
 na temelju OCR-rezultata dobivenog od sustava za određivanje linija. U sadržaju
-ne postoje razmaci zato jer OCR-rezultat nije još prošao kroz
+ne postoje razmaci zato što OCR-rezultat nije još prošao kroz
 sustav za rastavljanje riječi. Točnost sadržaja izlazne datoteke u odnosu na
 referentni sadržaj iz isječka \ref{lst:output-03} iznosi $0{,}8$.
 
@@ -1966,10 +1961,10 @@ određivanje linija. Određivanje točnosti algoritama za rastavljanje riječi j
 time ovisno o točnosti algoritama za određivanje linija, što je najveći
 nedostatak ovog pristupa za mjerenje točnosti.
 
-Budući da je ulazni OCR-rezultat u sustava za rastavljanje riječi rezultat
+Budući da je ulazni OCR-rezultat u sustav za rastavljanje riječi rezultat
 kojeg je vratio sustav za određivanje linija, mjera točnosti sustava za
 rastavljanje riječi je ujedno i mjera točnosti cijelog sustava za određivanje
-strukture teksta zato.
+strukture teksta.
 
 \begin{figure}[htb]
     \centering
@@ -1983,8 +1978,8 @@ strukture teksta zato.
 \end{figure}
 
 \subsection{Daljnja poboljšanja u određivanju točnosti}
-Prednost korištenog skupa za testiranje i opisanih metoda za određivanje
-točnosti je to što se lako može generirati veći skup podataka za testiranje
+Prednost korištenog skupa za ispitivanje i opisanih metoda za određivanje
+točnosti je to što se lako može generirati veći skup podataka za ispitivanje
 koristeći metodu početnog podizanja \engl{bootstrapping}. Kada su na
 raspolaganju samo označeni znakovi s omeđujućim pravokutnicima moguće je, na
 temelju nekoliko jednostavnih unaprijed ručno napisanih očekivanih izlaznih
@@ -1996,20 +1991,20 @@ napravio, ali zato ne treba ručno sastavljati cijelu očekivanu izlaznu
 datoteku. Zatim se ponovo može raditi na razvoju sustava i interpretaciji
 rezultata da bi se sustav poboljšao dok se ne postigne zadovoljavajuća točnost.
 Ovom metodom, korištenom u ovom radu, može se brzo stvoriti skup podataka za
-testiranje.
+ispitivanje.
 
 Najveći nedostatak u navedenim metodama za određivanje točnosti je to što
 točnost sustava za rastavljanje riječi ovisi o točnosti sustava za određivanje
 linija. Osim toga, usporedbom sa sadržajem očekivane izlazne datoteke gubimo
 informaciju o tome koji znak s omeđujućim pravokutnikom predstavlja zapisani
 znak u datoteci. Oba problema mogu se riješiti boljim skupom podataka za
-testiranje koji bi se trebao sastojati od unaprijed strukturiranih
+ispitivanje koji bi se trebao sastojati od unaprijed strukturiranih
 OCR-rezultata u formatu JSON koji predstavljaju očekivani OCR-rezultat. S
-takvim skupom podataka može se nezavisno testirati i analizirati ponašanje
+takvim skupom podataka može se nezavisno ispitivati i analizirati ponašanje
 sustava za određivanje linija i sustava za rastavljanje riječi. Dodatno, takav
 skup podataka omogućio bi korištenje bolje metode za mjerenje točnosti koje bi
 se temeljile na usporedbi znakova iz OCR-rezultata, a ne znakova iz datoteka.
-Stvaranje takvog skupa za testiranje zahtjeva implementaciju posebnog sustava
+Stvaranje takvog skupa za ispitivanje zahtjeva implementaciju posebnog sustava
 za označavanje linija i riječi na slici, odnosno sustava koji bi omogućio da
 se označeni znakovi (dostupni u trenutnom skupu podataka) spoje u odgovarajuće
 linije i riječi.
@@ -2121,7 +2116,7 @@ rezultati pokazuju točnost algoritama za rastavljanje riječi, a ujedno i
 točnost cijelog sustava za određivanje strukture teksta.
 Rezultati pokazuju da se s algoritmom temeljenog na prosječnoj udaljenosti
 centara može potpuno točno odrediti struktura teksta, u sadržaju s računa iz
-trgovina, za $54\%$ testnih primjera. Isti algoritam postiže znatno lošije
+trgovina, za $54\%$ ispitnih primjera. Isti algoritam postiže znatno lošije
 rezultate u određivanju strukture teksta u sadržaju iz knjiga.
 
 \begin{table}[htb]
@@ -2227,13 +2222,13 @@ susjeda ako su od njih udaljeniji od nekog promatranog prosjeka.
 Sustavi za određivanje strukture teksta sastavni su dio OCR-sustava koji se
 koriste za detekciju znakova na sadržaju strukturiranom u linije, riječi i
 blokove. Način izvedbe sustava ovisi o problemu koji se rješava i načinu
-integracije sa OCR-sustavom. U ovom radu predstavljeni su algoritmi za
+integracije s OCR-sustavom. U ovom radu predstavljeni su algoritmi za
 određivanje linija i razdvajanje riječi koji za određivanje
 strukture koriste položaj pojedinih znakova i zajedno čine sustav za određivanje
 strukture teksta.
 
 Predstavljeni sustav za određivanje strukture teksta na temelju položaja
-pojedinih znakova namijenjen je i testiran za određivanje strukture na sadržaju
+pojedinih znakova namijenjen je i ispitan za određivanje strukture na sadržaju
 s računa iz trgovina i na sadržaju iz knjiga. Rezultati i analiza pokazuju kako
 postoji još prostora za poboljšanje algoritama i mjera za određivanje
 točnosti. Algoritam za određivanje linija temelji se na pretpostavci da dva
@@ -2243,10 +2238,10 @@ koriste statističke podatke o širini i udaljenosti znakova. Dodatno,
 svaki algoritam koristi parametre koji utječu na način određivanja linija i
 razdvajanja riječi. Optimalni parametri algoritama ovise o problemu koji se
 rješava. U ovom radu predstavljeni optimalni parametri pronađeni su ručnim
-eksperimentiranjem sa skupom podataka za testiranje.
+eksperimentiranjem sa skupom podataka za ispitivanje.
 
 U budućem radu predlaže se sastavljanje novog skupa podataka koji bi omogućio
-nezavisno testiranje dva podsustava u sustavu za određivanje strukture teksta i
+nezavisno ispitivanje dva podsustava u sustavu za određivanje strukture teksta i
 predlaže se korištenje evolucijskih algoritama za pronalaženje optimalnih
 parametara.
 
@@ -2273,7 +2268,7 @@ segmentacija teksta, segmentacija linija}
 \engtitle{Text Layout Analysis System Based on Individual Character Positions}
 \begin{abstract}
 This thesis describes text layout analysis system based on individual character
-positions intendend to solve the problem of determining text layout in
+positions intended to solve the problem of determining text layout in
 receipts and book content. The system is divided into two subsystems, the first
 of which finds the lines in text and the other separates the words in lines.
 Algorithm for finding lines in text is based on the assumption that the two
