@@ -75,7 +75,7 @@ tablica, digitalizaciji starih tiskanih knjiga, digitalizaciji raznih tiskanih
 dokumenata, automatskom unosu podataka s uplatnica itd. U nekim primjenama
 optičkog raspoznavanja znakova potrebna nam je i struktura očitanog sadržaja
 nad kojom bi se mogla provesti daljnja analiza. Na primjer, u digitalizaciji
-knjiga potrebna nam je struktura sadržaja u kojoj su znakovi grupirani u linije
+knjiga potrebna nam je struktura sadržaja u kojem su znakovi grupirani u linije
 i riječi kako bismo nad takvim strukturiranim sadržajem mogli provesti neku
 drugu obradu. U provjeri osobnih dokumenata potrebna nam je struktura sadržaja
 kako bismo mogli povratiti informacije o osobnim podacima korisnika kao što su
@@ -88,12 +88,12 @@ samo na temelju položaju pojedinih znakova. Sustav za određivanje strukture
 teksta na temelju položaja pojedinih znakova, implementiran u sklopu ovog rada,
 rješavat će problem određivanje strukture teksta u sadržaju s računa iz
 trgovine i u sadržaju iz knjiga. Sustav će biti podijeljen na dva podsustava od
-kojih će prvi odrediti linije, a drugi će rastaviti riječi u svakoj liniji.
+kojih će prvi određivati linije, a drugi će rastavljati riječi u svakoj liniji.
 
 U drugom poglavlju opisane su primjene i način rada sustava za optičko
 raspoznavanje znakova. Treće poglavlje daje uvid u dosadašnji rad u području
 određivanja strukture teksta, a četvrto poglavlje detaljno opisuje problem koji
-rješava ovaj rad. Također, u okviru četvrtog poglavlja bit će opisan skup
+rješava ovaj rad. Također, u okviru četvrtog poglavlja opisan je skup
 podataka za testiranje razvijenog sustava. Poglavlje
 \ref{chap:algoritmi-za-odredivanje-strukture-teksta} formalno opisuje način rada
 algoritama za određivanje linija i algoritama za rastavljanje riječi koji
@@ -244,8 +244,8 @@ smanjiti informacije na slici. Binarizacija je jedan od potkoraka predobrade
 koji slike u boji ili u nijansama sive pretvara u crno-bijele. Osim binarizacije
 koriste se neke morfološke transformacije poput dilatacije, rezanja i
 skaliranja. Slika \ref{fig:binarization} prikazuje primjer slike prije i nakon
-binarizacije. \citep{Gulan:2016:Bacherlor},
-\citep{DBLP:journals/corr/abs-1710-05703}, \citep{Jurin:2017:Master}
+binarizacije. \citep{Gulan:2016:Bacherlor}
+\citep{DBLP:journals/corr/abs-1710-05703} \citep{Jurin:2017:Master}
 
 \
 
@@ -265,7 +265,7 @@ binarizacije. \citep{Gulan:2016:Bacherlor},
 Sljedeći korak, segmentacija znakova, je postupak segmentiranja slike u
 segmente unutar kojih se nalaze znakovi koje želimo klasificirati. Jedan od
 pristupa segmentacije izvodi se s vrha prema dnu gdje se prvo segmentiraju
-linije, zatim riječi i na kraju pojedini znakovi \citep{Jurin:2017:Master},
+linije, zatim riječi i na kraju pojedini znakovi \citep{Jurin:2017:Master}
 \citep{Vynckier:2018:HowOcrWorks}. Prednost ovakvog pristupa je da uz lokaciju
 svakog znaka dobivamo i strukturu cijelog teksta, odnosno, znamo kojoj liniji i
 kojoj riječi znak pripada. Nedostatak ovakvog pristupa je da ne postoje
@@ -313,7 +313,7 @@ Bayesov klasifikator, klasifikator stablom odluke, umjetne neuronske mreže i
 metoda k-najbližih susjeda \citep{DBLP:journals/corr/abs-1710-05703}.
 
 \citep{krizhevsky2012imagenet} objavili su rad koji je označio prekretnicu u
-klasifikaciji i lokalizaciji objekata \citep{Jurin:2017:Master}. Slika
+klasifikaciji i lokalizaciji objekata. Slika
 \ref{fig:deep-example-01} prikazuje arhitekturu \emph{AlexNet} koja je
 pobijedila na natječaju \emph{ImageNet 2012} u području klasifikacije objekata.
 \citep{Jurin:2017:Master}
@@ -340,8 +340,8 @@ znakova}.
 \citep{schulz2017multi} predstavili su arhitekturu
 tzv. \emph{post-correction} OCR-sustava kojim su pokazati na koji su način
 adaptirali generički sustav za naknadnu obradu OCR-rezultata koristeći domensko
-znanje za konkretan problem koji su rješavali. Ovim pristupom ostvarili su bolje
-rezultate za konkretni problem nego što su ostvarili koristeći postojeći
+znanje za problem koji su rješavali. Ovim pristupom ostvarili su bolje
+rezultate za nego što su ostvarili koristeći postojeći
 generički sustav za naknadnu obradu OCR-rezultata.
 
 \
@@ -383,7 +383,7 @@ teksta \citep{Jurin:2017:Master}.
 
 Tekst na slici može biti podijeljen na linije ili blokove, a u bloku tekst
 možemo podijeliti na linije. Unutar jedne linije znakove možemo grupirati u
-riječi. Način na koji će se odrediti struktura teksta uvelike ovisi o problemu
+riječi. Način na koji će se odrediti struktura teksta ovisi o problemu
 koji rješavamo i kakve rezultate želimo dobiti. Tekst na slici
 \ref{fig:text-segmentation-01} podijeljen je na linije (plavo), a unutar svake
 linije na riječi (crveno).
@@ -399,7 +399,7 @@ linije na riječi (crveno).
 strukture teksta koji će osim određivanja kojoj liniji pojedini znak pripada
 znati izbaciti tzv. \emph{false positive} znakove odnosno znakove koje je
 OCR-sustav prepoznao, a zapravo u tekstu ne postoje. Njihov sustav temelji
-se na \emph{min-cost flow network} modelu koji objedinjuje izbacivanje
+se na modelu \emph{min-cost flow network} koji objedinjuje izbacivanje
 \emph{false positive} znakova i pronalazak strukture teksta. Na temelju
 međusobne pozicije između dva prepoznata znaka i dodatnog parametra kojeg
 dobivaju od klasifikatora, a koji označava vjerojatnost ispravne detekcije,
@@ -415,7 +415,7 @@ grade težinski usmjereni graf (slika \ref{fig:text-flow}).
 
 \citep{zhu2016novel} predložili su novu arhitekturu (slika \ref{fig:novel-ocr})
 OCR-sustava koji se temelji na empirijskim rezultatima koji su pokazali da
-sadržaj riječi ne ovisi samo o dijelu teksta u kojem se ta riječ nalazi nego i
+sadržaj riječi ne ovisi samo o dijelu teksta u kojem se ta riječ nalazi, nego i
 o susjednim dijelovima teksta. Njihov OCR-sustav radi dvostruku analizu
 strukture teksta -- prije klasifikacije i nakon klasifikacije. Prva analiza
 strukture teksta omogućuje im da odrede strukturu teksta u blokovima, a druga
@@ -440,18 +440,18 @@ težinski graf nad kojim provode Kruskalov algoritam za pronalazak minimalnog
 razapinjujućeg stabla. Njihov pristup ne koristi rezultate klasifikacije, nego
 koriste povezane komponente koje im predstavljaju znakove i koje pronalaze
 koristeći algoritam temeljen na praćenju kontura \engl{contour tracing}. Slika
-\ref{fig:mst-example-01} prikazuje rezultat pronalaska linija teksta u rukom
-pisanom dokumentu na Engleskom jeziku.
+\ref{fig:mst-example-01} prikazuje rezultat pronalaska linija u teksta rukom
+pisanog dokumenta na Engleskom jeziku.
 
 \
 
 \begin{figure}[htb]
     \centering
-    \captionsetup{justification=centering,margin=2cm}
+    \captionsetup{justification=centering}
     \includegraphics[height=8cm]{images/mst-example-01.png}
     \caption{
-        Rezultat pronalaska linija teksta u rukom pisanom dokumentu na
-        Engleskom jeziku \citep{yin2007handwritten}
+        Rukom pisani dokument na
+        Engleskom jeziku \citep{yin2007handwritten}.
     }
     \label{fig:mst-example-01}
 \end{figure}
@@ -461,8 +461,8 @@ koji u težinama grafa uzima u obzir dodatne težine koje su učene mjerom MCE
 \engl{minimum classification error}.
 
 Još jedan pristup predložili su \citep{DBLP:journals/corr/abs-1301-2628} koji
-koriste tehniku hijerahijskog grupiranja koji postupno spaja linije koje dijele
-znakove dok god postoje linije koje se mogu spojiti.
+koriste tehniku hijerahijskog grupiranja koja postupno spaja samo one linije
+koje imaju zajedničke znakove.
 \citep{DBLP:journals/corr/TianPHLYT16}
 
 Liang i suradnici \citep{liang1996document} predlažu heuristički algoritam za
@@ -474,6 +474,8 @@ spaja dva znaka u jednu cjelinu ako i samo ako su dva znaka dovoljno blizu da
 ih ima smisla spojiti. \citep{gupta2006document} također
 koriste razne heuristike prema kojima povezuju susjedne omeđujuće pravokutnike.
 
+\pagebreak
+
 \begin{figure}[htb]
     \centering
     \captionsetup{justification=centering,margin=2cm}
@@ -482,8 +484,8 @@ koriste razne heuristike prema kojima povezuju susjedne omeđujuće pravokutnike
     \label{fig:histogram-projection}
 \end{figure}
 
-Određivanje strukture teksta je teško i uvelike ovisi o problemu koji
-rješavamo. U ovom poglavlju pokazano je da strukturiranje teksta može biti
+Određivanje strukture teksta je teško i jako ovisi o problemu koji se
+rješava. U ovom poglavlju pokazano je da strukturiranje teksta može biti
 izvođeno u raznim fazama izvođenja OCR-sustava. Trenutak u kojem ćemo pokrenuti
 analizu strukture teksta ovisi o načinu na koji smo označili segmente znakova,
 koje informacije o segmentu imamo i koji problem rješavamo. Pokazano je da su
@@ -516,7 +518,7 @@ nestrukturirani OCR-rezultat u kojem se nalaze svi segmentirani i
 klasificirani znakovi. Takav nestrukturirani OCR-rezultat prosljeđuje se
 sustavu za određivanje strukture teksta na naknadnu obradu. U praksi je sustav
 za određivanje strukture teksta sastavni dio naknadne obrade OCR-sustava,
-međutim, u ovaj rad razdvojit će ta dva sustava radi preglednije analize
+međutim, ovaj rad razdvojit će ta dva sustava radi preglednije analize
 njihove suradnje koja je prikazana na slici \ref{fig:sustav-01}.
 
 \
@@ -543,9 +545,10 @@ prepoznao. Svaki znak u OCR-rezultatu posjeduje sljedeće informacije:
 \
 
 Izlaz iz sustava je strukturirani OCR-rezultat u kojemu su znakovi
-grupirani u linije, a unutar svake linije riječi su odvojene znakom
+grupirani u linije, a unutar svake linije su riječi odvojene znakom
 bjeline. Strukturirani OCR-rezultat se zatim prosljeđuje dodatnim naknadnim
-obradama koje ovise o problemu koji se rješava.
+obradama koje ovise o problemu koji se rješava i koje u ovom radu neće biti
+razmatrane.
 
 U sklopu ovog rada potrebno je razviti sustav za određivanje strukture
 teksta koji će rješavati problem određivanja strukture teksta na računima iz
@@ -562,8 +565,8 @@ Primjer pojednostavljenog (detaljnije u odjeljku
 \ref{sec:skup-padataka-za-testiranje}) nestrukturiranog OCR-rezultata u formatu
 JSON koji će sustav za određivanje strukture teksta dobiti kao svoj ulaz
 prikazan je isječkom \ref{lst:ocr-result-json-01}. Ulazni nestrukturirani
-OCR-rezultat u formatu JSON uvijek se sastoji od jedne linije u koju
-su smješteni svi segmentirani i klasificirani znakovi u nasumičnim redoslijedom.
+OCR-rezultat u formatu JSON sastoji se uvijek od jedne linije u koju
+su, nasumičnim poretkom, smješteni svi segmentirani i klasificirani znakovi.
 
 \
 
@@ -626,21 +629,21 @@ su smješteni svi segmentirani i klasificirani znakovi u nasumičnim redoslijedo
 \section{Željena funkcionalnost}
 \label{sec:željena-funkcionalnost}
 Od sustava se očekuje da za dobiveni nestrukturirani OCR-rezultat u formatu
-JSON vrati novi strukturirani OCR-rezultat u istom formatu koji će znakove
-grupirati u linije i koji će unutar linija biti poredani s lijeva na desno.
-Također, linije moraju biti sortirane tako da se najviša linija u dokumentu
+JSON vrati strukturirani OCR-rezultat u istom formatu koji će znakove
+grupirati u linije i poredati ih s lijeva na desno.
+Linije, također, moraju biti poredane tako da se najviša linija u dokumentu
 nalazi na prvom mjestu.
 
-Osim grupiranja linija od sustava se očekuje da između dva znaka, gdje smatra da
-završava prethodna i započinje nova riječ, ubaci novi znak bjeline čija je
-vrijednost \engl{value} $32$, a ostale informacije mogu biti proizvoljne.
+Osim grupiranja linija, od sustava se očekuje da između dva znaka, gdje smatra
+da završava prethodna i započinje nova riječ, ubaci novi znak bjeline čija je
+vrijednost \engl{value} $32$, dok ostale informacije mogu biti proizvoljne.
 Dodatan zahtjev je da sustav sve grupirane linije smjesti u jedan blok
 (detaljnije u pododjeljku \ref{subsec:ulazne-datoteke}).
 
 Isječak \ref{lst:ocr-result-json-02} prikazuje primjer izlaza iz sustava za dani
 ulaz iz isječka \ref{lst:ocr-result-json-01}. Sustav je znakove grupirao u dvije
 linije i između prvog i zadnjeg znaka u drugoj liniji je ubacio znak bjeline.
-Vrijednost znaka bjeline je zahtijevana vrijednost $32$. Ostale informacije
+Vrijednost znaka bjeline je zahtijevana vrijednost $32$, a ostale informacije
 znaka bjeline mogle su biti proizvoljne, međutim, sustav im je dodijelio
 sljedeće smislenije vrijednosti:\begin{itemize}
     \item[$\bullet$] $x$ - horizontalna pozicija gornjeg desnog kuta lijevog
@@ -766,7 +769,7 @@ susjedna omeđujuća pravokutnika preklapaju.
     \centering
     \captionsetup{justification=centering,margin=2cm}
     \includegraphics[width=\textwidth]{images/book-example-04.png}
-    \caption{Primjer slike s kosim tekstom.}
+    \caption{Primjer slike s ukošenim tekstom.}
     \label{fig:book-example-04}
 \end{figure}
 
@@ -777,7 +780,20 @@ susjedna omeđujuća pravokutnika preklapaju.
 
 \subsection{Ulazne datoteke}
 \label{subsec:ulazne-datoteke}
-Slike opisane u pododjeljku \ref{subsec:slike} \textbf{ne predstavljaju} ulaz u sustav za određivanje strukture teksta. Nakon označavanja slika podatci o označavanju svake slike se izvoze i pohranjuju u datoteke u formatu JSON. Datoteke u formatu JSON predstavljaju nestrukturirani OCR-rezultat i ulaz u sustav. Ulazna datoteka u formatu JSON u kojoj su zapisani podaci o označavanju slike \ref{fig:receipt-example-04} prikazana je u isječku \ref{lst:ocr-result-json-03}. Zbog specifičnosti sustava za označavanje slika i načina na koji pohranjuje informacije o označavanju, svi označeni znakovi bit će smješteni u jednu liniju u nasumičnom poretku i ta linija će biti smještena u jedan blok. Za svaki znak dostupna je informacija o Unicode vrijednosti znaka koja je smještena pod ključem \lstinline{value}. Dodatno, za svaki znak dostupna je informacija o poziciji i veličini njegovog omeđujućeg pravokutnika \engl{bounding box}. Za svaki omeđujući pravokutnik poznate su sljedeće informacije:
+Slike opisane u pododjeljku \ref{subsec:slike} \textbf{ne predstavljaju} ulaz u
+sustav za određivanje strukture teksta. Nakon označavanja slika, podatci o
+označavanju svake slike se izvoze i pohranjuju u datoteke u formatu JSON.
+Datoteke u formatu JSON predstavljaju nestrukturirani OCR-rezultat i ulaz u
+sustav. Ulazna datoteka u formatu JSON u kojoj su zapisani podaci o označavanju
+slike \ref{fig:receipt-example-04} prikazana je u isječku
+\ref{lst:ocr-result-json-03}. Zbog specifičnosti sustava za označavanje slika i
+načina na koji pohranjuje informacije o označavanju, svi označeni znakovi bit
+će smješteni u jednu liniju u nasumičnom poretku i ta linija će biti smještena
+u jedan blok. Za svaki znak dostupna je informacija o Unicode vrijednosti znaka
+koja je smještena pod ključem \lstinline{value}. Dodatno, za svaki znak
+dostupna je informacija o poziciji i veličini njegovog omeđujućeg pravokutnika
+\engl{bounding box}. Za svaki omeđujući pravokutnik poznate su sljedeće
+informacije:
 
 \begin{itemize}
     \item[$\bullet$] $x$ - horizontalna pozicija gornjeg lijevog kuta,
@@ -843,10 +859,10 @@ o označenoj slici. Sve informacije koje nisu ovdje navede mogu se zanemariti.
 \subsubsection{Izlaz iz sustava za određivanje strukture teksta}
 U odjeljku \ref{sec:željena-funkcionalnost} navedene su željene funkcionalnosti
 sustava i opisan je pojednostavljeni format izlaza iz sustava. Od sustava se
-očekuje da rezultat nakon određivanja strukture teksta prikaže u istom formatu
+očekuje da rezultat, nakon određivanja strukture teksta, prikaže u istom formatu
 u kojemu je prikazan ulaz u sustav opisan u ovom odjeljku. Sve grupirane linije
 potrebno je smjestiti u jedan blok. Sustav ne treba isporučiti informacije koje
-su se mogu zanemariti na ulazu.
+su se mogle zanemariti na ulazu.
 
 
 
@@ -919,7 +935,7 @@ formatu JSON u kojemu se nalaze znakovi grupirani u linije i gdje su između
 riječi ubačeni znakovi bjeline. Strukturirani OCR-rezultat potrebno je zapisati
 u izlaznu datoteku u formatu opisanom u odjeljku
 \ref{subsec:ocekivane-izlazne-datoteke}. Isječak \ref{lst:ocr-result-to-txt}
-prikazuje pseudokôd algoritma za ispis OCR-rezultata u format opisan u
+prikazuje pseudokôd algoritma za ispis OCR-rezultata u formatu opisanom u
 pododjeljku \ref{subsec:ocekivane-izlazne-datoteke}. Izlazne datoteke stvorene
 na temelju strukturiranih OCR-rezultata i očekivane ulazne datoteke dostupne u
 skupu podataka za testiranje uspoređuju se metodom objašnjenom u odjeljku
@@ -967,11 +983,11 @@ Slika \ref{fig:sustav-03} prikazuje navedene komponente sustava i njihovu
 suradnju. Ulaz u sustav za određivanje linija je nestrukturirani OCR-rezultat
 dobiven od OCR-sustava koji je ujedno i ulaz u sustav za određivanje strukture
 teksta. Izlaz iz sustava za određivanje linija je OCR-rezultat
-u kojemu su znakovi grupirani u linije kojima pripadaju. Izlaz
-iz sustava za određivanje linija je ulaz u sustav za rastavljanje riječi koji
-u svakoj liniji ubacuje na odgovarajuća mjesta znakove bjeline koji odvajaju
-riječi. Izlaz iz sustava za rastavljanje riječi je ujedno i izlaz iz sustava
-za određivanje strukture teksta.
+u kojemu su znakovi grupirani u linije. Izlaz iz sustava za određivanje linija
+je ulaz u sustav za rastavljanje riječi koji u svakoj liniji ubacuje na
+odgovarajuća mjesta znakove bjeline koji odvajaju riječi. Izlaz iz sustava za
+rastavljanje riječi je ujedno i izlaz iz sustava za određivanje strukture
+teksta.
 
 \
 
@@ -997,7 +1013,8 @@ U formalnoj definiciji algoritama koriste se sljedeće oznake:
     \item[$\bullet$] $l$ i $k$ - označavaju pojedinu liniju u OCR-rezultatu,
     \item[$\bullet$] $l_{-i}$ - označava $i$-ti znak od kraja linije
     (npr.\ $l_{-1}$ označava zadnji znak u liniji),
-    \item[$\bullet$] $l_i$ - označava $i$-ti znak od početka linije (npr.\ $l_1$ označava prvi znak u liniji).
+    \item[$\bullet$] $l_i$ - označava $i$-ti znak od početka linije (npr.\
+    $l_1$ označava prvi znak u liniji).
 \end{itemize}
 
 \
@@ -1010,7 +1027,8 @@ A = B \iff
 A_w = B_w \land A_h = B_h \land A_x = B_x \land A_y = B_y \land A_v = B_v
 \]
 
-U definiciji algoritama koristit će se sljedeće horizontalne udaljenosti između dva znaka $A$ i $B$:
+U definiciji algoritama koristit će se sljedeće horizontalne udaljenosti između
+dva znaka $A$ i $B$:
 \begin{align}
 d(A, B) &= |\max(A_x, B_x) - \min(A_x + A_w, B_x + B_w)| \\
 d_l(A, B) &= |A_x - B_x| \\
@@ -1088,7 +1106,7 @@ pripadne onoj liniji s kojom ostvari maksimalno preklapanje:
 l_{max} = \argmax_{l \in L}\left\{\textit{overlap}(A, l_{-1})\right\}
 \end{equation}
 
-Ako je promatrani znak s nekom linijom ostvario preklapanje vrijednosti $0$
+Ako je promatrani znak s nekom linijom ostvario preklapanje vrijednosti $0$,
 u skup $L$ dodaje se nova linija i promatrani znak postaje početak te linije.
 Na ovaj način algoritam konstruira linije i skup svih linija $L$ koji je na
 početku prazan.
@@ -1097,16 +1115,20 @@ početku prazan.
 \subsubsection{Rješavanje problema valovitih linija}
 Budući da linije u sadržaju promatranog skupa podataka mogu biti valovite
 (slika \ref{fig:aligner-01}), ponekad je poželjno izmjeriti preklapanje ne samo
-sa zadnjim znakom u liniji nego i sa zadnjih nekoliko:
+sa zadnjim znakom u liniji, nego i sa zadnjih nekoliko znakova:
 \begin{equation}
 \label{eq:overlap-02}
-l_{max} = \argmax_{l \in L,\ i \in [1, \min(|l|, c_1)]}\left\{\textit{overlap}(A, l_{-i})\right\}
+l_{max} = \argmax_{l \in L,\ i \in [1, \min(|l|, c_1)]}\left\{\textit{overlap}
+(A, l_{-i})\right\}
 \end{equation}
 
 Za razliku od izraza \ref{eq:overlap-01} koji uzima u obzir samo zadnji znak u
 svakoj liniji, izraz \ref{eq:overlap-02} uzet će u obzir zadnjih
 $\min(|l|, c_1)$
-znakova u svakoj liniji, gdje $c_1$ predstavlja \textbf{parametar algoritma}. Eksperimentalno je utvrđeno da se za vrijednost $1$ parametra $c_1$ ostvaruju najbolji rezultati za sadržaj s računa iz trgovine i da se za vrijednost $2$ parametra $c_1$ ostvaruju najbolji rezultati za sadržaj iz knjiga.
+znakova u svakoj liniji, gdje $c_1$ predstavlja \textbf{parametar algoritma}.
+Eksperimentalno je utvrđeno da se za vrijednost $1$ parametra $c_1$ ostvaruju
+najbolji rezultati za sadržaj s računa iz trgovine i da se za vrijednost $2$
+parametra $c_1$ ostvaruju najbolji rezultati za sadržaj iz knjiga.
 
 Slika \ref{fig:aligner-01} prikazuje kako znak \lstinline{=} na desnoj strani
 crvenog pravokutnika ostvaruje maksimalno preklapanje sa znakom \lstinline{=}
@@ -1127,15 +1149,18 @@ $c_1$.
 \subsubsection{Rješavanje problema preklapanja početaka dviju linija}
 Slika \ref{fig:overlap-01} prikazuje kako je moguće preklapanje početaka dviju
 linija. Tako znakovi \lstinline{0} i \lstinline{D}
-ostvaruju nezanemarivo preklapanje čija će posljedica biti krivo određene
-linije. Za uspješno izbjegavanje ovakvih slučajeva uvodi se dodatan uvijet
+ostvaruju nezanemarivo preklapanje zbog čega će linije biti krivo određene.
+Za uspješno izbjegavanje ovakvih slučajeva uvodi se dodatan uvijet
 koji će odlučiti hoće li promatrani znak pripasti liniji s kojom ostvaruje
 maksimalno preklapanje:
 
 \begin{equation}
 \label{eq:overlap-03}
-\max_{i \in [1, \min(|l_{max}|, c_1)]}\left\{\textit{overlap}(A, l_{max_{-i}})\right\} > c_2
+\max_{i \in [1, \min(|l_{max}|, c_1)]}\left\{\textit{overlap}(A, l_{max_{-i}})
+\right\} > c_2
 \end{equation}
+
+\
 
 \begin{figure}[htb]
     \centering
@@ -1146,13 +1171,15 @@ maksimalno preklapanje:
 \end{figure}
 
 Nakon što je izrazom \ref{eq:overlap-02} određeno s kojom linijom promatrani
-znak ostvaruje maksimalno preklapanje potrebno je provjeriti zadovoljava li iznos
-tog preklapanja uvijet naveden izrazom \ref{eq:overlap-03}. Uvodi se novi
+znak ostvaruje maksimalno preklapanje potrebno je provjeriti zadovoljava li
+iznos tog preklapanja uvijet naveden izrazom \ref{eq:overlap-03}. Uvodi se novi
 parametar algoritma $c_2$ koji predstavlja donju granicu preklapanja koju znak
 mora ostvariti s linijom da bi joj se pripojio. Eksperimentalno je utvrđeno da
 se za vrijednost $0{,}13$ parametra $c_2$ ostvaruju najbolji rezultati za
 sadržaj s računa iz trgovine i da se za vrijednost $0{,}05$ parametra $c_2$
 ostvaruju najbolji rezultati za sadržaj iz knjiga.
+
+\
 
 \begin{figure}[htb]
     \centering
@@ -1198,8 +1225,8 @@ f_2(x) &= 1 + \frac{c_4 \cdot x}{1 + c_4 \cdot x}
 \pagebreak
 
 Ideja je koristiti navedene funkcije $f_1$ i $f_2$ kako bi se linijama
-olakšalo odnosno otežalo postizanje preklapanja u ovisnosti o udaljenosti između
-njihovih zadnjih znakova. Recimo da u smo u postupku traženja maksimalnog
+olakšalo, odnosno otežalo postizanje preklapanja u ovisnosti o udaljenosti
+između njihovih zadnjih znakova. Recimo da u smo u postupku traženja maksimalnog
 preklapanja u jednom trenutku ostvarili maksimalno preklapanje s linijom $l$
 iznosa $p_l$. S idućom linijom $k$ izmjerimo preklapanje $p_k$. Da bi linija
 $k$ postigla novo maksimalno preklapanje sa promatranim znakom mora vrijediti
@@ -1218,7 +1245,8 @@ p_k > p_l \cdot f_1(\hat{d_l}(l_{-1},k_{-1}))
 Funkcija $f_1$ će liniji $k$ pomoći tim više što su zadnji znakovi linija
 $l$ i $k$ udaljeniji. Da je zadnji znak linije $k$ bio dalje od
 promatranog znaka nego zadnji znak linije $l$ onda bismo liniji $k$ trebali
-otežati postizanje novog maksimalnog preklapanja čak i ako vrijedi $p_k > p_l$. U tom slučaju novi uvijet za liniju $k$ glasi:
+otežati postizanje novog maksimalnog preklapanja čak i ako vrijedi $p_k > p_l$.
+U tom slučaju novi uvijet za liniju $k$ glasi:
 
 \begin{equation}
     p_k > p_l \cdot f_2(\hat{d_l}(l_{-1},k_{-1}))
@@ -1232,10 +1260,12 @@ trgovine i za sadržaj iz knjiga.
 Nakon što je svaki znak smješten u odgovarajuću liniju, linije je potrebno
 sortirati uzlazno po $y$ vrijednosti prvih znakova linije. Naime, u početnom
 koraku sortiranja znakova po $x$ vrijednosti moguće je da prvi znak
-u sortiranim znakovima započinje neku liniju u sadržaju koja nije prva u sadržaju. Taj znak će u algoritmu biti detektiran kao početak nove linije koja će se zatim ubaciti u skup svih linija $L$.
+u sortiranim znakovima započinje neku liniju u sadržaju koja nije prva u
+sadržaju. Taj znak će u algoritmu biti detektiran kao početak nove linije koja
+će se zatim ubaciti u skup svih linija $L$.
 
 Konačno, pseudokôd algoritma za određivanje linija na temelju maksimalnog
-preklapanja znakova prikazan je u isječku. U navedenom isječku funkcije $f_1$ i
+preklapanja znakova prikazan je u isječku. U navedenom isječku, funkcije $f_1$ i
 $f_2$ implicitno koriste vrijednost $0{,}13$ za parametare $c_3$ i $c_4$.
 U pseudokôdu funkcija \lstinline{dln} označava funkciju udaljenosti $\hat{d_l}$.
 
@@ -1244,7 +1274,7 @@ U pseudokôdu funkcija \lstinline{dln} označava funkciju udaljenosti $\hat{d_l}
 \begin{lstlisting}[
     caption={Pseudokôd algoritma za određivanje linija.},
     label={lst:algorithm-01},
-    morekeywords={def,for,end,if,else,return,new},
+    morekeywords={def,for,end,if,then,else,return,new},
     firstnumber=1
 ]
 def odrediLinije(nestrukturiraniOcrRezultat)
@@ -1260,20 +1290,20 @@ def odrediLinije(nestrukturiraniOcrRezultat)
       for i u [0, min(c1, linija.duljina)]
         p = max(p, overlap(znak, linija[-i]))
       end
-      if linijaSaMaxPreklapanjem != null
-        if linijaSaMaxPreklapanjem[-1].x < linija[-1].x
+      if linijaSaMaxPreklapanjem != null then
+        if linijaSaMaxPreklapanjem[-1].x < linija[-1].x then
           tezina = f1(dln(linijaSaMaxPreklapanjem[-1], linija[-1]))
         else
           tezina = f2(dln(linijaSaMaxPreklapanjem[-1], linija[-1]))
         end
       end
-      if p > maxPreklapanje * tezina
+      if p > maxPreklapanje * tezina then
         maxPreklapanje = p
         linijaSaMaxPreklapanjem = linija
       end
     end
 
-    if maxPreklapanje > c2
+    if maxPreklapanje > c2 then
       linijaSaMaxPreklapanjem.nadodaj( znak )
     else
       linije.nadodaj([znak])
@@ -1300,7 +1330,7 @@ Zadnji znak u petlji s početkom linije $6$ treba provjeriti preklapanje sa
 svakom linijom. Dodatno, zbog petlje koja počinje linijom $11$ promatrani znak
 mora izmjeriti preklapanje sa svakim znakom u liniji što nas opet dovodi do
 složenosti $\mathcal{O}(n^2)$. Budući da sortiranja u linijama $2$ i $36$ imaju
-složenost $\mathcal{O}(n \cdot \log(n))$ one ne utječu na ukupnu složenost
+složenost $\mathcal{O}(n \cdot \log(n))$, one ne utječu na ukupnu složenost
 algoritma.
 
 
@@ -1318,7 +1348,6 @@ znakovi grupirani u linije u prethodnom koraku opisanom u odjeljku
 riječi je da između znakova, za koje smatra da su završetak prethodne odnosno
 početak iduće riječi, ubaci znak bjeline čija će vrijednost \engl{value} biti
 $32$, a ostale informacije mogu biti proizvoljne.
-
 Ovaj odjeljak opisat će tri algoritma za rastavljanje riječi:
 \begin{itemize}
     \item[$\bullet$] algoritam temeljen na prosječnoj širini znaka
@@ -1363,7 +1392,7 @@ znaka.
         prosječnoj širini znaka.
     },
     label={lst:algorithm-02},
-    morekeywords={def,for,end,if,else,return,while,new},
+    morekeywords={def,for,end,if,then,else,return,while,new},
     firstnumber=1
 ]
 def rastaviRijeci(ocrRezultat)
@@ -1378,7 +1407,7 @@ def rastaviRijeci(ocrRezultat)
     j = 1
     while j < linija.duljina
       udaljenost = d(linija[i], linija[j])
-      if udaljenost > prosjecnaSirina * c1
+      if udaljenost > prosjecnaSirina * c1 then
         bjelina = new Znak()
         bjelina.value = 32
         bjelina.x = linija[i].x + linija[i].width
@@ -1519,9 +1548,9 @@ algoritam opisan u pododjeljku
 \ref{subsec:algoritam-temeljen-na-prosjecnoj-sirini znaka} razdvojio znakom
 bjeline zbog krive procjene. Ideja ovog algoritma temelji se na
 pretpostavci da su znakovi koji imaju istu vrijednost u prosjeku jednako
-udaljeni od znakova s kojima su neposredni susjedi. Ovaj algoritam se u ovoj
+udaljeni od znakova s kojima su susjedi. Ovaj algoritam se u ovoj
 inačici može koristiti kao dobar pokazatelj da između neka dva znaka zapravo
-ne treba ubaciti znak bjeline iako bi možda neki drugi algoritam opisan u ovom
+ne treba ubaciti znak bjeline, iako bi možda neki drugi algoritam opisan u ovom
 poglavlju ubacio znak bjeline i time vrlo vjerojatno napravio pogrešku.
 
 Isječak \ref{lst:algorithm-03} prikazuje pseudokôd algoritma temeljenog na
@@ -1546,7 +1575,7 @@ određuje na isti način kao i algoritam opisan u pododjeljku
         prosječnoj relativnoj udaljenosti.
     },
     label={lst:algorithm-03},
-    morekeywords={def,for,end,if,else,return,while,new},
+    morekeywords={def,for,end,if,then,else,return,while,new},
     firstnumber=1
 ]
 def rastaviRijeci(ocrRezultat)
@@ -1557,7 +1586,7 @@ def rastaviRijeci(ocrRezultat)
     for i = 1; i < linija.duljina; i++
       udaljenost = dc(linija[i], linija[i-1])
       normUdaljenost = ndc(linija[i], linija[i-1])
-      if normUdaljenost < c1
+      if normUdaljenost < c1 then
         sumMap[linija[i].value] += udaljenost
         cntMap[linija[i].value]++
         sumMap[linija[i-1].value] += udaljenost
@@ -1574,7 +1603,7 @@ def rastaviRijeci(ocrRezultat)
       avgRelDistI = sumMap[linija[i].value]/cntMap[linja[i].value]
       avgRelDistJ = sumMap[linija[j].value]/cntMap[linja[j].value]
       if udaljenost > avgRelDistI * c2 ||
-         udaljenost > avgRelDistJ * c2
+         udaljenost > avgRelDistJ * c2 then
         bjelina = new Znak()
         bjelina.value = 32
         bjelina.x = linija[i].x + linija[i].width
@@ -1598,7 +1627,7 @@ end
 
 \subsubsection{Vremenska složenost algoritma}
 Ako su u najgorem slučaju svi znakovi smješteni u istu liniju vremenska
-složenost ovog algoritma bit će $\mathcal{O}(n)$, gdje je $n$ ukupan broj
+složenost algoritma bit će $\mathcal{O}(n)$, gdje je $n$ ukupan broj
 znakova. U analizi vremenske složenosti nije uzeta u obzir vremenska složenost
 ubacivanja elementa u liniji $33$ zato jer postoje strukture podataka
 (npr.\ povezana lista) nad kojima je moguće izvesti operaciju ubacivanja u
@@ -1685,14 +1714,14 @@ opisan u pododjeljku
         prosječnoj udaljenosti centara.
     },
     label={lst:algorithm-04},
-    morekeywords={def,for,end,if,else,return,while,new},
+    morekeywords={def,for,end,if,then,else,return,while,new},
     firstnumber=1
 ]
 def rastaviRijeci(ocrRezultat)
   for linija u ocrRezultat.linije
     brojac = 0
     for i = 1; i < linija.duljina; i++
-      if ndc(linija[i], linija[i-1] < c1
+      if ndc(linija[i], linija[i-1] < c1 then
         avgUdaljenost += dc(linija[i], linija[i-1])
         brojac++
       end
@@ -1704,7 +1733,7 @@ def rastaviRijeci(ocrRezultat)
     j = 1
     while j < linija.duljina
       udaljenost = dc(linija[i], linija[j])
-      if udaljenost > avgUdaljenost * c2
+      if udaljenost > avgUdaljenost * c2 then
         bjelina = new Znak()
         bjelina.value = 32
         bjelina.x = linija[i].x + linija[i].width
@@ -1780,8 +1809,8 @@ strukture teksta.
 Za usporedbu sadržaja koristi se Levenshteinova udaljenost između niza znakova
 sadržaja očekivane izlazne datoteke i niza znakova sadržaja izlazne datoteke
 stvorene na temelju OCR-rezultata dobivenog iz sustava.
-Algoritam Levenshteinove udaljenosti dobro je opisan u literaturi i ovaj rad
-neće ulaziti u detalje njegova rada.
+Algoritam Levenshteinove udaljenosti dobro je opisan u literaturi
+\citep{cormen2009introduction} i ovaj rad neće ulaziti u detalje njegova rada.
 
 \begin{lstlisting}[
     caption={Primjer sadržaja očekivane izlazne datoteke.},
@@ -1792,16 +1821,19 @@ Lorem ipsum dolor sit amet,
 consectetur adipiscing elit.
 \end{lstlisting}
 
+\
+
 Način određivanja točnosti pokazat će se na primjeru isječaka
 \ref{lst:output-01} i \ref{lst:output-02}. Isječak \ref{lst:output-01}
 prikazuje sadržaj očekivane izlazne datoteke, a isječak \ref{lst:output-02}
 prikazuje sadržaj izlazne datoteke stvorene na temelju OCR-rezultata dobivenog
 iz sustava.
 
+\pagebreak
+
 \begin{lstlisting}[
     caption={
-        Primjer sadržaja izlazne datoteke stvorene na temelju OCR-rezultata
-        dobivenog iz sustava.
+        Primjer sadržaja izlazne datoteke.
     },
     label={lst:output-02},
     firstnumber=1
@@ -1809,6 +1841,8 @@ iz sustava.
 Lorem dolors it amet ,
 consecte tur ipsum ad ipiscing elit.
 \end{lstlisting}
+
+\
 
 Sustav je pogriješio u određivanju linija time što je riječ \lstinline{ipsum}
 stavio u drugu liniju. Osim toga, pogriješio je i u razdvajanju riječi u obje
@@ -1823,13 +1857,14 @@ primjeru, dulji niz znakova je niz znakova iz isječka
 redak \lstinline{\n}). Sustav je napravio $17$ pogrešaka od maksimalno $59$,
 odnosno njegova greška iznosi $\frac{17}{59} \cdot 100\% = 29\%$. Iz pogreške
 se može izračunati točnost koja iznosi $71\%$.
-
-Formalno, točnost ili dobrota \engl{fitness} sustava određuje se izrazom:
+Formalno, točnost ili dobrota \engl{fitness} sustava određena je izrazom:
 
 \begin{equation}
 \label{eq:fitness}
 f(a, b) = 1 - \frac{d_\textit{levenshtein}(a, b)}{\max(|a|, |b|)} \texttt{.}
 \end{equation}
+
+\
 
 U izrazu su s $a$ i $b$ označeni nizovi znakova, a s
 $d_\textit{levenshtein}$ Levenshteinova funkcija udaljenosti. U nastavku ovog
@@ -1837,10 +1872,10 @@ poglavlja točnost sustava iskazivat će se u vrijednostima
 između $0$ i $1$, a ne u postocima.
 
 Slika \ref{fig:result-example-01} prikazuje graf točnosti (dobrote) sustava za
-određivanje strukture teksta za sadržaj računa iz trgovine. Za svaki testni
+određivanje strukture teksta za sadržaj iz knjiga. Za svaki testni
 primjer izmjerena je dobrota sustava, zatim su izmjerene dobrote uzlazno
 sortirane i tako su nanesene na graf dobrote te je zbog toga graf monotono
-rastući. Na ovaj će se način prikazivati grafove dobrote u rezultatima svih
+rastući. Na ovaj će se način prikazivati grafovi dobrote u rezultatima svih
 algoritama.
 
 \begin{figure}[htb]
@@ -1996,7 +2031,8 @@ novih mjera točnosti koje bi dale bolji uvid u način rada pojedinih algoritama
 Grafovi točnosti algoritma za određivanje linija temeljenog na maksimalnom
 preklapanju znakova prikazani su na slikama \ref{fig:result-01} i
 \ref{fig:result-02}. Rezultati u tablici \ref{tbl:result-01} pokazuju kako se
-za $57\%$ primjera sadržaja računa iz trgovina i za $64\%$ primjera sadržaja iz knjiga ostvaruje maksimalna
+za $57\%$ primjera sadržaja računa iz trgovina i za $64\%$ primjera sadržaja iz
+knjiga ostvaruje maksimalna
 točnost iznosa $1$. Prikazani rezultati ostvareni su s algoritmom koji koristi
 optimalne parametre navedene u pododjeljku
 \ref{subsec:algoritam-temeljen-na-maksimalnom-preklapanju-znakova}.
@@ -2015,9 +2051,9 @@ Knjige & 0,67 & 0,98 & 1 & 1 & 0,64 \\ \hline
 Na slici \ref{fig:error-01} prikazana su dva primjera za koje algoritam griješi
 u detekciji linija. U prvom slučaju algoritam nije mogao zadovoljiti minimalni
 iznos preklapanja da poveže znakove \lstinline{.} i \lstinline{I} u istu
-liniju. Ovaj problem se rješava povećanjem parametra $c_1$ na vrijednost $2$,
+liniju. Povećanjem parametra $c_1$ na vrijednost $2$ rješava ovaj problem,
 ali eksperimenti su pokazali kako to nije optimalan parametar za sadržaj s
-računa iz trgovina. Ovaj problem bi se mogao riješiti tako da algoritam mjeri
+računa iz trgovina. Ovaj problem mogao bi se riješiti tako da algoritam mjeri
 preklapanje samo između znakova koji su relativno iste visine. U ovom primjeru
 to bi značilo da će algoritam zanemariti znak \lstinline{.} i izmjerit će
 preklapanje sa znakom \lstinline{D}. U drugom slučaju algoritam ne može spojiti
@@ -2047,7 +2083,8 @@ desne strane s grupiranim linijama s lijeve strane.
     \captionsetup{justification=centering}
     \includegraphics[width=\textwidth]{images/result-01.png}
     \caption{
-        Graf točnosti algoritma za određivanje linija u sadržaju s računa iz trgovine.
+        Graf točnosti algoritma za određivanje linija u sadržaju s računa iz
+        trgovine.
     }
     \label{fig:result-01}
 \end{figure}
@@ -2088,20 +2125,22 @@ trgovina, za $54\%$ testnih primjera. Isti algoritam postiže znatno lošije
 rezultate u određivanju strukture teksta u sadržaju iz knjiga.
 
 \begin{table}[htb]
-\caption{Točnost algoritama za rastavljanje riječi u sadržaju s računa iz trgovine.}
+\caption{
+    Točnost algoritama za rastavljanje riječi u sadržaju s računa iz trgovine.
+}
 \label{tbl:result-02}
 \centering
 \begin{tabular}{lccccc} \hline
 & Min. & Sred. & Med. & Maks. & Udio primjera s maks. točnosti \\ \hline
-avgcharwidth & 0,83 & 0,98 & 0,99 & 1 & 0,34 \\
-avgreldist & 0,82 & 0,98 & 0,99 & 1 & 0,33 \\
-avgcenterdist & 0,83 & 0,99 & 1 & 1 & 0,54 \\ \hline
+\emph{avgcharwidth} & 0,83 & 0,98 & 0,99 & 1 & 0,34 \\
+\emph{avgreldist} & 0,82 & 0,98 & 0,99 & 1 & 0,33 \\
+\emph{avgcenterdist} & 0,83 & 0,99 & 1 & 1 & 0,54 \\ \hline
 \end{tabular}
 \end{table}
 
 Ovakvi rezultati
 mogu se objasniti činjenicom da je sadržaj na računima iz trgovina tiskan
-fontom konstantne širine \engl{monospaced font}, i to iskorištava algoritam
+fontom konstantne širine \engl{monospaced font}, i to se iskorištava algoritam
 \emph{avgcenterdist}. Rezultati pokazuju kako je za rastavljanje riječi u
 sadržaju iz knjiga pogodnije koristiti algoritme koji se ne oslanjaju na
 udaljenost centara, nego na udaljenost rubova znakova. U budućem radu trebala
@@ -2113,9 +2152,9 @@ bi se koristiti ta informacija kako bi se poboljšali rezultati.
 \centering
 \begin{tabular}{lccccc} \hline
 & Min. & Sred. & Med. & Maks. & Udio primjera s maks. točnosti \\ \hline
-avgcharwidth & 0,6 & 0,96 & 0,97 & 1 & 0,2 \\
-avgreldist & 0,61 & 0,92 & 0,93 & 0,961436 & 0,6 \\
-avgcenterdist & 0,59 & 0,93 & 0,95 & 1 & 0,02 \\ \hline
+\emph{avgcharwidth} & 0,6 & 0,96 & 0,97 & 1 & 0,2 \\
+\emph{avgreldist} & 0,61 & 0,92 & 0,93 & 0,961436 & 0,6 \\
+\emph{avgcenterdist} & 0,59 & 0,93 & 0,95 & 1 & 0,02 \\ \hline
 \end{tabular}
 \end{table}
 
@@ -2133,7 +2172,8 @@ susjeda ako su od njih udaljeniji od nekog promatranog prosjeka.
     \captionsetup{justification=centering,margin=2cm}
     \includegraphics[width=\textwidth]{images/result-03.png}
     \caption{
-        Graf točnosti algoritama za rastavljanje riječi u sadržaju s računa iz trgovine.
+        Graf točnosti algoritama za rastavljanje riječi u sadržaju s računa iz
+        trgovine.
     }
     \label{fig:result-03}
 \end{figure}
@@ -2193,8 +2233,8 @@ strukture koriste položaj pojedinih znakova i zajedno čine sustav za određiva
 strukture teksta.
 
 Predstavljeni sustav za određivanje strukture teksta na temelju položaja
-pojedinih znakova namijenjen je i testiran za određivanje strukture na sadržaju s
-računa iz trgovina i na sadržaju iz knjiga. Rezultati i analiza pokazuju kako
+pojedinih znakova namijenjen je i testiran za određivanje strukture na sadržaju
+s računa iz trgovina i na sadržaju iz knjiga. Rezultati i analiza pokazuju kako
 postoji još prostora za poboljšanje algoritama i mjera za određivanje
 točnosti. Algoritam za određivanje linija temelji se na pretpostavci da dva
 susjedna znaka, koja se nalaze u istoj liniji, ostvaruju maksimalno vertikalno
@@ -2225,7 +2265,9 @@ koriste statističke podatke o širini i udaljenosti znakova. Svaki algoritam
 koristi parametre koji utječu na način određivanja linija i razdvajanja riječi
 
 
-\kljucnerijeci{sustav za određivanje strukture teksta, optičko raspoznavanje znakova, algoritmi za određivanje linija, algoritmi za razdvajanje riječi, segmentacija teksta, segmentacija linija}
+\kljucnerijeci{sustav za određivanje strukture teksta, optičko raspoznavanje
+znakova, algoritmi za određivanje linija, algoritmi za razdvajanje riječi,
+segmentacija teksta, segmentacija linija}
 \end{sazetak}
 
 \engtitle{Text Layout Analysis System Based on Individual Character Positions}
