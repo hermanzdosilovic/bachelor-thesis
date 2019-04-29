@@ -1,5 +1,5 @@
-### Sustav za određivanje strukture teksta na temelju položaja pojedinih znakova
-#### Sažetak
+## Sustav za određivanje strukture teksta na temelju položaja pojedinih znakova
+### Sažetak
 U ovom radu predstavljen je sustav za određivanje strukture teksta na temelju
 položaja pojedinih znakova namijenjen za rješavanje problema određivanja
 strukture teksta u sadržaju s računa iz trgovina i sadržaju iz knjiga. Sustav je
@@ -9,13 +9,13 @@ da dva susjedna znaka, koja se nalaze u istoj liniji, ostvaruju maksimalno
 vertikalno preklapanje. Algoritmi za rastavljanje riječi na razne načine
 koriste statističke podatke o širini i udaljenosti znakova. Svaki algoritam
 koristi parametre koji utječu na način određivanja linija i razdvajanja riječi.
-#### Ključne riječi
+### Ključne riječi
 sustav za određivanje strukture teksta, optičko raspoznavanje
 znakova, algoritmi za određivanje linija, algoritmi za razdvajanje riječi,
 segmentacija teksta, segmentacija linija
 
-### Text Layout Analysis System Based on Individual Character Positions
-#### Abstract
+## Text Layout Analysis System Based on Individual Character Positions
+### Abstract
 This thesis describes text layout analysis system based on individual character
 positions intended to solve the problem of determining text layout in
 receipts and book content. The system is divided into two subsystems, the first
@@ -26,7 +26,7 @@ Algorithms for separating the words in lines use in various ways statistics of
 character width and distance of characters. Algorithms use parameters that can
 be tuned and affect on how the lines are found and the words are separated.
 
-#### Keywords
+### Keywords
 text layout analysis system, optical character recognition, line
 finding algorithms, word separation algorithms, text segmentation, line
 segmentation
